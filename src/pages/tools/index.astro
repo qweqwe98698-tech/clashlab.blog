@@ -1,0 +1,417 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Badge from '../../components/common/Badge.astro';
+
+const tools = [
+  {
+    id: 'subconverter',
+    name: '在线订阅转换助手',
+    badge: '极高频使用',
+    desc: '一键将 V2Ray / Shadowsocks / Trojan 订阅链接转换为 Clash Verge Rev (YAML)、sing-box (JSON)、Surge 或 Quantumult X 规范配置。',
+    features: ['支持远程规则集注入', '自动节点重命名与过滤', '去除广告规则自动合并', '支持自定义后端 API'],
+  },
+  {
+    id: 'dns-leak',
+    name: 'DNS 泄漏与污染在线检测',
+    badge: '安全必备',
+    desc: '检测当前网络环境下系统 DNS 是否被运营商污染劫持，排查 DoH/DoT 加密状态与 ECS (EDNS-Client-Subnet) 隐私泄露风险。',
+    features: ['测试 DNS 上游归属地', '检测 Fake-IP 命中率', '识别运营商透明 DNS 代理', '给出防泄漏优化配置'],
+  },
+  {
+    id: 'webrtc',
+    name: 'WebRTC 真实公网 IP 检测',
+    badge: '隐私安全',
+    desc: '即便开启了普通 HTTP 代理，浏览器 WebRTC STUN 请求仍可能暴露你的真实公网 IP。本工具可一键验证当前浏览器防护等级。',
+    features: ['STUN 服务器候选探测', '检测本地真实内网/公网 IP', '提供各浏览器禁用方法', 'TUN 模式接管有效性验证'],
+  },
+  {
+    id: 'speedtest',
+    name: '网络延迟与带宽吞吐计算器',
+    badge: '性能调优',
+    desc: '基于物理距离、光纤传播速度与 TCP/UDP 窗口大小，计算跨境链路理论最小延迟与最大并发吞吐量。',
+    features: ['光纤物理传播时延估算', 'TCP 慢启动与 RTT 关系图', 'BBR 拥塞控制吞吐模拟', '晚高峰抖动容限分析'],
+  },
+  {
+    id: 'generator',
+    name: 'sing-box / Clash 配置生成器',
+    badge: '极客工具',
+    desc: '图形化构建符合现代标准的高性能配置文件，自定义 Inbound 端口、Outbound 链式代理与 GEO 规则集路由分支。',
+    features: ['可视化拖拽路由规则', '一键导出 JSON / YAML', '内置主流常用分流模板', '自动语法与 schema 校验'],
+  },
+];
+---
+
+<PageLayout
+  title="网络技术在线工具箱"
+  description="ClashLab 实验室自研与推荐的实用网络工具集合，助力开发者与技术极客排查网络问题与优化配置。"
+  tagline="DEV & LAB TOOLS"
+  breadcrumbCurrent="在线工具"
+>
+  <div class="tools-page-container">
+    <!-- Subconverter Tool Interactive Card -->
+    <div class="card tool-interactive-card" id="subconverter-widget">
+      <div class="tool-card-head">
+        <div class="tool-head-title-wrap">
+          <span class="tool-badge-top">QUICK GENERATOR</span>
+          <h2 class="tool-main-title">🚀 在线订阅转换与规则定制</h2>
+        </div>
+        <Badge variant="green">服务正常在线</Badge>
+      </div>
+
+      <p class="tool-intro-text">
+        支持将各类机场原始订阅无损转换为 Clash Verge (YAML) 或 sing-box (JSON) 格式，并自动加载高级分流规则：
+      </p>
+
+      <form class="converter-form" onsubmit="event.preventDefault(); handleConvert();">
+        <div class="form-group">
+          <label for="sub-url">订阅链接 (Subscription URL):</label>
+          <input
+            type="url"
+            id="sub-url"
+            placeholder="https://example.com/api/v1/client/subscribe?token=..."
+            required
+          />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="target-client">目标客户端格式:</label>
+            <select id="target-client">
+              <option value="clash">Clash / Clash Verge Rev (YAML)</option>
+              <option value="singbox">sing-box (JSON)</option>
+              <option value="surge">Surge 5</option>
+              <option value="quantumultx">Quantumult X</option>
+              <option value="shadowrocket">Shadowrocket</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="rule-preset">规则集预设 (Rule Preset):</label>
+            <select id="rule-preset">
+              <option value="acl4ssr">ACL4SSR_Online (全分组精细分流 - 推荐)</option>
+              <option value="loyalsoldier">Loyalsoldier 现代极简规则</option>
+              <option value="geosite">sing-box 原生 GEO 规则集</option>
+              <option value="no-ads">去广告 + 经典规则</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-lg">
+            生成转换后订阅链接
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('sub-url').value='https://clashlab.blog/demo-sub?token=demo123';">
+            填入测试演示链接
+          </button>
+        </div>
+
+        <div id="converter-result-box" class="converter-result-box" style="display: none;">
+          <label>生成的专用订阅地址:</label>
+          <div class="result-input-group">
+            <input type="text" id="converted-url" readonly />
+            <button type="button" id="copy-converted-btn" class="btn btn-dark btn-sm">复制</button>
+          </div>
+          <span class="result-note">✅ 直接将上方链接复制并粘贴到 Clash Verge / sing-box 中导入即可使用！</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tools Directory Cards -->
+    <div class="tools-grid">
+      {tools.map((tool) => (
+        <div class="card tool-item-card" id={tool.id}>
+          <div class="tool-item-inner">
+            <div class="tool-item-top">
+              <h3 class="tool-item-name card-title">{tool.name}</h3>
+              <Badge variant="blue" size="sm">{tool.badge}</Badge>
+            </div>
+
+            <p class="tool-item-desc">{tool.desc}</p>
+
+            <div class="tool-features-list">
+              {tool.features.map((f) => (
+                <div class="tool-feat">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="tool-item-action">
+              <a href={`#${tool.id}`} class="btn btn-secondary btn-sm" onclick={`alert('【${tool.name}】已激活就绪，请使用上方转换引擎或查看对应技术指南。')`}>
+                启动该工具
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .tools-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .tool-interactive-card {
+    background: linear-gradient(135deg, #0B111A 0%, #151E2B 100%);
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-lg);
+    padding: 2.25rem 2rem;
+    color: #FFFFFF;
+  }
+
+  .tool-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tool-badge-top {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #38BDF8;
+    letter-spacing: 0.05em;
+  }
+
+  .tool-main-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-top: 0.25rem;
+  }
+
+  .tool-intro-text {
+    font-size: 0.9375rem;
+    color: #94A3B8;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .converter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #CBD5E1;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.75rem 1rem;
+    background-color: #121A24;
+    border: 1px solid #233448;
+    border-radius: var(--radius-md);
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #38BDF8;
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .form-row-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .converter-result-box {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background-color: #121A24;
+    border: 1px solid #2B3D52;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .converter-result-box label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #38BDF8;
+  }
+
+  .result-input-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .result-input-group input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    background-color: #0B111A;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-sm);
+    color: #F8FAFC;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.8125rem;
+  }
+
+  .result-note {
+    font-size: 0.75rem;
+    color: #10B981;
+  }
+
+  /* Tool Directory Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tools-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .tool-item-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .tool-item-inner {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.75rem;
+  }
+
+  .tool-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .tool-item-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-main);
+    transition: color var(--transition-fast);
+  }
+
+  .tool-item-desc {
+    font-size: 0.84375rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .tool-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.625rem 0.75rem;
+    background-color: var(--bg-aux);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+  }
+
+  .tool-feat {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-body);
+  }
+
+  .tool-feat svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  .tool-item-action {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+</style>
+
+<script>
+  function handleConvert() {
+    const subUrl = (document.getElementById('sub-url') as HTMLInputElement)?.value.trim();
+    const target = (document.getElementById('target-client') as HTMLSelectElement)?.value;
+    const rule = (document.getElementById('rule-preset') as HTMLSelectElement)?.value;
+
+    if (!subUrl) return;
+
+    const resultBox = document.getElementById('converter-result-box');
+    const resultInput = document.getElementById('converted-url') as HTMLInputElement;
+
+    const encodedSub = encodeURIComponent(subUrl);
+    const backendApi = 'https://api.v1.mk/sub';
+    const finalUrl = `${backendApi}?target=${target}&url=${encodedSub}&insert=false&config=https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online.ini&emoji=true&list=shadowsocks`;
+
+    if (resultInput && resultBox) {
+      resultInput.value = finalUrl;
+      resultBox.style.display = 'flex';
+    }
+  }
+
+  function initCopyTool() {
+    const copyBtn = document.getElementById('copy-converted-btn');
+    const resultInput = document.getElementById('converted-url') as HTMLInputElement;
+
+    copyBtn?.addEventListener('click', async () => {
+      if (resultInput?.value) {
+        await navigator.clipboard.writeText(resultInput.value);
+        copyBtn.textContent = '已复制！';
+        setTimeout(() => {
+          copyBtn.textContent = '复制';
+        }, 2000);
+      }
+    });
+  }
+
+  // Bind to window for form submit
+  (window as any).handleConvert = handleConvert;
+
+  document.addEventListener('DOMContentLoaded', initCopyTool);
+  document.addEventListener('astro:page-load', initCopyTool);
+</script>

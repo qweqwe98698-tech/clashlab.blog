@@ -1,0 +1,453 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+const navItems = [
+  { label: '首页', href: '/' },
+  { label: '机场推荐', href: '/airport-recommendation' },
+  { label: '品牌库', href: '/brands' },
+  { label: '文章', href: '/posts' },
+  { label: '专题', href: '/topics' },
+  { label: '教程', href: '/tutorials' },
+  { label: '机场观察', href: '/insights' },
+  { label: '工具', href: '/tools' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') {
+    return currentPath === '/' || currentPath === '';
+  }
+  return currentPath.startsWith(href);
+};
+---
+
+<header class="header">
+  <div class="container header-inner">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-logo" aria-label="ClashLab 首页">
+      <div class="logo-icon-wrap">
+        <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#1D4ED8" />
+          <path d="M7 21.5L16 6.5L25 21.5H19.5L16 15.5L12.5 21.5H7Z" fill="white" />
+          <circle cx="16" cy="24.5" r="2.5" fill="#38BDF8" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">ClashLab</span>
+        <span class="brand-suffix">.blog</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav" aria-label="主要导航">
+      <ul class="nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={`nav-link ${isActive(item.href) ? 'active' : ''}`}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Header Actions (Search & Quick links) -->
+    <div class="header-actions">
+      <!-- Search Trigger Button -->
+      <button class="search-trigger-btn" data-search-trigger aria-label="搜索全站文档 (快捷键: Ctrl+K)">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <span class="search-label">搜索...</span>
+        <span class="kbd-shortcut">
+          <span class="kbd-key">Ctrl</span>
+          <span class="kbd-key">K</span>
+        </span>
+      </button>
+
+      <!-- GitHub / RSS quick icon -->
+      <a
+        href="/rss.xml"
+        class="header-icon-link"
+        title="RSS 订阅"
+        aria-label="RSS 订阅"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="切换菜单" aria-expanded="false">
+        <svg class="icon-hamburger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-drawer" class="mobile-drawer">
+    <div class="container mobile-drawer-inner">
+      <div class="mobile-search-wrap">
+        <button class="mobile-search-btn" data-search-trigger>
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span>搜索技术文章、客户端教程...</span>
+        </button>
+      </div>
+
+      <nav class="mobile-nav">
+        <ul class="mobile-nav-list">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class={`mobile-nav-link ${isActive(item.href) ? 'active' : ''}`}
+              >
+                <span>{item.label}</span>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="mobile-drawer-footer">
+        <div class="mobile-tagline">ClashLab · 网络协议与代理技术评测实验室</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--bg-dark);
+    border-bottom: 1px solid var(--border-dark);
+    transition: background-color var(--transition-normal), border-color var(--transition-normal);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4.25rem;
+  }
+
+  /* Brand Logo */
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .logo-icon-wrap {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 2px 8px rgba(37, 99, 235, 0.4));
+  }
+
+  .logo-icon {
+    width: 100%;
+    height: 100%;
+  }
+
+  .brand-text {
+    display: flex;
+    align-items: baseline;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .brand-name {
+    font-size: 1.35rem;
+    color: #FFFFFF;
+  }
+
+  .brand-suffix {
+    font-size: 0.95rem;
+    color: var(--accent-sky);
+    font-weight: 600;
+    margin-left: 1px;
+  }
+
+  /* Desktop Nav */
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 920px) {
+    .desktop-nav {
+      display: block;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .nav-link {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #94A3B8;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-link.active {
+    color: #FFFFFF;
+    font-weight: 600;
+    background-color: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+  }
+
+  /* Actions */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .search-trigger-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    background-color: #121A24;
+    border: 1px solid var(--border-dark);
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-md);
+    color: #94A3B8;
+    font-size: 0.8125rem;
+    transition: all var(--transition-fast);
+  }
+
+  .search-trigger-btn:hover {
+    border-color: #38BDF8;
+    color: #F8FAFC;
+    background-color: #162232;
+  }
+
+  .search-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: #64748B;
+  }
+
+  .search-trigger-btn:hover .search-icon {
+    color: #38BDF8;
+  }
+
+  .search-label {
+    display: none;
+  }
+
+  @media (min-width: 540px) {
+    .search-label {
+      display: inline;
+    }
+  }
+
+  .kbd-shortcut {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    padding: 0.1rem 0.3rem;
+    font-size: 0.6875rem;
+    background-color: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    color: #94A3B8;
+  }
+
+  @media (min-width: 640px) {
+    .kbd-shortcut {
+      display: inline-flex;
+    }
+  }
+
+  .header-icon-link {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    color: #94A3B8;
+    background-color: #121A24;
+    border: 1px solid var(--border-dark);
+    transition: all var(--transition-fast);
+  }
+
+  .header-icon-link:hover {
+    color: #FFFFFF;
+    border-color: var(--primary);
+  }
+
+  .header-icon-link svg {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  /* Mobile Menu Button */
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: #CBD5E1;
+    background-color: #121A24;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 860px) {
+    .mobile-menu-btn {
+      display: none;
+    }
+  }
+
+  .mobile-menu-btn .icon-close {
+    display: none;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .mobile-menu-btn .icon-hamburger {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .icon-hamburger {
+    display: none;
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  /* Mobile Drawer */
+  .mobile-drawer {
+    display: none;
+    background-color: #0B111A;
+    border-bottom: 1px solid var(--border-dark);
+    padding: 1rem 0 1.5rem;
+  }
+
+  .mobile-drawer.open {
+    display: block;
+  }
+
+  .mobile-drawer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .mobile-search-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background-color: #121A24;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-md);
+    color: #94A3B8;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    color: #CBD5E1;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color var(--transition-fast);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    background-color: #162232;
+    color: #38BDF8;
+  }
+
+  .mobile-nav-link .chevron {
+    width: 1rem;
+    height: 1rem;
+    color: #64748B;
+  }
+
+  .mobile-drawer-footer {
+    padding-top: 0.75rem;
+    border-top: 1px solid #1F2937;
+    font-size: 0.75rem;
+    color: #64748B;
+    text-align: center;
+  }
+</style>
+
+<script>
+  function initMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-drawer');
+
+    if (!btn || !drawer) return;
+
+    btn.addEventListener('click', () => {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isExpanded));
+      drawer.classList.toggle('open');
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initMobileMenu);
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>

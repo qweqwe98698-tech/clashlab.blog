@@ -1,0 +1,279 @@
+---
+import Badge from '../common/Badge.astro';
+
+interface ClientItem {
+  name: string;
+  badge: string;
+  platforms: string[];
+  description: string;
+  recommendedKernel: string;
+  tutorialUrl: string;
+  downloadUrl: string;
+  tag: string;
+}
+
+const clients: ClientItem[] = [
+  {
+    name: 'Clash Verge Rev',
+    badge: '主流推荐',
+    platforms: ['Windows', 'macOS', 'Linux'],
+    description: '采用 Tauri 框架打造的现代 Clash 客户端，原生集成 Mihomo (Meta) 内核，支持高级规则集与 TUN 虚拟网卡接管。',
+    recommendedKernel: 'Mihomo (Meta) v1.18+',
+    tutorialUrl: '/tutorials#clash-verge',
+    downloadUrl: 'https://github.com/clash-verge-rev/clash-verge-rev',
+    tag: '桌面端主力',
+  },
+  {
+    name: 'Shadowrocket (小火箭)',
+    badge: 'iOS 首选',
+    platforms: ['iOS', 'iPadOS', 'macOS (M系列)'],
+    description: 'iOS 生态中最稳定强劲的网络调试工具，支持几乎所有主流代理协议、分流策略、MITM 证书解密与脚本重写。',
+    recommendedKernel: '内置全协议引擎',
+    tutorialUrl: '/tutorials#shadowrocket',
+    downloadUrl: 'https://apps.apple.com/app/shadowrocket/id932747118',
+    tag: '移动端神器',
+  },
+  {
+    name: 'sing-box',
+    badge: '技术标杆',
+    platforms: ['Windows', 'macOS', 'Linux', 'Android', 'iOS'],
+    description: '新一代通用网络代理核心平台，超低内存占用与高吞吐性能，支持灵活的 JSON 路由链与原生 TUN 架构。',
+    recommendedKernel: 'sing-box Core 1.10+',
+    tutorialUrl: '/tutorials#sing-box',
+    downloadUrl: 'https://github.com/SagerNet/sing-box',
+    tag: '全平台内核',
+  },
+  {
+    name: 'v2rayN',
+    badge: 'Windows 经典',
+    platforms: ['Windows'],
+    description: 'Windows 平台老牌经典客户端，支持 Xray-core 与 sing-box 双内核无缝切换，批量测速与多节点聚合功能强大。',
+    recommendedKernel: 'Xray-core / sing-box',
+    tutorialUrl: '/tutorials#v2rayn',
+    downloadUrl: 'https://github.com/2dust/v2rayN',
+    tag: '专业测试',
+  },
+  {
+    name: 'Hiddify Next',
+    badge: '全平台通用',
+    platforms: ['Windows', 'macOS', 'Linux', 'Android', 'iOS'],
+    description: '基于 Flutter 打造的现代化开源代理工具，界面优雅友好，支持自动识别多协议与智能负载均衡。',
+    recommendedKernel: 'sing-box 内核',
+    tutorialUrl: '/tutorials#hiddify',
+    downloadUrl: 'https://github.com/hiddify/hiddify-next',
+    tag: '新手友好',
+  },
+];
+---
+
+<section class="client-tutorials section bg-dark-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color: #38BDF8;">CLIENT ECOSYSTEM</span>
+        <h2 class="section-title">主流代理客户端深度配置手册</h2>
+        <p class="section-desc">全平台覆盖，权威手把手安装与内核分流调优指南，拒绝无效报错。</p>
+      </div>
+      <a href="/tutorials" class="section-link" style="color: #38BDF8;">
+        查看全部客户端合集
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- 5 Clients Grid -->
+    <div class="grid-5 clients-grid">
+      {clients.map((client) => (
+        <div class="card-dark client-card">
+          <div class="client-card-inner">
+            <!-- Header -->
+            <div class="client-card-top">
+              <div class="client-title-row">
+                <h3 class="client-name card-title">{client.name}</h3>
+                <span class="client-badge">{client.badge}</span>
+              </div>
+              <!-- Platforms list -->
+              <div class="platform-chips">
+                {client.platforms.map((plat) => (
+                  <span class="platform-pill">{plat}</span>
+                ))}
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="client-desc">
+              {client.description}
+            </p>
+
+            <!-- Kernel Info -->
+            <div class="client-kernel-info">
+              <span class="kernel-label">推荐核心:</span>
+              <span class="kernel-val">{client.recommendedKernel}</span>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="client-card-actions">
+              <a href={client.tutorialUrl} class="btn btn-primary btn-sm client-btn-tutorial">
+                配置教程
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-arrow">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a href={client.downloadUrl} target="_blank" rel="noopener noreferrer" class="client-btn-download" title="官方发布源">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .clients-grid {
+    margin-top: 1rem;
+  }
+
+  .client-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .client-card-inner {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.875rem;
+  }
+
+  .client-card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .client-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .client-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.3;
+    transition: color var(--transition-fast);
+  }
+
+  .client-badge {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    background-color: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38BDF8;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .platform-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .platform-pill {
+    font-size: 0.6875rem;
+    color: #94A3B8;
+    background-color: #0B111A;
+    border: 1px solid #1F2937;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .client-desc {
+    font-size: 0.8125rem;
+    color: #94A3B8;
+    line-height: 1.5;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .client-kernel-info {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    background-color: #0E1622;
+    border: 1px solid #1B2635;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .kernel-label {
+    color: #64748B;
+  }
+
+  .kernel-val {
+    color: #38BDF8;
+    font-weight: 500;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.6875rem;
+  }
+
+  .client-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .client-btn-tutorial {
+    flex: 1;
+  }
+
+  .btn-arrow {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .client-btn-download {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background-color: #162232;
+    border: 1px solid #233448;
+    color: #94A3B8;
+    transition: all var(--transition-fast);
+  }
+
+  .client-btn-download:hover {
+    background-color: #1E2E42;
+    color: #FFFFFF;
+    border-color: #38BDF8;
+  }
+
+  .client-btn-download svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style>

@@ -1,0 +1,122 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import '../styles/typography.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  tagline?: string;
+  breadcrumbCurrent?: string;
+  maxWidth?: string;
+}
+
+const {
+  title,
+  description,
+  tagline,
+  breadcrumbCurrent = title,
+  maxWidth = 'var(--container-max)',
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page-layout-wrap">
+    <!-- Page Hero Banner -->
+    <section class="page-hero">
+      <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="page-breadcrumbs" aria-label="路径导航">
+          <a href="/">首页</a>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-current">{breadcrumbCurrent}</span>
+        </nav>
+
+        <div class="page-title-wrap">
+          {tagline && <span class="page-tagline">{tagline}</span>}
+          <h1 class="page-title">{title}</h1>
+          {description && <p class="page-desc">{description}</p>}
+        </div>
+      </div>
+    </section>
+
+    <!-- Page Body -->
+    <div class="container page-content-container" style={`max-width: ${maxWidth};`}>
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-layout-wrap {
+    padding-bottom: 4rem;
+  }
+
+  .page-hero {
+    background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg-main) 100%);
+    border-bottom: 1px solid var(--border-light);
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .page-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .crumb-sep {
+    color: #CBD5E1;
+  }
+
+  .page-breadcrumbs a:hover {
+    color: var(--primary);
+  }
+
+  .crumb-current {
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  .page-title-wrap {
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .page-tagline {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+  }
+
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: 2.375rem;
+    }
+  }
+
+  .page-desc {
+    font-size: 1.0625rem;
+    color: var(--text-body);
+    line-height: 1.6;
+    margin-top: 0.25rem;
+  }
+
+  .page-content-container {
+    padding-top: 2.5rem;
+  }
+</style>

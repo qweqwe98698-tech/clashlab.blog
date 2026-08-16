@@ -1,0 +1,229 @@
+---
+import Badge from '../common/Badge.astro';
+
+interface InsightItem {
+  id: string;
+  category: string;
+  badgeColor: 'blue' | 'green' | 'amber' | 'cyan' | 'dark';
+  title: string;
+  description: string;
+  date: string;
+  metric: string;
+  metricLabel: string;
+  href: string;
+}
+
+const insights: InsightItem[] = [
+  {
+    id: 'recommendation-pillar',
+    category: '梯队榜单',
+    badgeColor: 'blue',
+    title: '2026 机场推荐天梯榜与 16 品牌梯队全景透视',
+    description: '深度横评光速云、一翻云、速界、快狸等 16 家品牌，综合骨干专线、VLESS 协议与晚高峰 QoS 实测划分 T1/T2/T3 梯队。',
+    date: '2026-08',
+    metric: '16 家实测',
+    metricLabel: '全专线数据库',
+    href: '/airport-recommendation',
+  },
+  {
+    id: 'brand-dynamics',
+    category: '品牌与架构',
+    badgeColor: 'green',
+    title: '主流品牌专线拓扑与 VLESS 架构升级实录',
+    description: '光速云、宇宙云等服务商加速推进 VLESS 协议原生集成，广港/沪日/京德多入口容灾调度成为标配。',
+    date: '2026-08',
+    metric: '99.8%',
+    metricLabel: '多入口容灾可用率',
+    href: '/brands',
+  },
+  {
+    id: 'price-traffic-trend',
+    category: '性价比观察',
+    badgeColor: 'cyan',
+    title: '20 元档 150GB 成为大流量专线新标准',
+    description: '一翻云、灵猫网络等新锐服务商推动 150GB 月付配额普及，单价下探至 7-8 元/月，性价比大幅提升。',
+    date: '2026-08',
+    metric: '150GB / ¥20',
+    metricLabel: '大流量性价比标杆',
+    href: '/brands',
+  },
+  {
+    id: 'line-qos-testing',
+    category: '线路测速',
+    badgeColor: 'amber',
+    title: '晚高峰 20:00-23:00 骨干专线抗抖动实测',
+    description: '实测 16 张测速图档归档：IEPL 专线在晚高峰抗 QoS 抖动表现优异，平均延迟抖动控制在 2.4ms 以内。',
+    date: '2026-08',
+    metric: '< 2.4ms',
+    metricLabel: '专线平均抖动',
+    href: '/airport-recommendation#decision-framework',
+  },
+  {
+    id: 'safety-and-selection',
+    category: '避坑准则',
+    badgeColor: 'dark',
+    title: '月付上车黄金法则与防跑路风控体系',
+    description: '坚守「月付优先」核心守则，配合主力专线+备用不限时双持策略，彻底规避大额年付沉没风险。',
+    date: '2026-08',
+    metric: '100% 必备',
+    metricLabel: '月付与防跑路原则',
+    href: '/airport-recommendation#safety-rules',
+  },
+];
+---
+
+<section class="airport-insights section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-tag">INDUSTRY OBSERVATORY</span>
+        <h2 class="section-title">机场生态观察与网络基础设施研报</h2>
+        <p class="section-desc">客观数据追踪、成本模型拆解与前沿线路技术观察，不做任何主观营销。</p>
+      </div>
+      <a href="/insights" class="section-link">
+        阅读全部行业研报
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- 5 Horizontal/Grid Insight Cards -->
+    <div class="grid-5 insights-grid">
+      {insights.map((item) => (
+        <article class="card insight-card">
+          <a href={item.href} class="insight-card-link">
+            <!-- Top Tag & Metric -->
+            <div class="insight-top">
+              <Badge variant={item.badgeColor} size="sm">{item.category}</Badge>
+              <span class="insight-date">{item.date}</span>
+            </div>
+
+            <!-- Content -->
+            <h3 class="insight-title card-title">{item.title}</h3>
+            <p class="insight-desc">{item.description}</p>
+
+            <!-- Metric Box -->
+            <div class="insight-metric-box">
+              <span class="metric-val">{item.metric}</span>
+              <span class="metric-lbl">{item.metricLabel}</span>
+            </div>
+
+            <!-- Read Report -->
+            <div class="insight-footer">
+              <span class="view-report">
+                查看研报
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .insights-grid {
+    margin-top: 1rem;
+  }
+
+  .insight-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .insight-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    gap: 0.75rem;
+  }
+
+  .insight-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .insight-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .insight-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    transition: color var(--transition-fast);
+  }
+
+  .insight-desc {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .insight-metric-box {
+    padding: 0.625rem 0.75rem;
+    background-color: var(--bg-aux);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .metric-val {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.2;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .metric-lbl {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+  }
+
+  .insight-footer {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .view-report {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--primary);
+    transition: transform var(--transition-fast);
+  }
+
+  .insight-card:hover .view-report {
+    transform: translateX(3px);
+  }
+
+  .view-report svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style>

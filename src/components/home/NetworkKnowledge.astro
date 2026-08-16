@@ -1,0 +1,214 @@
+---
+interface KnowledgeCard {
+  number: string;
+  tag: string;
+  title: string;
+  description: string;
+  keyTech: string[];
+  href: string;
+}
+
+const cards: KnowledgeCard[] = [
+  {
+    number: '01',
+    tag: 'PROTOCOLS',
+    title: '代理协议演进与传输层优化',
+    description: '从早期基于 TCP 的 Socks5/Shadowsocks 到基于 TLS 模拟的 VLESS/Trojan，再到基于 UDP/QUIC 拥塞控制的 Hysteria 2 与 TUIC v5。',
+    keyTech: ['Shadowsocks', 'VLESS-XTLS', 'Trojan', 'Hysteria 2', 'TUIC v5'],
+    href: '/posts/hysteria2-vs-tuic-protocols',
+  },
+  {
+    number: '02',
+    tag: 'DNS & ROUTING',
+    title: 'DNS 防泄漏与分流机制',
+    description: '深入分析 DoH/DoT 加密解析、ECS 客户端子网泄漏风险，以及 Clash/sing-box 中 Fake-IP 避免二次远程 DNS 解析的核心优势。',
+    keyTech: ['Fake-IP', 'DoH / DoT', 'ECS 防泄露', 'Direct 分流'],
+    href: '/posts/dns-leak-prevention-and-fakeip-rules',
+  },
+  {
+    number: '03',
+    tag: 'IP & SECURITY',
+    title: 'IP 类型全景与风控规避',
+    description: '辨析数据中心广播 IP、机房原生 IP 与双 ISP 住宅静态 IP 的真实差异，揭秘流媒体与 AI 服务对机房 ASN 的反作弊判定机制。',
+    keyTech: ['原生 IP', '广播 IP', '双 ISP 住宅', 'Fraud Score'],
+    href: '/posts/ip-types-and-risk-control',
+  },
+  {
+    number: '04',
+    tag: 'INFRASTRUCTURE',
+    title: 'CDN 与 Anycast 全球加速',
+    description: '探索跨境 Anycast 路由就近接入、边缘节点缓存加速原理，以及如何在复杂网络环境下利用多线 BGP 避免单点故障。',
+    keyTech: ['Anycast BGP', 'Cloudflare Edge', '跨境回源', 'TCP 优化'],
+    href: '/posts/airport-infrastructure-evaluation',
+  },
+  {
+    number: '05',
+    tag: 'DEDICATED LINES',
+    title: 'IPLC / IEPL 专线中转解密',
+    description: '点对点跨境物理内网光纤互联，不经过公网国际出口防火墙，具备低抖动、0 丢包与高 QoS 优先级的专线技术拓扑。',
+    keyTech: ['IPLC 专线', 'IEPL 专线', '深港/沪日内网', 'QoS 保障'],
+    href: '/posts/iplc-iepl-dedicated-lines',
+  },
+];
+---
+
+<section class="network-knowledge section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-tag">CORE NETWORKING</span>
+        <h2 class="section-title">网络底层原理与核心认知体系</h2>
+        <p class="section-desc">穿透黑盒，理解网络协议、加密隧道与全球互联拓扑的底层运行逻辑。</p>
+      </div>
+      <a href="/posts?category=协议与原理" class="section-link">
+        查看网络原理专栏
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- 5 Cards Grid -->
+    <div class="grid-5 knowledge-grid">
+      {cards.map((card) => (
+        <article class="card knowledge-card">
+          <a href={card.href} class="knowledge-card-link">
+            <!-- Top number & tag -->
+            <div class="knowledge-card-header">
+              <span class="knowledge-num">{card.number}</span>
+              <span class="knowledge-tag">{card.tag}</span>
+            </div>
+
+            <!-- Title & Desc -->
+            <h3 class="knowledge-title card-title">{card.title}</h3>
+            <p class="knowledge-desc">{card.description}</p>
+
+            <!-- Key tech chips -->
+            <div class="knowledge-chips">
+              {card.keyTech.map((tech) => (
+                <span class="tech-chip">{tech}</span>
+              ))}
+            </div>
+
+            <!-- Footer link -->
+            <div class="knowledge-card-footer">
+              <span class="learn-more">
+                深度拆解
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .knowledge-grid {
+    margin-top: 1rem;
+  }
+
+  .knowledge-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .knowledge-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    gap: 0.75rem;
+  }
+
+  .knowledge-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .knowledge-num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  .knowledge-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .knowledge-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.35;
+    transition: color var(--transition-fast);
+  }
+
+  .knowledge-desc {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .knowledge-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+  }
+
+  .tech-chip {
+    font-size: 0.6875rem;
+    color: #475569;
+    background-color: var(--bg-aux);
+    border: 1px solid var(--border-light);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  .knowledge-card-footer {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .learn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--primary);
+    transition: transform var(--transition-fast);
+  }
+
+  .knowledge-card:hover .learn-more {
+    transform: translateX(3px);
+  }
+
+  .learn-more svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style>

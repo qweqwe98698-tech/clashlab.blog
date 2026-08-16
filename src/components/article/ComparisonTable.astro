@@ -1,0 +1,187 @@
+---
+interface Column {
+  key: string;
+  label: string;
+  isHighlighted?: boolean;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  columns?: Column[];
+  rows?: Record<string, any>[];
+}
+
+const {
+  title = '主流客户端与线路核心参数对比矩阵',
+  description = '基于实验室实际压测与协议支持度整理的技术对比指标',
+  columns = [
+    { key: 'name', label: '客户端 / 方案' },
+    { key: 'platforms', label: '支持平台' },
+    { key: 'protocols', label: '主流协议支持' },
+    { key: 'tunMode', label: 'TUN 虚拟网卡' },
+    { key: 'scripting', label: '高级脚本规则' },
+    { key: 'memory', label: '内存占用' },
+    { key: 'recommendation', label: '综合推荐度', isHighlighted: true },
+  ],
+  rows = [
+    {
+      name: 'Clash Verge Rev',
+      platforms: 'Win / Mac / Linux',
+      protocols: 'VMess / VLESS / Trojan / Hysteria 2 / TUIC',
+      tunMode: '✅ 原生内核级支持',
+      scripting: '✅ JavaScript / Script',
+      memory: '约 60-120 MB',
+      recommendation: '⭐⭐⭐⭐⭐ (桌面端首选)',
+    },
+    {
+      name: 'sing-box',
+      platforms: '全平台 (Win/Mac/Linux/iOS/Android)',
+      protocols: '全协议 (Shadowsocks / VLESS / Hysteria 2 / TUIC v5)',
+      tunMode: '✅ 极速系统级 TUN',
+      scripting: '✅ JSON 规则引擎',
+      memory: '约 20-50 MB (极低)',
+      recommendation: '⭐⭐⭐⭐⭐ (极客与多端首选)',
+    },
+    {
+      name: 'Shadowrocket',
+      platforms: 'iOS / iPadOS / macOS M系列',
+      protocols: '全主流协议 + 插件模块',
+      tunMode: '✅ NetworkExtension',
+      scripting: '✅ Rewrite / JS Script',
+      memory: '约 40-70 MB',
+      recommendation: '⭐⭐⭐⭐⭐ (iOS 生态标杆)',
+    },
+    {
+      name: 'v2rayN',
+      platforms: 'Windows',
+      protocols: 'Xray-core / sing-box 支持协议',
+      tunMode: '✅ sing-box / tun2socks',
+      scripting: '⚠️ 基础路由列表',
+      memory: '约 80-160 MB',
+      recommendation: '⭐⭐⭐⭐ (Windows 老牌备用)',
+    },
+    {
+      name: 'Hiddify Next',
+      platforms: '全平台跨端',
+      protocols: 'VLESS / Trojan / Hysteria 2 / SSH',
+      tunMode: '✅ 内置一键开启',
+      scripting: '⚠️ 规则预设',
+      memory: '约 70-130 MB',
+      recommendation: '⭐⭐⭐⭐ (新手开箱即用)',
+    },
+  ],
+} = Astro.props;
+---
+
+<div class="comparison-matrix-wrap">
+  {title && (
+    <div class="comparison-header">
+      <h3 class="comparison-title">{title}</h3>
+      {description && <p class="comparison-desc">{description}</p>}
+    </div>
+  )}
+
+  <div class="table-wrapper">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          {columns.map((col) => (
+            <th class={col.isHighlighted ? 'th-highlight' : ''}>
+              {col.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            {columns.map((col) => (
+              <td class={col.isHighlighted ? 'td-highlight' : ''}>
+                {row[col.key]}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .comparison-matrix-wrap {
+    margin: 2rem 0;
+  }
+
+  .comparison-header {
+    margin-bottom: 1rem;
+  }
+
+  .comparison-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+  }
+
+  .comparison-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+    background-color: #FFFFFF;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+
+  .comparison-table th {
+    background-color: #F8FAFC;
+    color: var(--text-main);
+    font-weight: 600;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    white-space: nowrap;
+  }
+
+  .comparison-table th.th-highlight {
+    background-color: #EFF6FF;
+    color: var(--primary);
+    border-bottom-color: #BFDBFE;
+  }
+
+  .comparison-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #F1F5F9;
+    color: var(--text-body);
+    white-space: nowrap;
+  }
+
+  .comparison-table td.td-highlight {
+    background-color: rgba(37, 99, 235, 0.03);
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .comparison-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .comparison-table tr:hover td {
+    background-color: #F8FAFC;
+  }
+
+  .comparison-table tr:hover td.td-highlight {
+    background-color: rgba(37, 99, 235, 0.08);
+  }
+</style>

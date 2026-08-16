@@ -1,0 +1,1634 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Badge from '../components/common/Badge.astro';
+
+const pageTitle = '关于 ClashLab 实验室 - E-E-A-T 权威评测标准与测试方法论';
+const pageDescription = 'ClashLab (clashlab.blog) 专注于跨境网络协议透明度与基础设施可观测性。依托珠海联通 5Gbps 物理骨干探针、MAI-TEST-BOT 自动化内核与 20:00-23:00 晚高峰全负载压测，建立四层数据隔离架构与 100% 独立中立评测体系。';
+
+// E-E-A-T Structured Data
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': 'https://clashlab.blog/about#webpage',
+      'url': 'https://clashlab.blog/about',
+      'name': pageTitle,
+      'description': pageDescription,
+      'inLanguage': 'zh-CN',
+      'isPartOf': {
+        '@type': 'WebSite',
+        '@id': 'https://clashlab.blog/#website',
+        'name': 'ClashLab',
+        'url': 'https://clashlab.blog'
+      },
+      'about': {
+        '@type': 'Organization',
+        '@id': 'https://clashlab.blog/#organization'
+      },
+      'mainEntity': {
+        '@type': 'Organization',
+        '@id': 'https://clashlab.blog/#organization'
+      }
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://clashlab.blog/#organization',
+      'name': 'ClashLab Network Observatory (ClashLab 评测实验室)',
+      'url': 'https://clashlab.blog',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://clashlab.blog/favicon.svg'
+      },
+      'description': '专注于网络协议透明度、跨境网络基础设施可观测性与主流代理客户端生态的独立技术实验室。',
+      'foundingDate': '2023',
+      'knowsAbout': [
+        'Computer Networking',
+        'BGP Routing & Peering',
+        'IPLC & IEPL Dedicated Transit Lines',
+        'Network Observability & QoS Stress Testing',
+        'VLESS & Shadowsocks AEAD Protocols',
+        'Hysteria 2 & TUIC v5 QUIC Congestion Control',
+        'DNS Poisoning & Fake-IP Security',
+        'Edge AI & Streaming Access Control'
+      ],
+      'member': [
+        {
+          '@type': 'Person',
+          '@id': 'https://clashlab.blog/about#alex-chen',
+          'name': 'Alex Chen',
+          'jobTitle': '首席网络架构师 (Chief Network Architect)',
+          'description': '12年大型 ISP BGP 路由调优、跨国 SD-WAN 与 IPLC 海缆专线运维经验，主导 ClashLab 物理测试床架构。',
+          'worksFor': {
+            '@type': 'Organization',
+            '@id': 'https://clashlab.blog/#organization'
+          }
+        },
+        {
+          '@type': 'Person',
+          '@id': 'https://clashlab.blog/about#linus-vance',
+          'name': 'Linus Vance',
+          'jobTitle': '协议安全研究员 (Protocol Security Researcher)',
+          'description': '专注于 VLESS/Hysteria2 协议栈逆向、TUN 虚拟网卡优化与 DNS 防污染对抗，主导客户端协议内核审计。',
+          'worksFor': {
+            '@type': 'Organization',
+            '@id': 'https://clashlab.blog/#organization'
+          }
+        },
+        {
+          '@type': 'Person',
+          '@id': 'https://clashlab.blog/about#sarah-wu',
+          'name': 'Sarah Wu',
+          'jobTitle': '流媒体与 AI 应用测试主管 (Lead Streaming & AI QA Specialist)',
+          'description': '长期跟踪 OpenAI/Anthropic/Netflix 等全球边缘安全风控机制，建立住宅/原生 IP 纯净度评估矩阵。',
+          'worksFor': {
+            '@type': 'Organization',
+            '@id': 'https://clashlab.blog/#organization'
+          }
+        }
+      ]
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://clashlab.blog/about#alex-chen',
+      'name': 'Alex Chen',
+      'alternateName': 'Alex Chen (陈博睿)',
+      'jobTitle': '首席网络架构师 (Chief Network Architect)',
+      'description': '拥有 12 年顶级 ISP 骨干网 BGP 调优、跨国企业 SD-WAN 与 IPLC/IEPL 海缆专线运维实战经验。负责 ClashLab 珠海联通 5Gbps 骨干测试床物理架构搭建与线路真实性拓扑审计。',
+      'knowsAbout': ['BGP Anycast', 'IPLC/IEPL Transit', 'QoS Traffic Shaping', 'MTR Network Telemetry', 'TCP Congestion Control'],
+      'worksFor': {
+        '@type': 'Organization',
+        '@id': 'https://clashlab.blog/#organization'
+      }
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://clashlab.blog/about#linus-vance',
+      'name': 'Linus Vance',
+      'alternateName': 'Linus Vance (范林)',
+      'jobTitle': '协议安全研究员 (Protocol Security Researcher)',
+      'description': '资深开源网络协议贡献者，深耕网络传输层混淆、加密通信协议逆向与网络阻断对抗。专注于 VLESS、Hysteria 2、TUIC v5 协议栈审计及 Fake-IP/DoH/DoT 防泄漏设计。',
+      'knowsAbout': ['VLESS Reality', 'Hysteria 2 Brutal', 'sing-box & Mihomo Core', 'DNS Leak Prevention', 'Packet Sniffing & TLS Fingerprinting'],
+      'worksFor': {
+        '@type': 'Organization',
+        '@id': 'https://clashlab.blog/#organization'
+      }
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://clashlab.blog/about#sarah-wu',
+      'name': 'Sarah Wu',
+      'alternateName': 'Sarah Wu (吴晓岚)',
+      'jobTitle': '流媒体与 AI 应用测试主管 (Lead Streaming & AI QA Specialist)',
+      'description': '8 年跨国软件与出海应用全链路测试经验，长期追踪 OpenAI、Anthropic、Google 及 Netflix、Disney+ 边缘安全风控策略与 ASN 欺诈分值演化。',
+      'knowsAbout': ['OpenAI & Claude Risk Control', 'Cloudflare Turnstile Bypass', 'Netflix 4K/8K DRM Unlock', 'IPQS Fraud Score', 'Residential Proxy Matrices'],
+      'worksFor': {
+        '@type': 'Organization',
+        '@id': 'https://clashlab.blog/#organization'
+      }
+    }
+  ]
+};
+
+const telemetryStats = [
+  { label: '物理骨干接入', value: '5 Gbps', sub: '珠海联通骨干' },
+  { label: '单节点并发线程', value: '32 线程', sub: 'TCP/UDP 满载压测' },
+  { label: '晚高峰压测窗口', value: '20:00-23:00', sub: 'QoS 极限负载' },
+  { label: '自动化审计内核', value: 'v2.0.0-dev', sub: 'MAI-TEST-BOT' },
+  { label: '数据隔离维度', value: '4 层架构', sub: '声明/实测/商业/评测' },
+];
+
+const slaMetrics = [
+  {
+    name: '丢包率 (Packet Loss SLA)',
+    tag: '网络连通性根基',
+    golden: '< 0.5% (物理专线保障)',
+    good: '0.5% - 2.0% (优质 BGP 中转)',
+    warning: '> 5.0% (公网直连/超售拥堵)',
+    method: '采用 32 并发流进行 300 秒持续打流，统计 TCP 重传包与 UDP 丢弃率。'
+  },
+  {
+    name: '网络抖动 (Jitter Variance)',
+    tag: '交互体验关键',
+    golden: '标准差 σ < 3 ms (物理内网直连)',
+    good: '3 ms ≤ σ < 10 ms (多线负载均衡)',
+    warning: 'σ ≥ 15 ms (动态公网路由抢占)',
+    method: '连续执行 5 组 Ping 探测，剔除首包 ARP 缓存扰动后计算 RTT 标准方差。'
+  },
+  {
+    name: '首包延迟 (TTFB & Handshake Latency)',
+    tag: '协议加解密损耗',
+    golden: '< 80 ms (极速握手响应)',
+    good: '80 ms - 180 ms (标准 TLS 握手)',
+    warning: '> 300 ms (高延迟多跳中继)',
+    method: '记录从 SYN 发起到接收 HTTP Response 首字节的纳秒级耗时，评估协议栈开销。'
+  },
+  {
+    name: '流媒体原生 4K/8K 解锁率 (Streaming Unlock)',
+    tag: '内容服务合规',
+    golden: '100% 原生解锁 (无代理识别)',
+    good: 'DNS 智能分流解锁 (单区原生)',
+    warning: '仅自制剧 / 提示 Proxy Blocked',
+    method: '自动化探测 Netflix, Disney+, YouTube Premium, Max 等主流平台 4K/8K 码率持续回放能力。'
+  },
+  {
+    name: 'AI 低风控可用性 (AI Low-Risk Score)',
+    tag: '生产力高可用',
+    golden: '零人机验证 (Clean Residential/Direct ASN)',
+    good: '偶发轻度验证 (优质机房 IP)',
+    warning: '1020 拦截 / Access Denied / 频繁封号',
+    method: '模拟长会话 Websocket 请求，评估 Cloudflare Turnstile / Arkose 验证码触发率与 IP 欺诈度评分。'
+  }
+];
+
+const segregationLayers = [
+  {
+    layer: 'Layer 01',
+    name: 'Vendor Data',
+    title: '厂商数据声明层',
+    color: 'blue',
+    desc: '汇总服务商官方公布的公称数据，包括标称专线类型（IPLC/IEPL）、名义节点数、公称带宽上限、套餐价格与并发设备限制。',
+    rules: [
+      '明确标注为「厂商声明」，不作为任何实验室天梯排名的直接打分依据。',
+      '定期对厂商公称规格进行物理拓扑校对，核实是否存在虚标或夸大宣传。'
+    ]
+  },
+  {
+    layer: 'Layer 02',
+    name: 'Measured Data',
+    title: '实验室实测证据层',
+    color: 'cyan',
+    desc: '基于珠海联通 5Gbps 骨干测试床在 20:00-23:00 黄金晚高峰跑出的原始证据链，包含吞吐测速图、丢包率、MTR 链路追踪与原生解锁跑分。',
+    rules: [
+      '所有实测数据均固化精确到秒的时间戳（CST）、测试内核版本与测速后端。',
+      '保留完整无篡改的高清测速图档与链路抓包记录，支持行业公开校验。'
+    ]
+  },
+  {
+    layer: 'Layer 03',
+    name: 'Commercial Data',
+    title: '商业优惠与返利透明披露层',
+    color: 'amber',
+    desc: '全量披露厂商提供的专属优惠码折扣、推广返利（Affiliate）机制及资费性价比分析。',
+    rules: [
+      '100% 透明公示推广佣金机制，明确说明佣金仅用于支撑实验室服务器与 5Gbps 带宽开销。',
+      '商业合作绝对不影响评分权重，严禁付费购买榜单排名或付费删除实测负面数据。'
+    ]
+  },
+  {
+    layer: 'Layer 04',
+    name: 'Editorial Data',
+    title: '独立中立评测与避坑建议层',
+    color: 'green',
+    desc: '由首席网络架构师与协议研究专家团队输出的 T1/T2/T3 梯队评级、优缺点深度剖析、场景决策树与风险警示。',
+    rules: [
+      '坚持「月付上车」第一原则，坚决警惕大额年付与虚假无限流量收割盘。',
+      '建立动态复测与风险下架机制，一旦专线降级或丢包恶化立即全站预警。'
+    ]
+  }
+];
+
+const teamMembers = [
+  {
+    name: 'Alex Chen',
+    title: '首席网络架构师 (Chief Network Architect)',
+    avatar: 'AC',
+    badge: '12年 BGP & 专线运维',
+    bio: '前大型云计算跨国网络架构师，拥有 12 年顶级运营商骨干网 BGP 调优、跨国企业 SD-WAN 与 IPLC/IEPL 海缆专线运维经验。',
+    focus: '负责 ClashLab 珠海联通 5Gbps 物理测试床搭建、BGP 路由穿透分析、Anycast 拓扑规划与专线物理拓扑真实性审计。',
+    skills: ['BGP Anycast', 'IPLC / IEPL 物理专线', 'QoS 流量整形', 'MTR 链路探测', '95 计费带宽审计']
+  },
+  {
+    name: 'Linus Vance',
+    title: '协议安全研究员 (Protocol Security Researcher)',
+    avatar: 'LV',
+    badge: '协议逆向 & 内核审计',
+    bio: '资深开源网络协议核心贡献者，长期从事现代代理传输层协议逆向、网络流量特征混淆与网络阻断对抗技术研究。',
+    focus: '负责 VLESS Reality、Hysteria 2 (Brutal)、TUIC v5 等新一代协议栈审计，主导 sing-box / Mihomo 内核性能、TUN 模式及 Fake-IP 防泄漏测试。',
+    skills: ['VLESS Reality', 'Hysteria 2 / QUIC', 'sing-box / Mihomo', 'DNS Leak 防护', 'TLS 握手逆向']
+  },
+  {
+    name: 'Sarah Wu',
+    title: '流媒体与 AI 应用测试主管 (Lead Streaming & AI QA)',
+    avatar: 'SW',
+    badge: 'AI风控 & 流媒体矩阵',
+    bio: '8 年跨国出海应用全链路测试工程师，持续跟踪 OpenAI (ChatGPT)、Anthropic (Claude) 以及 Netflix、Disney+ 等全球边缘服务风控机制。',
+    focus: '主持流媒体 4K/8K 原生解锁矩阵、住宅 IP 纯净度检测（IPQS / Spur）与生产级 AI 长会话低风控测试体系。',
+    skills: ['OpenAI / Claude 风控', 'Cloudflare Turnstile 绕过', 'Netflix 4K/8K 解锁', '住宅/机房 IP 纯净度', 'Websocket 长连接']
+  }
+];
+
+const editorialPrinciples = [
+  {
+    num: '01',
+    title: '坚守「月付上车」第一原则 (Monthly Subscription First)',
+    desc: '跨境网络基础设施受机房网络政策、上游运营商结算、入口 IP 阻断以及服务商资金链等多重不可控因素影响。ClashLab 始终告诫用户绝不轻易购买长周期年付，优先选择月付以将试错成本控制在最低，保持主动切换的权利。'
+  },
+  {
+    num: '02',
+    title: '零容忍商业赞助操纵 (Zero-Tolerance Sponsored Reviews)',
+    desc: '我们绝不接受任何付费定制好评，绝不接受厂商花钱删除负面测试数据（如晚高峰断流、虚假 IPLC 专线欺诈）。所有评测结论均必须基于可复现的抓包证据与真实测速图档。'
+  },
+  {
+    num: '03',
+    title: '商业返利与资金流向 100% 透明 (Affiliate Transparency)',
+    desc: 'ClashLab 参与部分服务商的公开推广返利计划。所得收益全部反哺于实验室 5Gbps 骨干专线宽带采购、多节点测速探针服务器托管与高并发测试脚本研发，与评测打分机制完全解耦。'
+  },
+  {
+    num: '04',
+    title: '持续动态复测与下架预警机制 (Continuous Audit & Delisting)',
+    desc: '网络服务具有动态时变特性。ClashLab 建立常态化周期性复测机制。若某服务商发生严重超售、断流率持续攀升或出现跑路征兆，编辑部将立即降级其梯队并在全站高亮风险预警，直至强制下架。'
+  }
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- Schema.org JSON-LD Structured Data for E-E-A-T -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <div class="about-page-wrapper">
+    
+    <!-- Hero Banner Section (#0B111A / Dark Tech Surface) -->
+    <header class="about-hero-section">
+      <div class="container hero-container">
+        <!-- Breadcrumbs -->
+        <nav class="about-breadcrumbs" aria-label="路径导航">
+          <a href="/">首页</a>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-current">关于实验室 (E-E-A-T &amp; 方法论)</span>
+        </nav>
+
+        <div class="hero-tag-wrap">
+          <Badge variant="blue" dot>E-E-A-T SPECIFICATION &amp; METHODOLOGY</Badge>
+          <span class="hero-version-tag">2026-08 实验室权威实测标准</span>
+        </div>
+
+        <h1 class="hero-main-title">
+          推动网络协议透明度 <br class="hidden-mobile" />
+          <span class="gradient-text">&amp; 跨境网络基础设施可观测性</span>
+        </h1>
+
+        <p class="hero-main-desc">
+          <strong>ClashLab (clashlab.blog)</strong> 是专注于现代网络代理协议演进、主流客户端架构（Clash Verge Rev / sing-box / Shadowrocket）与全球跨境网络基础设施深度基准测试的独立技术实验室。
+        </p>
+
+        <!-- Key Telemetry Stats Strip -->
+        <div class="hero-telemetry-grid">
+          {telemetryStats.map((item) => (
+            <div class="telemetry-box">
+              <span class="telemetry-label">{item.label}</span>
+              <span class="telemetry-value">{item.value}</span>
+              <span class="telemetry-sub">{item.sub}</span>
+            </div>
+          ))}
+        </div>
+
+        <!-- Quick Section Anchor Links -->
+        <nav class="about-anchor-nav" aria-label="内容快速跳转">
+          <span class="anchor-label">快速导航：</span>
+          <a href="#mission" class="anchor-link">核心使命</a>
+          <a href="#methodology" class="anchor-link">SLA 测试方法论</a>
+          <a href="#data-segregation" class="anchor-link">四层数据隔离</a>
+          <a href="#expert-team" class="anchor-link">E-E-A-T 专家团队</a>
+          <a href="#editorial-policy" class="anchor-link">编辑独立性政策</a>
+          <a href="#contact" class="anchor-link">联系与测速提交</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Sections Container -->
+    <div class="container about-main-body">
+
+      <!-- Section 1: Core Mission & Philosophy -->
+      <section id="mission" class="about-content-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-tag">CORE MISSION &amp; VISION</span>
+            <h2 class="section-title">实验室核心使命与创立愿景</h2>
+          </div>
+        </div>
+
+        <div class="card mission-card">
+          <div class="mission-text-grid">
+            <div class="mission-text-col">
+              <h3 class="mission-subheading">打破跨境网络领域的黑箱与信息差</h3>
+              <p class="mission-paragraph">
+                跨境网络服务行业长期充斥着大量虚假宣传、公网隧道冒充专线（Fake IPLC/IEPL）、超售导致的晚高峰严重丢包断流以及诱导年付导致的跑路风险。普通用户与出海技术团队往往面临极高的信息不对称与试错成本。
+              </p>
+              <p class="mission-paragraph">
+                <strong>ClashLab 实验室</strong>应运而生。我们秉持实证主义（Evidence-Based）与网络测量工程学原则，通过部署在骨干网边缘的真实硬件探针，对网络协议、中转隧道、落地纯净度与流媒体/AI 访问可用性进行不间断的主动拨测与全负载压力测试。
+              </p>
+            </div>
+            <div class="mission-text-col">
+              <h3 class="mission-subheading">实证科学驱动的 E-E-A-T 权威体系</h3>
+              <p class="mission-paragraph">
+                我们拒绝浮于表面的主观推荐，深入到 TCP/UDP 传输协议栈、TUN 虚拟网卡实现、BBR/Brutal 拥塞控制与 TLS 握手特征底层。
+              </p>
+              <div class="mission-highlights-box">
+                <div class="highlight-item">
+                  <span class="h-icon">🔬</span>
+                  <div>
+                    <strong>经验与专业 (Experience &amp; Expertise)：</strong> 12 年跨国 ISP 骨干运维与协议逆向团队全职把关。
+                  </div>
+                </div>
+                <div class="highlight-item">
+                  <span class="h-icon">🛡️</span>
+                  <div>
+                    <strong>权威与信任 (Authoritativeness &amp; Trustworthiness)：</strong> 完整可复现的数据证据链，100% 独立中立客观立场。
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Testing Methodology & SLA Standards -->
+      <section id="methodology" class="about-content-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-tag">TESTING METHODOLOGY &amp; SLA BENCHMARK</span>
+            <h2 class="section-title">实验室测试环境与 SLA 衡量标准</h2>
+            <p class="section-desc">
+              科学严谨的测试必须建立在确定性的物理硬件环境、可复现的并发压力模型与具有统计学意义的采样周期之上。
+            </p>
+          </div>
+        </div>
+
+        <!-- Infrastructure & Environment Grid -->
+        <div class="grid-3 infra-spec-grid">
+          <!-- Item 1: Physical Bed -->
+          <div class="card infra-spec-card">
+            <div class="spec-card-header">
+              <div class="spec-icon-wrap icon-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                  <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                  <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                  <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                </svg>
+              </div>
+              <div>
+                <span class="spec-tag">PHYSICAL TESTBED</span>
+                <h3 class="spec-title">物理测试接入环境</h3>
+              </div>
+            </div>
+            <ul class="spec-list">
+              <li><strong>核心骨干探针：</strong> 珠海联通 5Gbps 物理接入点 (China Unicom AS4837/AS9929 顶级跨境通道)</li>
+              <li><strong>压力并发线程：</strong> 32 线程多流饱和打流，充分激发链路最大带宽与丢包隐患</li>
+              <li><strong>采样测量基准：</strong> Ping 5 次连续采样排除首包抖动异常，记录 RTT 均值与方差</li>
+            </ul>
+          </div>
+
+          <!-- Item 2: Kernel & Tools -->
+          <div class="card infra-spec-card">
+            <div class="spec-card-header">
+              <div class="spec-icon-wrap icon-cyan">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+              <div>
+                <span class="spec-tag">TESTING ENGINE</span>
+                <h3 class="spec-title">测试内核与自动化套件</h3>
+              </div>
+            </div>
+            <ul class="spec-list">
+              <li><strong>协议审计内核：</strong> <code>MAI-TEST-BOT 2.0.0-dev</code>（自研自动化协议识别与连通性探针）</li>
+              <li><strong>高并发吞吐套件：</strong> <code>喵速 (Miaosu) 4.7.0</code> (9G 集群高并发吞吐压测引擎)</li>
+              <li><strong>客户端内核验证：</strong> Mihomo (Clash Meta) v1.19+ &amp; sing-box v1.11+ 生产级核心</li>
+            </ul>
+          </div>
+
+          <!-- Item 3: Peak Hours -->
+          <div class="card infra-spec-card">
+            <div class="spec-card-header">
+              <div class="spec-icon-wrap icon-amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div>
+                <span class="spec-tag">LOAD PROFILE</span>
+                <h3 class="spec-title">黄金晚高峰全负载压测</h3>
+              </div>
+            </div>
+            <ul class="spec-list">
+              <li><strong>核心压测窗口：</strong> <strong>20:00 - 23:00 黄金晚高峰</strong> (Peak Congestion Period)</li>
+              <li><strong>为什么选择晚高峰：</strong> 此时骨干互联点 QoS 调度压力最大，最能暴露服务商超售与假专线</li>
+              <li><strong>基线校准时段：</strong> 02:00 - 06:00 闲时记录物理光纤理论极限延迟与跳点</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SLA Benchmark Matrix Table -->
+        <div class="sla-matrix-card card-dark">
+          <div class="sla-matrix-header">
+            <div class="sla-matrix-title-wrap">
+              <Badge variant="cyan">CORE SLA METRICS</Badge>
+              <h3 class="sla-matrix-title">五大核心评测指标与 SLA 分级量化体系</h3>
+            </div>
+            <span class="sla-matrix-subtitle">ClashLab Laboratory Standard Specification v2.6</span>
+          </div>
+
+          <div class="sla-table-responsive">
+            <table class="sla-table">
+              <thead>
+                <tr>
+                  <th style="width: 24%;">核心度量指标</th>
+                  <th style="width: 24%;">🥇 黄金级 (SLA Tier 1)</th>
+                  <th style="width: 24%;">🥈 良好级 (SLA Tier 2)</th>
+                  <th style="width: 28%;">⚠️ 警戒与淘汰级 (Warning)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {slaMetrics.map((m) => (
+                  <tr>
+                    <td class="td-metric-name">
+                      <strong>{m.name}</strong>
+                      <span class="metric-tag">{m.tag}</span>
+                      <p class="metric-method">{m.method}</p>
+                    </td>
+                    <td class="td-golden">
+                      <div class="sla-level-pill golden-pill">{m.golden}</div>
+                    </td>
+                    <td class="td-good">
+                      <div class="sla-level-pill good-pill">{m.good}</div>
+                    </td>
+                    <td class="td-warning">
+                      <div class="sla-level-pill warning-pill">{m.warning}</div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Four-Layer Data Segregation Architecture -->
+      <section id="data-segregation" class="about-content-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-tag">DATA INTEGRITY &amp; GOVERNANCE</span>
+            <h2 class="section-title">四层数据隔离架构 (Data Segregation Architecture)</h2>
+            <p class="section-desc">
+              为了彻底杜绝商业利益对评测结论的污染，ClashLab 确立了四层严格物理隔离的数据治理架构：
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2 segregation-grid">
+          {segregationLayers.map((layer) => (
+            <div class={`card layer-box layer-${layer.color}`}>
+              <div class="layer-top-bar">
+                <span class="layer-badge-chip">{layer.layer}</span>
+                <span class="layer-tech-name">{layer.name}</span>
+              </div>
+              <h3 class="layer-box-title">{layer.title}</h3>
+              <p class="layer-box-desc">{layer.desc}</p>
+              <div class="layer-rules-box">
+                <span class="rules-box-title">治理准则与隔离约束：</span>
+                <ul class="rules-list">
+                  {layer.rules.map((rule) => (
+                    <li>{rule}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section 4: Expert Profiles (E-E-A-T Team) -->
+      <section id="expert-team" class="about-content-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-tag">EXPERT PROFILES &amp; AUTHORSHIP</span>
+            <h2 class="section-title">实验室专家团队档案 (E-E-A-T Team)</h2>
+            <p class="section-desc">
+              每一篇技术深度指南与横评报告均由具备多年网络工程、协议安全与全链路 QA 经验的专家联合撰写并交叉审计。
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-3 team-grid">
+          {teamMembers.map((member) => (
+            <div class="card team-card">
+              <div class="team-card-header">
+                <div class="avatar-circle">{member.avatar}</div>
+                <div class="team-header-text">
+                  <div class="member-name-wrap">
+                    <h3 class="member-name">{member.name}</h3>
+                    <span class="verified-badge" title="实验室认证专家">✓</span>
+                  </div>
+                  <span class="member-role">{member.title}</span>
+                  <Badge variant="blue" size="sm" class="mt-1">{member.badge}</Badge>
+                </div>
+              </div>
+
+              <div class="team-card-body">
+                <p class="member-bio">{member.bio}</p>
+                <div class="member-focus-box">
+                  <span class="focus-title">🔍 核心主导职责：</span>
+                  <p class="focus-text">{member.focus}</p>
+                </div>
+              </div>
+
+              <div class="team-card-footer">
+                <span class="skills-label">技术领域：</span>
+                <div class="member-skills-wrap">
+                  {member.skills.map((skill) => (
+                    <span class="skill-tag">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section 5: Editorial Independence & Conflict Policy -->
+      <section id="editorial-policy" class="about-content-block">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-tag">EDITORIAL CHARTER</span>
+            <h2 class="section-title">编辑独立性与利益冲突防范政策</h2>
+            <p class="section-desc">
+              公信力是 ClashLab 存在的唯一基石。我们制定了业界最严苛的利益冲突防范与客观评测公约：
+            </p>
+          </div>
+        </div>
+
+        <div class="editorial-charter-box card-dark">
+          <div class="charter-principles-grid">
+            {editorialPrinciples.map((item) => (
+              <div class="charter-principle-item">
+                <div class="principle-idx-wrap">
+                  <span class="principle-idx">{item.num}</span>
+                </div>
+                <div class="principle-content-wrap">
+                  <h3 class="principle-heading">{item.title}</h3>
+                  <p class="principle-body-text">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <!-- Highlight Warning Bar -->
+          <div class="charter-callout-bar">
+            <div class="callout-icon">⚖️</div>
+            <div class="callout-content">
+              <strong>独立性声明：</strong>
+              若您发现本站任何评测数据与实际抓包严重不符，或怀疑存在未披露的商业操纵行为，欢迎随时发送邮件至
+              <a href="mailto:contact@clashlab.blog" class="callout-link">contact@clashlab.blog</a>
+              提出异议。实验室将在 48 小时内启动复测并公开原始抓包日志。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Contact & Submission -->
+      <section id="contact" class="about-content-block">
+        <div class="card contact-card">
+          <div class="contact-inner-grid">
+            <div class="contact-info-col">
+              <span class="section-tag">GET IN TOUCH &amp; CONTRIBUTE</span>
+              <h3 class="contact-main-heading">技术交流与测速节点盲测提交</h3>
+              <p class="contact-intro">
+                如果您是网络协议研究者、开源客户端（Mihomo / sing-box / Shadowrocket）核心开发者，或希望提交新线路参与实验室盲测评估，欢迎与我们取得联系：
+              </p>
+              <div class="contact-details-list">
+                <div class="contact-detail-item">
+                  <span class="c-icon">📮</span>
+                  <div>
+                    <strong>实验室官方邮箱：</strong>
+                    <a href="mailto:contact@clashlab.blog" class="contact-mail-link">contact@clashlab.blog</a>
+                  </div>
+                </div>
+                <div class="contact-detail-item">
+                  <span class="c-icon">📡</span>
+                  <div>
+                    <strong>RSS 订阅更新：</strong>
+                    <a href="/rss.xml" class="contact-mail-link">clashlab.blog/rss.xml</a>
+                  </div>
+                </div>
+                <div class="contact-detail-item">
+                  <span class="c-icon">⚡</span>
+                  <div>
+                    <strong>盲测提交要求：</strong>
+                    提供完整节点配置信息、名义物理带宽声明与 72 小时盲测订阅授权。
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-action-col">
+              <div class="action-card-box">
+                <h4 class="action-card-title">快速通道</h4>
+                <p class="action-card-desc">探索实验室更多核心技术资源与专题指南：</p>
+                <div class="action-btn-stack">
+                  <a href="/airport-recommendation" class="btn btn-primary">
+                    查看 2026 机场推荐天梯榜 →
+                  </a>
+                  <a href="/brands" class="btn btn-secondary">
+                    进入 16 品牌互动数据库
+                  </a>
+                  <a href="/posts" class="btn btn-secondary">
+                    阅读全部网络技术文章
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Hero Section (#0B111A / Dark Surface) */
+  .about-hero-section {
+    background: linear-gradient(180deg, #0B111A 0%, #121A24 100%);
+    border-bottom: 1px solid var(--border-dark);
+    padding: 3rem 0 3.5rem;
+    color: #FFFFFF;
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .about-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #94A3B8;
+  }
+
+  .about-breadcrumbs a {
+    color: #94A3B8;
+    transition: color var(--transition-fast);
+  }
+
+  .about-breadcrumbs a:hover {
+    color: #38BDF8;
+  }
+
+  .crumb-sep {
+    color: #475569;
+  }
+
+  .crumb-current {
+    color: #F8FAFC;
+    font-weight: 500;
+  }
+
+  .hero-tag-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-version-tag {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+  }
+
+  .hero-main-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    max-width: 960px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-main-title {
+      font-size: 2.85rem;
+    }
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #38BDF8 0%, #2563EB 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-main-desc {
+    font-size: 1.0625rem;
+    color: #CBD5E1;
+    line-height: 1.7;
+    max-width: 860px;
+  }
+
+  .hero-main-desc strong {
+    color: #38BDF8;
+  }
+
+  /* Telemetry Grid */
+  .hero-telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+    width: 100%;
+    max-width: 1060px;
+    margin-top: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero-telemetry-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-telemetry-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .telemetry-box {
+    background-color: #0E1620;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .telemetry-box:hover {
+    transform: translateY(-2px);
+    border-color: #38BDF8;
+  }
+
+  .telemetry-label {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    font-weight: 500;
+  }
+
+  .telemetry-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    letter-spacing: -0.02em;
+  }
+
+  .telemetry-sub {
+    font-size: 0.6875rem;
+    color: #38BDF8;
+  }
+
+  /* Quick Anchor Nav */
+  .about-anchor-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    background: rgba(18, 26, 36, 0.85);
+    border: 1px solid var(--border-dark);
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-full);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .anchor-label {
+    font-size: 0.75rem;
+    color: #64748B;
+    font-weight: 600;
+  }
+
+  .anchor-link {
+    font-size: 0.8125rem;
+    color: #CBD5E1;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+
+  .anchor-link:hover {
+    color: #38BDF8;
+    background-color: rgba(56, 189, 248, 0.1);
+  }
+
+  /* Body Content */
+  .about-main-body {
+    padding-top: 3.5rem;
+    padding-bottom: 4.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .about-content-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Mission Card */
+  .mission-card {
+    padding: 2.25rem;
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+  }
+
+  .mission-text-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .mission-text-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+    }
+  }
+
+  .mission-subheading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    letter-spacing: -0.015em;
+  }
+
+  .mission-paragraph {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin-bottom: 1rem;
+  }
+
+  .mission-paragraph strong {
+    color: var(--primary);
+  }
+
+  .mission-highlights-box {
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text-body);
+  }
+
+  .h-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* Infra Spec Grid */
+  .infra-spec-grid {
+    margin-bottom: 2rem;
+  }
+
+  .infra-spec-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #FFFFFF;
+  }
+
+  .spec-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .spec-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .spec-icon-wrap svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .icon-blue {
+    background-color: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .icon-cyan {
+    background-color: #F0F9FF;
+    color: #0284C7;
+  }
+
+  .icon-amber {
+    background-color: #FFFBEB;
+    color: #D97706;
+  }
+
+  .spec-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .spec-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .spec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    font-size: 0.875rem;
+    color: var(--text-body);
+    line-height: 1.55;
+  }
+
+  .spec-list li strong {
+    color: var(--text-main);
+  }
+
+  .spec-list code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8125rem;
+    background-color: var(--bg-aux);
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    color: var(--primary-hover);
+  }
+
+  /* SLA Matrix Card */
+  .sla-matrix-card {
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background-color: #0B111A;
+    border: 1px solid #1F2937;
+  }
+
+  .sla-matrix-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #1F2937;
+  }
+
+  @media (min-width: 640px) {
+    .sla-matrix-header {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .sla-matrix-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sla-matrix-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+  }
+
+  .sla-matrix-subtitle {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .sla-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sla-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    color: #E2E8F0;
+    min-width: 720px;
+  }
+
+  .sla-table th {
+    background-color: #121A24;
+    color: #94A3B8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #1F2937;
+  }
+
+  .sla-table td {
+    padding: 1.125rem 1rem;
+    border-bottom: 1px solid #16202E;
+    vertical-align: top;
+  }
+
+  .sla-table tr:hover td {
+    background-color: rgba(37, 99, 235, 0.04);
+  }
+
+  .td-metric-name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .td-metric-name strong {
+    font-size: 0.9375rem;
+    color: #FFFFFF;
+  }
+
+  .metric-tag {
+    font-size: 0.6875rem;
+    color: #38BDF8;
+    font-weight: 600;
+  }
+
+  .metric-method {
+    font-size: 0.75rem;
+    color: #64748B;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+  }
+
+  .sla-level-pill {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    line-height: 1.4;
+  }
+
+  .golden-pill {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .good-pill {
+    background-color: rgba(56, 189, 248, 0.12);
+    color: #38BDF8;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+  }
+
+  .warning-pill {
+    background-color: rgba(244, 63, 94, 0.15);
+    color: #FB7185;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+  }
+
+  /* Segregation Layers Grid */
+  .segregation-grid {
+    gap: 1.75rem;
+  }
+
+  .layer-box {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #FFFFFF;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .layer-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+
+  .layer-blue::before { background-color: var(--primary); }
+  .layer-cyan::before { background-color: #0284C7; }
+  .layer-amber::before { background-color: #D97706; }
+  .layer-green::before { background-color: #10B981; }
+
+  .layer-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .layer-badge-chip {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background-color: var(--bg-aux);
+    color: var(--text-main);
+    border: 1px solid var(--border-light);
+  }
+
+  .layer-tech-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .layer-box-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.015em;
+  }
+
+  .layer-box-desc {
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.65;
+  }
+
+  .layer-rules-box {
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .rules-box-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  .rules-list li::before {
+    content: "• ";
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  /* Team Grid */
+  .team-grid {
+    gap: 1.5rem;
+  }
+
+  .team-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background-color: #FFFFFF;
+    border-radius: var(--radius-lg);
+  }
+
+  .team-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .avatar-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1E293B 0%, #0B111A 100%);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    font-weight: 800;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    border: 2px solid #38BDF8;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .team-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .member-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .member-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background-color: var(--primary);
+    color: #FFFFFF;
+    font-size: 0.625rem;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+
+  .member-role {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .team-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .member-bio {
+    font-size: 0.875rem;
+    color: var(--text-body);
+    line-height: 1.6;
+  }
+
+  .member-focus-box {
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .focus-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .focus-text {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  .team-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .skills-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .member-skills-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .skill-tag {
+    font-size: 0.6875rem;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* Editorial Charter Box */
+  .editorial-charter-box {
+    padding: 2.25rem;
+    background-color: #0B111A;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .charter-principles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .charter-principles-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .charter-principle-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .principle-idx-wrap {
+    flex-shrink: 0;
+  }
+
+  .principle-idx {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #38BDF8;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    line-height: 1;
+    display: inline-block;
+  }
+
+  .principle-content-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .principle-heading {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  .principle-body-text {
+    font-size: 0.875rem;
+    color: #94A3B8;
+    line-height: 1.6;
+  }
+
+  .charter-callout-bar {
+    background: linear-gradient(135deg, #151E2B 0%, #0E1620 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .callout-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .callout-content {
+    font-size: 0.875rem;
+    color: #CBD5E1;
+    line-height: 1.6;
+  }
+
+  .callout-content strong {
+    color: #38BDF8;
+  }
+
+  .callout-link {
+    color: #38BDF8;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  .callout-link:hover {
+    color: #60A5FA;
+  }
+
+  /* Contact Section */
+  .contact-card {
+    padding: 2.5rem;
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+  }
+
+  .contact-inner-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 840px) {
+    .contact-inner-grid {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: center;
+    }
+  }
+
+  .contact-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-main-heading {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+  }
+
+  .contact-intro {
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.65;
+  }
+
+  .contact-details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-top: 0.5rem;
+  }
+
+  .contact-detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  .c-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .contact-mail-link {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .contact-mail-link:hover {
+    color: var(--primary-hover);
+  }
+
+  .action-card-box {
+    background-color: var(--bg-aux);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .action-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .action-card-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .action-btn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .action-btn-stack .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media (max-width: 640px) {
+    .hidden-mobile {
+      display: none;
+    }
+  }
+</style>

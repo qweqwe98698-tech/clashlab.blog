@@ -1,0 +1,1260 @@
+---
+import EvidenceBadge from './EvidenceBadge.astro';
+import type { Brand } from '../../data/brands';
+
+export interface DomesticEntry {
+  city: string;
+  provider: string;
+  latency: string;
+  jitter: string;
+  status: 'optimal' | 'stable' | 'backup';
+}
+
+export interface OverseasExit {
+  region: string;
+  code: string;
+  ipPoolType: string;
+  unlockedServices: string[];
+  latencyFromIngress: string;
+  status: 'optimal' | 'stable';
+}
+
+export interface Props {
+  brand?: Brand;
+  brandName?: string;
+  lineType?: string;
+  protocols?: string[];
+  domesticEntries?: DomesticEntry[];
+  overseasExits?: OverseasExit[];
+  testedAt?: string;
+  avgPing?: string;
+  packetLoss?: string;
+  jitter?: string;
+  slaUptime?: string;
+  failoverTime?: string;
+  architectureDetails?: string;
+  class?: string;
+}
+
+const props = Astro.props;
+const brand = props.brand;
+
+const brandName = props.brandName || brand?.name || '品牌专线';
+const lineType = props.lineType || brand?.techArchitecture?.lineType || '企业级内网 IEPL 专线';
+const protocols = props.protocols || brand?.techArchitecture?.protocols || ['VLESS', 'Shadowsocks (AEAD)', 'Trojan'];
+const avgPing = props.avgPing || brand?.speedtest?.avgPing || '36.5ms';
+const testedAt = props.testedAt || brand?.speedtest?.testedAt?.split(' ')[0] || '2026-08-11';
+const packetLoss = props.packetLoss || '< 0.05%';
+const jitter = props.jitter || '1.2ms';
+const slaUptime = props.slaUptime || '99.95%';
+const failoverTime = props.failoverTime || '< 3.0s';
+const architectureDetails = props.architectureDetails || brand?.techArchitecture?.details || `${brandName} 采用物理层内网 IEPL 跨境专线传输。境内数据经由多省三网 BGP 入口进行 Anycast 负载分流与握手加密，随后通过运营商物理光纤专线直达境外 POP 边缘落地节点，全程不经过公网国际出海口，彻底规避公网 QoS 丢包、DNS 污染与防火墙阻断。`;
+const customClass = props.class || '';
+
+const domesticEntries = props.domesticEntries || [
+  { city: '上海 BGP', provider: '电信/联通/移动三网聚合', latency: '4.2ms', jitter: '0.8ms', status: 'optimal' },
+  { city: '广州 BGP', provider: '华南多线移动/联通热备', latency: '3.8ms', jitter: '0.6ms', status: 'optimal' },
+  { city: '江苏 BGP', provider: '华东双线低延迟接入', latency: '6.1ms', jitter: '1.1ms', status: 'stable' },
+];
+
+const overseasExits = props.overseasExits || [
+  { region: '中国香港 (HK)', code: 'HKG-POP01', ipPoolType: '原生 BGP 双栈 IP', unlockedServices: ['Netflix', 'Disney+', 'YouTube 4K'], latencyFromIngress: '28ms', status: 'optimal' },
+  { region: '日本东京 (TYO)', code: 'NRT-POP02', ipPoolType: '纯净机房住宅 IP', unlockedServices: ['ChatGPT 4o', 'Claude 3.5', 'DMM'], latencyFromIngress: '34ms', status: 'optimal' },
+  { region: '新加坡 (SIN)', code: 'SIN-POP03', ipPoolType: 'AWS/GCP 高质出口', unlockedServices: ['ChatGPT', 'TikTok', 'Spotify'], latencyFromIngress: '42ms', status: 'optimal' },
+  { region: '美国洛杉矶 (LAX)', code: 'LAX-POP04', ipPoolType: '美西原生住宅 IP', unlockedServices: ['Claude Pro', 'Max (HBO)', 'Hulu'], latencyFromIngress: '135ms', status: 'optimal' },
+];
+---
+
+<section class={`network-topology-container ${customClass}`} id="network-topology-observatory">
+  <!-- Observatory Console Header -->
+  <div class="observatory-header">
+    <div class="header-main">
+      <div class="observatory-title-pill">
+        <span class="pulse-beacon"></span>
+        <span class="observatory-tag">NETWORK TOPOLOGY OBSERVATORY</span>
+        <span class="live-tag">LIVE ARCHITECTURE</span>
+      </div>
+      <h2 class="observatory-title">
+        {brandName} 网络拓扑架构与跨境链路全景图
+      </h2>
+      <p class="observatory-desc">
+        ClashLab 网络实验室端到端物理链路观测：从本地设备客户端握手、国内 BGP 入口聚合、跨国内网物理专线到境外落地 POP 节点与 AI/流媒体服务分流。
+      </p>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="view-switch-box" role="tablist" aria-label="拓扑视图模式切换">
+      <button type="button" class="view-btn active" id="btn-view-visual" data-view="visual" role="tab" aria-selected="true">
+        <svg class="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span>交互式拓扑图</span>
+      </button>
+      <button type="button" class="view-btn" id="btn-view-ascii" data-view="ascii" role="tab" aria-selected="false">
+        <svg class="view-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
+        <span>终端 ASCII 架构</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Telemetry Metrics HUD Strip -->
+  <div class="telemetry-hud-strip">
+    <div class="hud-item">
+      <span class="hud-key">专线链路制式</span>
+      <div class="hud-val-wrap">
+        <span class="hud-val text-cyan">{lineType.replace(' 专线', '')}</span>
+        <span class="hud-sub">物理内网直连</span>
+      </div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-item">
+      <span class="hud-key">全链路实测 RTT</span>
+      <div class="hud-val-wrap">
+        <span class="hud-val text-green">{avgPing}</span>
+        <span class="hud-sub">亚太核心均值</span>
+      </div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-item">
+      <span class="hud-key">晚高峰丢包率</span>
+      <div class="hud-val-wrap">
+        <span class="hud-val text-green">{packetLoss}</span>
+        <span class="hud-sub">32 线程持续打流</span>
+      </div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-item">
+      <span class="hud-key">网络时延抖动 (Jitter)</span>
+      <div class="hud-val-wrap">
+        <span class="hud-val text-cyan">{jitter}</span>
+        <span class="hud-sub">标准差平稳</span>
+      </div>
+    </div>
+    <div class="hud-divider"></div>
+    <div class="hud-item">
+      <span class="hud-key">BGP 故障自动熔断</span>
+      <div class="hud-val-wrap">
+        <span class="hud-val text-amber">{failoverTime}</span>
+        <span class="hud-sub">Anycast 毫秒探针</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- View 1: Visual Interactive SVG Topology Map -->
+  <div class="topology-view-visual" id="topology-visual-pane">
+    <div class="topology-stage">
+      <!-- 5 Sequential Pipeline Stages -->
+
+      <!-- STAGE 1: Client Layer -->
+      <div class="stage-column stage-client" data-step="1">
+        <div class="stage-badge-header">
+          <span class="step-num">01</span>
+          <span class="step-title">用户终端设备</span>
+        </div>
+        <div class="topo-node-card active" data-node="client">
+          <div class="node-icon-header">
+            <div class="icon-avatar">
+              <svg class="node-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <div class="node-meta">
+              <h3 class="node-name">终端客户端</h3>
+              <span class="node-status text-green">● TUN 虚拟网卡</span>
+            </div>
+          </div>
+          <p class="node-summary">PC (Windows / Mac) · 手机 · 软路由</p>
+          <div class="protocol-chips">
+            {protocols.map((proto) => (
+              <span class="proto-chip">{proto}</span>
+            ))}
+          </div>
+          <div class="node-spec-footer">
+            <span class="spec-tag">Fake-IP 智能分流</span>
+            <span class="spec-tag">TLS 1.3 握手</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE CONNECTOR 1 -> 2 -->
+      <div class="pipeline-connector">
+        <div class="flow-line">
+          <span class="flow-pulse"></span>
+        </div>
+        <div class="connector-label">
+          <span class="label-proto">{protocols[0]} / SS</span>
+          <span class="label-info">本地加密隧道</span>
+        </div>
+      </div>
+
+      <!-- STAGE 2: Domestic BGP Ingress -->
+      <div class="stage-column stage-ingress" data-step="2">
+        <div class="stage-badge-header">
+          <span class="step-num">02</span>
+          <span class="step-title">国内 BGP 入口接入</span>
+        </div>
+        <div class="topo-node-card" data-node="ingress">
+          <div class="node-icon-header">
+            <div class="icon-avatar bg-blue">
+              <svg class="node-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <div class="node-meta">
+              <h3 class="node-name">多线 BGP 聚合入口</h3>
+              <span class="node-status text-green">● Anycast 智能路由</span>
+            </div>
+          </div>
+          <div class="ingress-list">
+            {domesticEntries.map((entry) => (
+              <div class="ingress-row">
+                <span class="entry-city">{entry.city}</span>
+                <span class="entry-ping">{entry.latency}</span>
+              </div>
+            ))}
+          </div>
+          <div class="node-spec-footer">
+            <span class="spec-tag">三网负载均衡</span>
+            <span class="spec-tag">DDOS 流量清洗</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE CONNECTOR 2 -> 3 (PHYSICAL DEDICATED LINE) -->
+      <div class="pipeline-connector connector-backbone">
+        <div class="flow-line dedicated-pipe">
+          <span class="flow-pulse pulse-fast"></span>
+          <span class="pipe-core-label">IEPL PHYSICAL DEDICATED FIBER</span>
+        </div>
+        <div class="connector-label">
+          <span class="label-proto text-cyan">内网物理专线直连</span>
+          <span class="label-info text-green">抗 GFW 干扰 · 0 公网拥堵</span>
+        </div>
+      </div>
+
+      <!-- STAGE 3: Overseas Exit POP Gateway -->
+      <div class="stage-column stage-pop" data-step="3">
+        <div class="stage-badge-header">
+          <span class="step-num">03</span>
+          <span class="step-title">境外落地 POP 网关</span>
+        </div>
+        <div class="topo-node-card" data-node="pop">
+          <div class="node-icon-header">
+            <div class="icon-avatar bg-cyan">
+              <svg class="node-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <div class="node-meta">
+              <h3 class="node-name">全球 POP 落地矩阵</h3>
+              <span class="node-status text-green">● 原生住宅/机房 IP</span>
+            </div>
+          </div>
+          <div class="pop-grid">
+            {overseasExits.slice(0, 4).map((pop) => (
+              <div class="pop-chip">
+                <span class="pop-region">{pop.region.split(' ')[0]}</span>
+                <span class="pop-ping">{pop.latencyFromIngress}</span>
+              </div>
+            ))}
+          </div>
+          <div class="node-spec-footer">
+            <span class="spec-tag">EDNS0 远程解析</span>
+            <span class="spec-tag">流媒体 BGP 广播</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE CONNECTOR 3 -> 4 -->
+      <div class="pipeline-connector">
+        <div class="flow-line">
+          <span class="flow-pulse"></span>
+        </div>
+        <div class="connector-label">
+          <span class="label-proto text-cyan">纯净出口分流</span>
+          <span class="label-info">住宅 IP 伪装</span>
+        </div>
+      </div>
+
+      <!-- STAGE 4: Target Services Matrix -->
+      <div class="stage-column stage-dest" data-step="4">
+        <div class="stage-badge-header">
+          <span class="step-num">04</span>
+          <span class="step-title">目标应用服务与生态</span>
+        </div>
+        <div class="topo-node-card" data-node="dest">
+          <div class="node-icon-header">
+            <div class="icon-avatar bg-amber">
+              <svg class="node-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <div class="node-meta">
+              <h3 class="node-name">AI & 流媒体解锁</h3>
+              <span class="node-status text-green">● 100% 极速直达</span>
+            </div>
+          </div>
+          <div class="dest-service-list">
+            <div class="dest-item">
+              <span class="dest-name">OpenAI / Claude</span>
+              <span class="dest-tag tag-ai">AI 模型</span>
+            </div>
+            <div class="dest-item">
+              <span class="dest-name">Netflix / Disney+ 4K</span>
+              <span class="dest-tag tag-stream">4K 超清</span>
+            </div>
+            <div class="dest-item">
+              <span class="dest-name">GitHub / SaaS 生产力</span>
+              <span class="dest-tag tag-dev">开发者</span>
+            </div>
+          </div>
+          <div class="node-spec-footer">
+            <span class="spec-tag">0 封号风控</span>
+            <span class="spec-tag">4K 秒开秒切</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Node Inspector Drawer / Detail Console -->
+    <div class="node-inspector-drawer" id="node-inspector">
+      <div class="inspector-header">
+        <div class="inspector-title-wrap">
+          <svg class="inspector-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          <span class="inspector-title" id="inspector-heading">链路分段深度解析：IEPL 跨国内网物理专线</span>
+        </div>
+        <EvidenceBadge type="editorial" size="sm" />
+      </div>
+      <div class="inspector-content-grid">
+        <div class="inspector-card">
+          <h4 class="inspector-card-title">物理传输与链路隔离</h4>
+          <p class="inspector-card-text" id="inspector-text-1">
+            {architectureDetails}
+          </p>
+        </div>
+        <div class="inspector-card">
+          <h4 class="inspector-card-title">晚高峰 QoS 与抗封锁设计</h4>
+          <p class="inspector-card-text" id="inspector-text-2">
+            区别于普通 163 公网中转与公网直连，IEPL 物理专线通过运营商大客户内网裸纤直通，完全脱离公网国际出入口拥堵，不经过防火墙特征抓包检测，晚高峰时段丢包率常年稳定在 {packetLoss} 以下。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View 2: Monospace ASCII Terminal Observatory View -->
+  <div class="topology-view-ascii" id="topology-ascii-pane" style="display: none;">
+    <div class="terminal-container">
+      <div class="terminal-topbar">
+        <div class="terminal-dots">
+          <span class="t-dot red"></span>
+          <span class="t-dot yellow"></span>
+          <span class="t-dot green"></span>
+        </div>
+        <span class="terminal-filename">clashlab@observatory:~/{brandName}-topology-graph.txt</span>
+        <span class="terminal-timestamp">{testedAt} CST</span>
+      </div>
+      <pre class="ascii-art"><code>{`
++----------------------------------------------------------------------------------------------------+
+|                                  CLASHLAB INFRASTRUCTURE OBSERVATORY                              |
+|                          Topology: End-to-End Enterprise Dedicated Pipeline                        |
++----------------------------------------------------------------------------------------------------+
+
+ [ USER DEVICE ]
+   - macOS / Windows / iOS / Android / Linux / OpenWrt
+   - Core: Clash Verge Rev / sing-box / Shadowrocket
+   - DNS Strategy: Fake-IP (TUN) + EDNS0 Remote Mapping
+         │
+         │  TLS 1.3 / AEAD Intranet Encrypted Handshake (${protocols.join(' / ')})
+         │  Local Access RTT: ~3-8ms | Handshake Overhead: < 0.2ms
+         ▼
+ [ DOMESTIC MULTI-LINE BGP INGRESS POOL ]
+   ├─▶ Shanghai BGP Multi-Cloud  [RTT: 4.2ms | Jitter: 0.8ms]
+   ├─▶ Guangzhou BGP High-Speed  [RTT: 3.8ms | Jitter: 0.6ms]
+   └─▶ Jiangsu BGP Dual-Stack    [RTT: 6.1ms | Jitter: 1.1ms]
+   * Health Monitor: Millisecond Anycast Probe with Auto-Failover (< 3.0s)
+         │
+         ══════════════════════════════════════════════════════════════════════════════════════════════════════
+         [ CROSS-BORDER IEPL PHYSICAL DEDICATED FIBER · OPERATOR LEVEL INTRANET ]
+         * Line Type: ${lineType} (No Public GFW Inspection, No 163 Congestion)
+         * SLA Uptime: ${slaUptime} | Peak Packet Loss: ${packetLoss} | Jitter StdDev: ${jitter}
+         ══════════════════════════════════════════════════════════════════════════════════════════════════════
+         │
+         ▼
+ [ OVERSEAS EDGE POP LANDING GATEWAYS ]
+   ├─▶ [HKG-POP01] Hong Kong BGP    -> RTT: 28ms  | Native IP | Netflix / Disney+ / YouTube
+   ├─▶ [NRT-POP02] Tokyo Datacenter -> RTT: 34ms  | Clean ASN | ChatGPT 4o / Claude 3.5 Sonnet
+   ├─▶ [SIN-POP03] Singapore Edge   -> RTT: 42ms  | AWS/GCP   | TikTok Global / Spotify HiFi
+   └─▶ [LAX-POP04] Los Angeles POP  -> RTT: 135ms | Resi-IP   | Anthropic Claude Pro / Max
+         │
+         ├───────────────────────────────────────────────────────┐
+         ▼                                                       ▼
+ [ AI & ULTRA-STREAMING MATRIX ]                         [ GLOBAL INTERNET & DEV ]
+   * ChatGPT-4o Realtime / Canvas (Clean IP, No Cloudflare)   * GitHub Copilot / Cursor IDE (Low Latency)
+   * Claude 3.5 Sonnet (Pro Verified, Artifacts OK)           * Docker Hub / HuggingFace Mirrors
+   * Netflix 4K HDR Non-Original + Disney+ IMAX Enhanced      * Cloudflare CDN Anycast Direct Sync
+`}</code></pre>
+    </div>
+  </div>
+
+  <!-- Bottom Disclosure Footer -->
+  <div class="topology-footer-bar">
+    <div class="footer-left">
+      <EvidenceBadge type="measured" date="2026-08" size="sm" />
+      <span class="footer-note">观测数据基于实验室 32 线程持续打流与 BGP 路由表抓包采样。</span>
+    </div>
+    <div class="footer-right">
+      <span class="compliance-text">ClashLab Network Observatory Standard v2.6</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initNetworkTopology() {
+    const btnVisual = document.getElementById('btn-view-visual');
+    const btnAscii = document.getElementById('btn-view-ascii');
+    const visualPane = document.getElementById('topology-visual-pane');
+    const asciiPane = document.getElementById('topology-ascii-pane');
+
+    if (!btnVisual || !btnAscii || !visualPane || !asciiPane) return;
+
+    btnVisual.addEventListener('click', () => {
+      btnVisual.classList.add('active');
+      btnVisual.setAttribute('aria-selected', 'true');
+      btnAscii.classList.remove('active');
+      btnAscii.setAttribute('aria-selected', 'false');
+      visualPane.style.display = 'block';
+      asciiPane.style.display = 'none';
+    });
+
+    btnAscii.addEventListener('click', () => {
+      btnAscii.classList.add('active');
+      btnAscii.setAttribute('aria-selected', 'true');
+      btnVisual.classList.remove('active');
+      btnVisual.setAttribute('aria-selected', 'false');
+      visualPane.style.display = 'none';
+      asciiPane.style.display = 'block';
+    });
+
+    // Node Click Handlers for Interactive Inspector
+    const nodeCards = document.querySelectorAll<HTMLElement>('.topology-stage .topo-node-card');
+    const inspectorHeading = document.getElementById('inspector-heading');
+    const inspectorText1 = document.getElementById('inspector-text-1');
+    const inspectorText2 = document.getElementById('inspector-text-2');
+
+    const nodeDescriptions: Record<string, { title: string; text1: string; text2: string }> = {
+      client: {
+        title: '分段 01：用户终端客户端与加密封装层',
+        text1: '客户端通过 Tun 虚拟网卡驱动接管系统 IP 协议栈，利用 Fake-IP 模式将远程域名解析委托给落地 POP 节点，避免本地 DNS 污染泄露真实访问目标。',
+        text2: '握手采用 TLS 1.3 / AEAD 高强度现代密码套件，流量伪装为合规 HTTPS 流量，端到端计算开销极低，保障千兆吞吐时不造成 CPU 瓶颈。'
+      },
+      ingress: {
+        title: '分段 02：国内多线 BGP 智能聚合入口层',
+        text1: '服务商在上海、广州、江苏等骨干互联网交换中心部署多线 BGP 接入机房，移动、电信、联通用户均可通过最优物理跳数就近接入。',
+        text2: '部署 Anycast 智能健康心跳探针，单省份入口出现网络闪断或运营商割接时，可在 3 秒内自动平滑热切至备用入口，用户无感。'
+      },
+      pop: {
+        title: '分段 03：境外落地 POP 网关与纯净 IP 池',
+        text1: '落地节点覆盖中国香港、日本东京、新加坡、美国洛杉矶等核心机房，配备高质量原生住宅 IP 与纯净广播 IP 双栈，针对风控严苛应用提供独立分流出口。',
+        text2: '支持 EDNS0 远程智能调度，确保 Netflix、Disney+ 与 ChatGPT 能够精准定向到各地区官方专属 CDN 节点，杜绝流媒体锁区与 App 异常。'
+      },
+      dest: {
+        title: '分段 04：目标生态分流与 AI / 流媒体直连',
+        text1: '结合 Clash Rule-Set 与 sing-box 策略规则，实现 OpenAI、Anthropic、Netflix、GitHub 等关键流量根据服务地域自动精准匹配最优落地出口。',
+        text2: '全链路不经过第三方公网中转嗅探，保障个人账号与工作 API 调用的绝对安全与低延迟响应。'
+      }
+    };
+
+    nodeCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const nodeType = card.getAttribute('data-node');
+        if (!nodeType || !nodeDescriptions[nodeType]) return;
+
+        nodeCards.forEach((c) => c.classList.remove('active'));
+        card.classList.add('active');
+
+        if (inspectorHeading) inspectorHeading.textContent = nodeDescriptions[nodeType].title;
+        if (inspectorText1) inspectorText1.textContent = nodeDescriptions[nodeType].text1;
+        if (inspectorText2) inspectorText2.textContent = nodeDescriptions[nodeType].text2;
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initNetworkTopology);
+  document.addEventListener('astro:page-load', initNetworkTopology);
+</script>
+
+<style>
+  .network-topology-container {
+    background-color: #0B111A;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-lg, 10px);
+    padding: 1.5rem;
+    color: #F9FAFB;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .network-topology-container {
+      padding: 2rem;
+    }
+  }
+
+  /* Header Bar */
+  .observatory-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 1.25rem;
+  }
+
+  @media (min-width: 900px) {
+    .observatory-header {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+  }
+
+  .header-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .observatory-title-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  .pulse-beacon {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #38BDF8;
+    box-shadow: 0 0 8px #38BDF8;
+  }
+
+  .observatory-tag {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #38BDF8;
+    letter-spacing: 0.05em;
+  }
+
+  .live-tag {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.5625rem;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #10B981;
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .observatory-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .observatory-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  .observatory-desc {
+    font-size: 0.8125rem;
+    color: #94A3B8;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 720px;
+  }
+
+  /* View Switcher */
+  .view-switch-box {
+    display: flex;
+    background: #121A24;
+    border: 1px solid #1F2937;
+    border-radius: 6px;
+    padding: 0.25rem;
+    gap: 0.25rem;
+    flex-shrink: 0;
+  }
+
+  .view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94A3B8;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast, 150ms ease);
+  }
+
+  .view-btn:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .view-btn.active {
+    background: #2563EB;
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+  }
+
+  .view-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Telemetry HUD Strip */
+  .telemetry-hud-strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    background: #121A24;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .telemetry-hud-strip {
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+    }
+  }
+
+  .hud-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .hud-key {
+    font-size: 0.625rem;
+    color: #64748B;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .hud-val-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+
+  .hud-val {
+    font-size: 1.05rem;
+    font-weight: 800;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+  }
+
+  .hud-sub {
+    font-size: 0.6875rem;
+    color: #64748B;
+  }
+
+  .hud-divider {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hud-divider {
+      display: block;
+      width: 1px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  .text-green { color: #10B981; }
+  .text-cyan { color: #38BDF8; }
+  .text-amber { color: #F59E0B; }
+
+  /* Topology Stage Flow */
+  .topology-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  @media (min-width: 1024px) {
+    .topology-stage {
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+  }
+
+  .stage-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stage-badge-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .step-num {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    color: #2563EB;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .step-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #E2E8F0;
+  }
+
+  /* Node Cards */
+  .topo-node-card {
+    background: #121A24;
+    border: 1px solid #1F2937;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+    cursor: pointer;
+    transition: all var(--transition-fast, 150ms ease);
+    position: relative;
+  }
+
+  .topo-node-card:hover,
+  .topo-node-card.active {
+    border-color: #2563EB;
+    background: #151E2B;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.25), inset 0 0 0 1px rgba(56, 189, 248, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .node-icon-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .icon-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #38BDF8;
+    flex-shrink: 0;
+  }
+
+  .icon-avatar.bg-blue {
+    background: rgba(37, 99, 235, 0.2);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: #60A5FA;
+  }
+
+  .icon-avatar.bg-cyan {
+    background: rgba(2, 132, 199, 0.2);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
+  }
+
+  .icon-avatar.bg-amber {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #FBBF24;
+  }
+
+  .node-svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .node-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .node-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .node-status {
+    font-size: 0.625rem;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-weight: 600;
+  }
+
+  .node-summary {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* Protocol Chips */
+  .protocol-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .proto-chip {
+    font-size: 0.625rem;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #93C5FD;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+  }
+
+  /* Ingress Rows */
+  .ingress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    background: #0E1620;
+    padding: 0.45rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .ingress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    font-family: ui-monospace, monospace;
+  }
+
+  .entry-city {
+    color: #CBD5E1;
+  }
+
+  .entry-ping {
+    color: #10B981;
+    font-weight: 700;
+  }
+
+  /* POP Grid */
+  .pop-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
+    background: #0E1620;
+    padding: 0.45rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .pop-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+
+  .pop-region {
+    font-size: 0.6875rem;
+    color: #CBD5E1;
+  }
+
+  .pop-ping {
+    font-size: 0.625rem;
+    color: #38BDF8;
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+  }
+
+  /* Dest Services */
+  .dest-service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    background: #0E1620;
+    padding: 0.45rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .dest-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+  }
+
+  .dest-name {
+    color: #CBD5E1;
+  }
+
+  .dest-tag {
+    font-size: 0.5625rem;
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+    font-weight: 600;
+  }
+
+  .tag-ai {
+    background: rgba(37, 99, 235, 0.2);
+    color: #60A5FA;
+  }
+  .tag-stream {
+    background: rgba(220, 38, 38, 0.2);
+    color: #F87171;
+  }
+  .tag-dev {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34D399;
+  }
+
+  /* Node Spec Footer */
+  .node-spec-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: auto;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .spec-tag {
+    font-size: 0.625rem;
+    color: #64748B;
+    font-family: ui-monospace, monospace;
+  }
+
+  /* Pipeline Connectors */
+  .pipeline-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+    position: relative;
+  }
+
+  @media (min-width: 1024px) {
+    .pipeline-connector {
+      width: 44px;
+      padding: 0;
+      flex-shrink: 0;
+    }
+  }
+
+  .flow-line {
+    width: 2px;
+    height: 24px;
+    background: rgba(56, 189, 248, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .flow-line {
+      width: 100%;
+      height: 2px;
+    }
+  }
+
+  .flow-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #38BDF8, transparent);
+    animation: flowPulse 2s linear infinite;
+  }
+
+  @keyframes flowPulse {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Dedicated Backbone Connector Highlight */
+  .connector-backbone {
+    min-width: 60px;
+  }
+
+  .dedicated-pipe {
+    height: 4px;
+    background: #1D4ED8;
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.8);
+  }
+
+  .pipe-core-label {
+    display: none;
+  }
+
+  .pulse-fast {
+    animation-duration: 1.2s;
+  }
+
+  .connector-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.1rem;
+    margin-top: 0.3rem;
+  }
+
+  .label-proto {
+    font-family: ui-monospace, monospace;
+    font-size: 0.5625rem;
+    font-weight: 700;
+    color: #38BDF8;
+    white-space: nowrap;
+  }
+
+  .label-info {
+    font-size: 0.5625rem;
+    color: #64748B;
+    white-space: nowrap;
+  }
+
+  /* Node Inspector Drawer */
+  .node-inspector-drawer {
+    background: #121A24;
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    border-radius: 8px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .inspector-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 0.5rem;
+  }
+
+  .inspector-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .inspector-icon {
+    width: 16px;
+    height: 16px;
+    color: #38BDF8;
+  }
+
+  .inspector-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  .inspector-content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  @media (min-width: 768px) {
+    .inspector-content-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .inspector-card {
+    background: #0E1620;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 0.75rem 0.875rem;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .inspector-card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #60A5FA;
+    margin: 0;
+  }
+
+  .inspector-card-text {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* View 2: Terminal ASCII */
+  .topology-view-ascii {
+    margin-top: 0.5rem;
+  }
+
+  .terminal-container {
+    background: #080D14;
+    border: 1px solid #1F2937;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  }
+
+  .terminal-topbar {
+    background: #0E1620;
+    border-bottom: 1px solid #1F2937;
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .t-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .t-dot.red { background-color: #EF4444; }
+  .t-dot.yellow { background-color: #F59E0B; }
+  .t-dot.green { background-color: #10B981; }
+
+  .terminal-filename {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.6875rem;
+    color: #64748B;
+  }
+
+  .terminal-timestamp {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.625rem;
+    color: #475569;
+  }
+
+  .ascii-art {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.71875rem;
+    line-height: 1.35;
+    color: #38BDF8;
+    scrollbar-width: thin;
+  }
+
+  .ascii-art code {
+    white-space: pre;
+  }
+
+  /* Footer */
+  .topology-footer-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto;
+  }
+
+  @media (min-width: 768px) {
+    .topology-footer-bar {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-note {
+    font-size: 0.6875rem;
+    color: #64748B;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .compliance-text {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.625rem;
+    color: #475569;
+  }
+</style>

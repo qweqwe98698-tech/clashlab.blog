@@ -1,0 +1,69 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="免责声明 (Disclaimer)"
+  description="ClashLab 实验室关于技术研究性质、学术探讨与合规使用之法律声明。"
+  tagline="LEGAL DISCLAIMER"
+  breadcrumbCurrent="免责声明"
+  maxWidth="860px"
+>
+  <div class="card legal-card">
+    <div class="prose legal-prose">
+      <h2>一、非商业性技术研究声明</h2>
+      <p>
+        <strong>ClashLab (clashlab.blog)</strong> 是一个专注于计算机网络体系结构、传输层协议（TCP/UDP/QUIC）、加密隧道与代理客户端路由机制的技术博客与学术实验室。
+      </p>
+      <p>
+        本站发表的所有技术文档、协议分析、配置教程与评测数据，其核心目的均在于促进计算机网络通信安全技术交流、网络性能调优与学术研究。本站自身<strong>不提供任何商业性质的 VPN、翻墙服务或网络接入经营业务</strong>。
+      </p>
+
+      <h2>二、用户合规守法义务</h2>
+      <p>
+        访问和使用本网站的任何用户，均应严格遵守所在国家与地区的法律法规。
+      </p>
+      <ul>
+        <li>请勿将本站介绍的技术、配置或开源工具用于任何非法入侵、网络攻击、窃取数据或破坏计算机信息系统的违法行为。</li>
+        <li>严禁利用本站技术从事任何危害国家安全、侵犯他人隐私或违反电信监管条例的活动。</li>
+        <li>因使用者不当或非法使用相关技术所产生的一切法律责任与不良后果，均由使用者自行承担，本站不承担任何直接或连带法律责任。</li>
+      </ul>
+
+      <h2>三、第三方链接与数据客观性</h2>
+      <p>
+        本站可能包含指向第三方开源项目代码仓库（如 GitHub）、官方文档或网络服务商的超链接。本站对第三方外部网站的内容、隐私策略或运营行为不拥有控制权，亦不承担任何法律担保责任。
+      </p>
+      <p>
+        所有测速数据与指标对比均基于实验室特定时间与网络拓扑环境下的实测记录，不构成对任何第三方服务的商业推荐或品质保证。
+      </p>
+
+      <h2>四、知识产权与内容引用</h2>
+      <p>
+        本站所有原创文章、评测图表与技术架构分析均受相关知识产权法律保护。非商业性技术转载请注明文章出处及原始链接（clashlab.blog）。
+      </p>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .legal-card {
+    padding: 2.25rem;
+    background-color: #FFFFFF;
+  }
+
+  .legal-prose {
+    max-width: 100%;
+  }
+
+  .legal-prose h2 {
+    font-size: 1.35rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .legal-prose p, .legal-prose li {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-body);
+  }
+</style>

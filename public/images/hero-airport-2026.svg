@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B111A" />
+      <stop offset="50%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <linearGradient id="speedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="50%" stop-color="#EF4444" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.8" stroke-opacity="0.35" />
+    </pattern>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <circle cx="850" cy="300" r="230" fill="#F59E0B" opacity="0.08" filter="url(#glow)" />
+
+  <g transform="translate(80, 120)">
+    <g>
+      <rect width="170" height="30" rx="15" fill="#1E293B" stroke="#F59E0B" stroke-width="1" />
+      <circle cx="15" cy="15" r="4" fill="#F59E0B" />
+      <text x="28" y="20" font-family="sans-serif" font-size="12" font-weight="700" fill="#F59E0B" letter-spacing="1">AIRPORT • 评测报告</text>
+    </g>
+
+    <text x="0" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="800" fill="#FFFFFF">
+      2026 优质机场评测
+    </text>
+    <text x="0" y="135" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" fill="url(#speedGrad)">
+      速度、稳定性与防封锁全维度对比
+    </text>
+
+    <text x="0" y="195" font-family="sans-serif" font-size="16" fill="#94A3B8">
+      晚高峰实测 • 流媒体全解锁 • 节点倍率透明度与 SLA 保障
+    </text>
+
+    <g transform="translate(0, 240)">
+      <rect width="140" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+      <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#F59E0B">4K/8K 极速秒开</text>
+
+      <g transform="translate(152, 0)">
+        <rect width="140" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+        <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#EF4444">99.9% 在线率</text>
+      </g>
+
+      <g transform="translate(304, 0)">
+        <rect width="140" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+        <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#38BDF8">多协议原生支持</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Right Visual: Gauge Speedometer & Cluster Benchmark -->
+  <g transform="translate(860, 310)">
+    <!-- Speedometer Gauge Ring -->
+    <path d="M-120,40 A130,130 0 1,1 120,40" fill="none" stroke="#1E293B" stroke-width="18" stroke-linecap="round" />
+    <path d="M-120,40 A130,130 0 1,1 90,-95" fill="none" stroke="url(#speedGrad)" stroke-width="18" stroke-linecap="round" filter="url(#glow)" />
+
+    <!-- Center Display -->
+    <circle cx="0" cy="-10" r="70" fill="#0B111A" stroke="#334155" stroke-width="2" />
+    <text x="0" y="-12" text-anchor="middle" font-family="monospace" font-size="28" font-weight="900" fill="#FFFFFF">1,250</text>
+    <text x="0" y="14" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#F59E0B">Mbps 峰值</text>
+
+    <!-- Node Benchmark Status List -->
+    <g transform="translate(-180, 90)">
+      <rect width="360" height="74" rx="10" fill="#0B111A" stroke="#1E293B" stroke-width="1.5" />
+      <text x="16" y="26" font-family="sans-serif" font-size="12" font-weight="600" fill="#94A3B8">HK IPLC 01 • 18ms</text>
+      <text x="16" y="52" font-family="sans-serif" font-size="12" font-weight="600" fill="#94A3B8">JP BGP 02 • 35ms</text>
+      <text x="240" y="26" font-family="monospace" font-size="13" font-weight="700" fill="#10B981">998 Mbps</text>
+      <text x="240" y="52" font-family="monospace" font-size="13" font-weight="700" fill="#10B981">840 Mbps</text>
+    </g>
+  </g>
+</svg>

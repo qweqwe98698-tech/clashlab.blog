@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B111A"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="blueGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="cyanGlow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  
+  <!-- Outer Glow Hexagon Grid -->
+  <polygon points="256,48 436,152 436,360 256,464 76,360 76,152" fill="none" stroke="#1E293B" stroke-width="4" />
+  <polygon points="256,72 416,164 416,348 256,440 96,348 96,164" fill="#121A24" fill-opacity="0.6" stroke="url(#blueGlow)" stroke-width="3" stroke-dasharray="8 6" />
+
+  <!-- Center Glow Aura -->
+  <circle cx="256" cy="256" r="140" fill="url(#blueGlow)" opacity="0.15" filter="url(#glow)"/>
+
+  <!-- Cyber Node Lines -->
+  <line x1="256" y1="110" x2="256" y2="190" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+  <line x1="130" y1="320" x2="195" y2="280" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+  <line x1="382" y1="320" x2="317" y2="280" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Isometric 3D Lab Cube / Core Router Node -->
+  <g transform="translate(256,256)">
+    <!-- Top Face -->
+    <polygon points="0,-72 68,-32 0,8 -68,-32" fill="url(#cyanGlow)" opacity="0.95" />
+    <!-- Left Face -->
+    <polygon points="-68,-32 0,8 0,86 -68,46" fill="#1D4ED8" />
+    <!-- Right Face -->
+    <polygon points="0,8 68,-32 68,46 0,86" fill="#2563EB" />
+    
+    <!-- Core Lightning Stream Symbol -->
+    <path d="M-6,-45 L18,-45 L-2,-5 L14,-5 L-18,50 L-6,12 L-20,12 Z" fill="#FFFFFF" filter="url(#glow)" />
+  </g>
+
+  <!-- Orbital Node Dots -->
+  <circle cx="256" cy="110" r="8" fill="#38BDF8" filter="url(#glow)"/>
+  <circle cx="130" cy="320" r="8" fill="#38BDF8" filter="url(#glow)"/>
+  <circle cx="382" cy="320" r="8" fill="#38BDF8" filter="url(#glow)"/>
+  <circle cx="256" cy="402" r="6" fill="#10B981" filter="url(#glow)"/>
+</svg>

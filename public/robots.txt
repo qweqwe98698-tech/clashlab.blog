@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow internal search query and API endpoints
+Disallow: /api/
+
+# Sitemap Location
+Sitemap: https://clashlab.blog/sitemap-index.xml
+Host: https://clashlab.blog

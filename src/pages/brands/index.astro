@@ -1,0 +1,1693 @@
+---
+// src/pages/brands/index.astro - ClashLab Network Observatory Brand Directory & Speedtest Matrix
+import PageLayout from '../../layouts/PageLayout.astro';
+import Badge from '../../components/common/Badge.astro';
+import ConversionCTA from '../../components/article/ConversionCTA.astro';
+import SpeedtestLightbox from '../../components/brands/SpeedtestLightbox.astro';
+import DataDisclosureModal from '../../components/brands/DataDisclosureModal.astro';
+import { brands } from '../../data/brands';
+
+const pageTitle = '2026 机场品牌库与晚高峰节点测速大盘 - 16家专线品牌实测矩阵';
+const pageDescription = 'ClashLab 实验室 2026 主流机场品牌数据库：全量收录 16 家 IEPL 专线与综合型机场，提供 2026-08 晚高峰真实节点测速原图、多维度动态条件筛选、四层数据披露白皮书与专属优惠码。';
+
+// Stats calculation
+const totalBrands = brands.length;
+const ieplCoverage = '100%';
+const packetLossRate = '0%';
+const latestTestBatch = '2026-08 节点压测';
+---
+
+<PageLayout
+  title={pageTitle}
+  description={pageDescription}
+  tagline="NETWORK OBSERVATORY & SPEEDTEST MATRIX"
+  breadcrumbCurrent="机场品牌库"
+>
+  <div class="brands-index-page">
+    <!-- Top Observatory Infrastructure Snapshot Metrics Banner -->
+    <section class="observatory-banner">
+      <div class="banner-glass-glow"></div>
+      <div class="banner-top-telemetry">
+        <div class="telemetry-live-pill">
+          <span class="pulse-beacon"></span>
+          <span class="telemetry-title">ClashLab 实验室节点探针在线监控中</span>
+        </div>
+        <button type="button" class="btn-disclosure-trigger" data-open-disclosure>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="info-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>四层实测审计白皮书</span>
+        </button>
+      </div>
+
+      <div class="banner-content">
+        <h1 class="banner-headline">
+          2026 机场品牌库与真实测速大盘
+        </h1>
+        <p class="banner-subtext">
+          拒绝虚标与口水营销。ClashLab 坚持客观透明原则，所有测试数据均来自 2026-08 黄金晚高峰（20:00–23:00）5Gbps / 9G 专线集群实机压测，完整保留单线程峰值吞吐、骨干线路拓扑与高清测速截图。
+        </p>
+      </div>
+
+      <!-- High-density Infrastructure Snapshot Metrics Grid -->
+      <div class="snapshot-metrics-grid">
+        <div class="metric-block">
+          <div class="metric-k">收录品牌</div>
+          <div class="metric-v">
+            <span class="v-num">{totalBrands}</span>
+            <span class="v-unit">家品牌已归档</span>
+          </div>
+          <span class="metric-sub">全量覆盖亚太/欧美核心专线</span>
+        </div>
+
+        <div class="metric-block">
+          <div class="metric-k">专线架构</div>
+          <div class="metric-v">
+            <span class="v-num highlight-sky">{ieplCoverage}</span>
+            <span class="v-unit">专线覆盖</span>
+          </div>
+          <span class="metric-sub">物理内网 IEPL / BGP 端到端</span>
+        </div>
+
+        <div class="metric-block">
+          <div class="metric-k">压测 SLA</div>
+          <div class="metric-v">
+            <span class="v-num highlight-green">{packetLossRate}</span>
+            <span class="v-unit">晚高峰丢包基准</span>
+          </div>
+          <span class="metric-sub">32 线程并发满载抗抖动测试</span>
+        </div>
+
+        <div class="metric-block">
+          <div class="metric-k">最新采样批次</div>
+          <div class="metric-v">
+            <span class="v-num highlight-amber">2026-08</span>
+            <span class="v-unit">实测归档</span>
+          </div>
+          <span class="metric-sub">珠海联通 5G / 9G 集群探针</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Four-Layer Data Disclosure Interactive Callout Strip -->
+    <section class="disclosure-callout-section">
+      <div class="disclosure-card-inline">
+        <div class="dci-header">
+          <div class="dci-title-wrap">
+            <span class="dci-tag">METHODOLOGY TRANSPARENCY</span>
+            <h3 class="dci-title">ClashLab 四层数据披露与实测审计体系</h3>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" data-open-disclosure>
+            查看白皮书细则 →
+          </button>
+        </div>
+
+        <div class="dci-layers-grid">
+          <div class="dci-layer-item">
+            <span class="dci-layer-badge">Layer 1</span>
+            <strong class="dci-layer-name">物理链路审计</strong>
+            <p class="dci-layer-p">端到端运营商内网 IEPL 专线直连，杜绝公网伪装，Jitter &lt; 2ms</p>
+          </div>
+          <div class="dci-layer-item">
+            <span class="dci-layer-badge">Layer 2</span>
+            <strong class="dci-layer-name">晚高峰满载压测</strong>
+            <p class="dci-layer-p">20:00–23:00 黄金晚高峰 5Gbps / 9G 专线集群 32 线程丢包率与抖动抓取</p>
+          </div>
+          <div class="dci-layer-item">
+            <span class="dci-layer-badge">Layer 3</span>
+            <strong class="dci-layer-name">原生风控与解锁</strong>
+            <p class="dci-layer-p">原生住宅/机房纯净 IP 池，针对 ChatGPT、Claude、Netflix 4K 解锁校验</p>
+          </div>
+          <div class="dci-layer-item">
+            <span class="dci-layer-badge">Layer 4</span>
+            <strong class="dci-layer-name">协议与客户端生态</strong>
+            <p class="dci-layer-p">全线适配 VLESS / Shadowsocks，支持 Clash Verge Rev、sing-box 一键导入</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Multi-Dimensional Live Filter Control Center -->
+    <section class="filter-center-section" id="filter-center">
+      <div class="filter-panel-card">
+        <!-- Search & Quick Action Topbar -->
+        <div class="filter-topbar">
+          <div class="search-input-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="brand-search-input"
+              class="brand-search-input"
+              placeholder="搜索品牌名称、拼音、协议 (VLESS)、特性 (如 ChatGPT、4K、不限时)..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button type="button" id="clear-search-btn" class="clear-search-btn" aria-label="清空搜索" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="filter-actions">
+            <button type="button" id="reset-filters-btn" class="btn-reset-filters">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="reset-icon">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+              <span>重置所有筛选</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Dimensions Rows -->
+        <div class="filter-dimensions-wrap">
+          <!-- Dimension 1: Price Tier -->
+          <div class="filter-dimension-row">
+            <span class="dim-label">起步月付：</span>
+            <div class="dim-buttons" data-filter-group="price">
+              <button type="button" class="filter-chip active" data-value="all">全部价格</button>
+              <button type="button" class="filter-chip" data-value="p-budget">≤ ¥10 /月 (极致平价)</button>
+              <button type="button" class="filter-chip" data-value="p-standard">¥11 – ¥20 /月 (主流实用)</button>
+              <button type="button" class="filter-chip" data-value="p-premium">≥ ¥21 /月 (旗舰大流量)</button>
+            </div>
+          </div>
+
+          <!-- Dimension 2: Protocol -->
+          <div class="filter-dimension-row">
+            <span class="dim-label">协议架构：</span>
+            <div class="dim-buttons" data-filter-group="protocol">
+              <button type="button" class="filter-chip active" data-value="all">全部协议</button>
+              <button type="button" class="filter-chip" data-value="vless">VLESS 现代协议</button>
+              <button type="button" class="filter-chip" data-value="shadowsocks">Shadowsocks (AEAD)</button>
+            </div>
+          </div>
+
+          <!-- Dimension 3: Tier Ranking -->
+          <div class="filter-dimension-row">
+            <span class="dim-label">梯队评级：</span>
+            <div class="dim-buttons" data-filter-group="tier">
+              <button type="button" class="filter-chip active" data-value="all">全部梯队</button>
+              <button type="button" class="filter-chip" data-value="T1">T1 综合首选与旗舰专线</button>
+              <button type="button" class="filter-chip" data-value="T2">T2 性价比主力专线</button>
+              <button type="button" class="filter-chip" data-value="T3">T3 便宜备用与不限时</button>
+            </div>
+          </div>
+
+          <!-- Dimension 4: Feature Tags -->
+          <div class="filter-dimension-row">
+            <span class="dim-label">场景特性：</span>
+            <div class="dim-buttons" data-filter-group="feature">
+              <button type="button" class="filter-chip active" data-value="all">全部特性</button>
+              <button type="button" class="filter-chip" data-value="ai">AI / ChatGPT 优化</button>
+              <button type="button" class="filter-chip" data-value="streaming">4K / 8K 流媒体解锁</button>
+              <button type="button" class="filter-chip" data-value="traffic">150GB+ 大流量</button>
+              <button type="button" class="filter-chip" data-value="noexpiry">不限时 / 永久按量</button>
+              <button type="button" class="filter-chip" data-value="old">3年以上老牌稳定</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Status Bar -->
+        <div class="filter-status-bar">
+          <div class="match-count-wrap">
+            <span>实时匹配：</span>
+            <span class="count-badge">
+              <strong id="matched-count">{totalBrands}</strong> / {totalBrands} 家品牌
+            </span>
+          </div>
+          <div class="active-filter-chips" id="active-filter-chips">
+            <!-- Dynamic active filter pills -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brands Grid Section -->
+    <section class="brands-section" id="brands-grid-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-tag">DIRECTORY &amp; TELEMETRY</span>
+          <h2 class="section-title">收录品牌全景评测矩阵</h2>
+          <p class="section-desc">支持单击测速缩略图查看高清原图，或进入评测报告查阅完整链路分析</p>
+        </div>
+      </div>
+
+      <!-- No Match Empty View -->
+      <div id="no-results-view" class="no-results-view" hidden>
+        <div class="no-results-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </div>
+        <h3>未找到符合当前组合条件的机场品牌</h3>
+        <p>建议放宽价格或特性筛选，或点击下方按钮重置所有筛选条件。</p>
+        <button type="button" class="btn btn-primary btn-sm" id="empty-reset-btn">
+          重置所有筛选条件
+        </button>
+      </div>
+
+      <!-- Brands Cards Grid -->
+      <div class="grid-4 brands-grid" id="brands-grid-container">
+        {brands.map((brand) => (
+          <article
+            class="card brand-card"
+            data-brand-card
+            data-brand-id={brand.id}
+            data-slug={brand.slug}
+            data-name={brand.name}
+            data-english-name={brand.englishName}
+            data-pinyin={brand.pinyin}
+            data-price={brand.entryPriceNum}
+            data-tier={brand.tier}
+            data-protocols={brand.techArchitecture.protocols.join(',')}
+            data-tags={brand.tags.join(',')}
+            data-desc={brand.description}
+            data-tagline={brand.tagline}
+            data-established={brand.establishedYear}
+            data-traffic={parseInt(brand.plans[0]?.traffic || '100')}
+            data-has-no-expiry={brand.slug === 'xingdaomeng' ? 'true' : 'false'}
+          >
+            <!-- Top Row: Name, Badge, Tier & Rating -->
+            <div class="bc-top-row">
+              <div class="bc-name-wrap">
+                <div class="bc-title-line">
+                  <h3 class="bc-name">
+                    <a href={`/brands/${brand.slug}`} class="brand-title-link">
+                      {brand.name}
+                    </a>
+                  </h3>
+                  {brand.badge && <span class="bc-badge">{brand.badge}</span>}
+                </div>
+                <span class="bc-subname">{brand.englishName} · {brand.establishedYear}年创立</span>
+              </div>
+              <div class="bc-tier-rating">
+                <span class={`tier-pill tier-${brand.tier.toLowerCase()}`}>{brand.tier}</span>
+                <div class="bc-rating-pill" title={`评分 ${brand.rating} / 5.0`}>
+                  <span class="star">★</span>
+                  <span>{brand.rating}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tagline -->
+            <p class="bc-tagline">{brand.tagline}</p>
+
+            <!-- Speedtest Snapshot Thumbnail with Lightbox Trigger -->
+            <div
+              class="bc-thumb-wrap view-speedtest-btn"
+              data-speedtest-img={brand.speedtest.image}
+              data-brand-name={brand.name}
+              data-brand-slug={brand.slug}
+              data-protocol={brand.speedtest.protocol}
+              data-backend={brand.speedtest.backend}
+              data-peak-speed={brand.speedtest.peakSpeed}
+              data-avg-ping={brand.speedtest.avgPing}
+              data-tested-at={brand.speedtest.testedAt}
+              data-analysis={brand.speedtest.analysis}
+              data-aff-url={brand.commercial.affiliateUrl}
+              role="button"
+              tabindex="0"
+              title="点击查看 2026-08 高清测速大图"
+            >
+              <img
+                src={brand.speedtest.image}
+                alt={`${brand.name} 2026 测速截图缩略图`}
+                class="bc-thumb-img"
+                loading="lazy"
+              />
+              <div class="bc-thumb-overlay">
+                <span class="thumb-tag">实测峰值: {brand.speedtest.peakSpeed}</span>
+                <span class="thumb-zoom-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                  </svg>
+                  <span>放大原图</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Key Specs Strip -->
+            <div class="bc-specs-row">
+              <div class="bc-spec-col">
+                <span class="spec-k">起步资费</span>
+                <span class="spec-v price">{brand.entryPrice}</span>
+              </div>
+              <div class="bc-spec-col">
+                <span class="spec-k">月付流量</span>
+                <span class="spec-v">{brand.plans[0]?.traffic || '100 GB'}</span>
+              </div>
+              <div class="bc-spec-col">
+                <span class="spec-k">实测协议</span>
+                <span class="spec-v">{brand.speedtest.protocol.split(' ')[0]}</span>
+              </div>
+              <div class="bc-spec-col">
+                <span class="spec-k">骨干链路</span>
+                <span class="spec-v">IEPL 专线</span>
+              </div>
+            </div>
+
+            <!-- Coupon Tag with Copy Button -->
+            <div class="bc-coupon-strip">
+              <div class="coupon-left">
+                <span class="coupon-lbl">优惠码:</span>
+                <code class="coupon-txt">{brand.couponCode}</code>
+              </div>
+              <button
+                type="button"
+                class="copy-btn-mini"
+                data-coupon={brand.couponCode}
+                title="点击复制优惠码"
+              >
+                <span class="copy-label">复制</span>
+              </button>
+            </div>
+
+            <!-- Action Footer -->
+            <div class="bc-footer">
+              <a href={`/brands/${brand.slug}`} class="view-review-btn">
+                <span>评测详情</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+              <a
+                href={brand.commercial.affiliateUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                class="btn-visit-brand-sm"
+              >
+                <span>官网注册</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Comprehensive Comparison Table Matrix -->
+    <section class="matrix-section" id="matrix-table-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-tag">COMPREHENSIVE MATRIX</span>
+          <h2 class="section-title">16 家机场核心参数横向速查表</h2>
+          <p class="section-desc">汇聚 16 家品牌的基础资费、协议支持、实测峰值、专属优惠码与直达注册链接</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="matrix-table" id="matrix-table">
+          <thead>
+            <tr>
+              <th>品牌名称</th>
+              <th>梯队</th>
+              <th>起步月付</th>
+              <th>月流量</th>
+              <th>骨干专线</th>
+              <th>实测协议</th>
+              <th>实测单线最高速率</th>
+              <th>平均延迟</th>
+              <th>专属优惠码</th>
+              <th>测速原图</th>
+              <th>官网注册</th>
+            </tr>
+          </thead>
+          <tbody>
+            {brands.map((b) => (
+              <tr data-table-row data-slug={b.slug} data-tier={b.tier} data-price={b.entryPriceNum}>
+                <td>
+                  <a href={`/brands/${b.slug}`} class="table-brand-link">
+                    <strong>{b.name}</strong>
+                    <span class="table-sub">{b.englishName}</span>
+                  </a>
+                </td>
+                <td>
+                  <span class={`tier-indicator tier-${b.tier.toLowerCase()}`}>{b.tier}</span>
+                </td>
+                <td><code class="table-price">{b.entryPrice}</code></td>
+                <td><strong>{parseInt(b.plans[0]?.traffic || '100')}</strong> GB</td>
+                <td><span class="line-tag">IEPL 专线</span></td>
+                <td><span class="badge badge-blue">{b.speedtest.protocol.split(' ')[0]}</span></td>
+                <td style="color: #10B981; font-weight: 700;">{b.speedtest.peakSpeed}</td>
+                <td><span class="ping-text">{b.speedtest.avgPing}</span></td>
+                <td>
+                  <button
+                    type="button"
+                    class="table-coupon-btn"
+                    data-coupon={b.couponCode}
+                    title="点击复制优惠码"
+                  >
+                    <code>{b.couponCode}</code>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn-table-speedtest view-speedtest-btn"
+                    data-speedtest-img={b.speedtest.image}
+                    data-brand-name={b.name}
+                    data-brand-slug={b.slug}
+                    data-protocol={b.speedtest.protocol}
+                    data-backend={b.speedtest.backend}
+                    data-peak-speed={b.speedtest.peakSpeed}
+                    data-avg-ping={b.speedtest.avgPing}
+                    data-tested-at={b.speedtest.testedAt}
+                    data-analysis={b.speedtest.analysis}
+                    data-aff-url={b.commercial.affiliateUrl}
+                  >
+                    查看原图
+                  </button>
+                </td>
+                <td>
+                  <a
+                    href={b.commercial.affiliateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class="btn btn-primary btn-sm table-reg-btn"
+                  >
+                    注册直达
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Bottom Conversion CTA -->
+    <ConversionCTA
+      title="如何挑选适合您的 2026 跨境专线方案？"
+      description="坚持「月付上车」黄金避坑法则，查看 2026 机场推荐与稳定天梯总榜，按 4K 追剧、AI 对话或多设备大流量精准匹配。"
+      primaryButtonText="查阅 2026 机场推荐天梯榜"
+      primaryButtonHref="/airport-recommendation"
+      secondaryButtonText="2026 机场选购避坑指南"
+      secondaryButtonHref="/posts/2026-airport-selection-benchmark-guide"
+    />
+  </div>
+
+  <!-- Speedtest Lightbox Modal -->
+  <SpeedtestLightbox />
+
+  <!-- Four-Layer Data Disclosure Modal -->
+  <DataDisclosureModal />
+</PageLayout>
+
+<style>
+  .brands-index-page {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  /* Observatory Hero Banner (#0B111A, #121A24, #1F2937) */
+  .observatory-banner {
+    position: relative;
+    background: linear-gradient(135deg, #0B111A 0%, #121A24 50%, #0F1722 100%);
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-xl);
+    padding: 2.5rem 2rem;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(37, 99, 235, 0.15);
+  }
+
+  .banner-glass-glow {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .banner-top-telemetry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .telemetry-live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    background-color: #121A24;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    color: #38BDF8;
+    font-family: ui-monospace, monospace;
+  }
+
+  .pulse-beacon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10B981;
+    box-shadow: 0 0 10px #10B981;
+    animation: beaconPulse 2s infinite;
+  }
+
+  @keyframes beaconPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+
+  .btn-disclosure-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    background-color: #151E2B;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-full);
+    color: #94A3B8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-disclosure-trigger:hover {
+    color: #38BDF8;
+    background-color: #1F2937;
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .info-icon {
+    width: 14px;
+    height: 14px;
+    color: #38BDF8;
+  }
+
+  .banner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 900px;
+  }
+
+  .banner-headline {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+  }
+
+  @media (min-width: 768px) {
+    .banner-headline {
+      font-size: 2.35rem;
+    }
+  }
+
+  .banner-subtext {
+    font-size: 0.95rem;
+    color: #94A3B8;
+    line-height: 1.65;
+  }
+
+  /* Snapshot Metrics Grid */
+  .snapshot-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .snapshot-metrics-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .metric-block {
+    background-color: #0E1620;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: border-color var(--transition-fast);
+  }
+
+  .metric-block:hover {
+    border-color: rgba(37, 99, 235, 0.5);
+  }
+
+  .metric-k {
+    font-size: 0.6875rem;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .metric-v {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .v-num {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    line-height: 1.1;
+  }
+
+  .highlight-sky { color: #38BDF8; }
+  .highlight-green { color: #10B981; }
+  .highlight-amber { color: #F59E0B; }
+
+  .v-unit {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94A3B8;
+  }
+
+  .metric-sub {
+    font-size: 0.6875rem;
+    color: #64748B;
+    margin-top: 0.15rem;
+  }
+
+  /* Four-Layer Disclosure Inline Callout */
+  .disclosure-callout-section {
+    margin-top: -1rem;
+  }
+
+  .disclosure-card-inline {
+    background-color: var(--bg-aux);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .dci-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .dci-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .dci-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .dci-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .dci-layers-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .dci-layers-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .dci-layers-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .dci-layer-item {
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .dci-layer-badge {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  .dci-layer-name {
+    font-size: 0.875rem;
+    color: var(--text-main);
+  }
+
+  .dci-layer-p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* Multi-Dimensional Live Filter Control Center */
+  .filter-center-section {
+    scroll-margin-top: 4rem;
+  }
+
+  .filter-panel-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .filter-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .search-input-box {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.875rem;
+    width: 18px;
+    height: 18px;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .brand-search-input {
+    width: 100%;
+    padding: 0.65rem 2.25rem 0.65rem 2.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-aux);
+    font-size: 0.875rem;
+    color: var(--text-main);
+    transition: all var(--transition-fast);
+  }
+
+  .brand-search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  .clear-search-btn {
+    position: absolute;
+    right: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .clear-search-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .clear-search-btn:hover {
+    color: var(--text-main);
+  }
+
+  .filter-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-reset-filters {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: transparent;
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-reset-filters:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+  }
+
+  .reset-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Dimension Rows */
+  .filter-dimensions-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .filter-dimension-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .dim-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-main);
+    min-width: 72px;
+    padding-top: 0.25rem;
+  }
+
+  .dim-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .filter-chip {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.78125rem;
+    font-weight: 500;
+    color: var(--text-body);
+    background-color: var(--bg-aux);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .filter-chip:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+  }
+
+  .filter-chip.active {
+    color: #FFFFFF;
+    background-color: var(--primary);
+    border-color: var(--primary-hover);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+  }
+
+  /* Status Bar */
+  .filter-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--border-light);
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+
+  .match-count-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .count-badge strong {
+    color: var(--primary);
+    font-size: 0.9375rem;
+  }
+
+  .active-filter-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  /* Brands Grid */
+  .brands-grid {
+    gap: 1.25rem;
+  }
+
+  .brand-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 0.875rem;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .brand-card:hover {
+    transform: translateY(-2px);
+    border-color: #CBD5E1;
+    box-shadow: var(--shadow-md);
+  }
+
+  .bc-top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .bc-name-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .bc-title-line {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .bc-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .brand-title-link {
+    color: var(--text-main);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .brand-title-link:hover {
+    color: var(--primary);
+  }
+
+  .bc-badge {
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 0.1rem 0.35rem;
+    background: var(--primary-light);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    color: var(--primary);
+    border-radius: 3px;
+  }
+
+  .bc-subname {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+  }
+
+  .bc-tier-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .tier-pill {
+    font-size: 0.6875rem;
+    font-weight: 800;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-family: ui-monospace, monospace;
+  }
+
+  .tier-t1 {
+    background: rgba(37, 99, 235, 0.12);
+    color: #2563EB;
+    border: 1px solid rgba(37, 99, 235, 0.3);
+  }
+
+  .tier-t2 {
+    background: rgba(2, 132, 199, 0.12);
+    color: #0284C7;
+    border: 1px solid rgba(2, 132, 199, 0.3);
+  }
+
+  .tier-t3 {
+    background: rgba(100, 116, 139, 0.12);
+    color: #475569;
+    border: 1px solid rgba(100, 116, 139, 0.3);
+  }
+
+  .bc-rating-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    background-color: #FFFBEB;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #D97706;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .bc-tagline {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  /* Thumbnail & Zoom Overlay */
+  .bc-thumb-wrap {
+    position: relative;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    height: 105px;
+    background-color: #0B111A;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+  }
+
+  .bc-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    opacity: 0.88;
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+  }
+
+  .bc-thumb-wrap:hover .bc-thumb-img {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+
+  .bc-thumb-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(11, 17, 26, 0.95) 100%);
+    padding: 0.35rem 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .thumb-tag {
+    font-size: 0.6875rem;
+    color: #38BDF8;
+    font-weight: 700;
+  }
+
+  .thumb-zoom-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.625rem;
+    color: #CBD5E1;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .thumb-zoom-icon svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Specs Row */
+  .bc-specs-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.35rem;
+    padding: 0.5rem;
+    background-color: var(--bg-aux);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+  }
+
+  .bc-spec-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .spec-k {
+    font-size: 0.59375rem;
+    color: var(--text-muted);
+  }
+
+  .spec-v {
+    font-size: 0.71875rem;
+    font-weight: 700;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .spec-v.price {
+    color: var(--primary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* Coupon Strip */
+  .bc-coupon-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background-color: #F8FAFC;
+    border: 1px dashed #CBD5E1;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+  }
+
+  .coupon-left {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .coupon-lbl {
+    color: var(--text-muted);
+  }
+
+  .coupon-txt {
+    color: var(--primary);
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+  }
+
+  .copy-btn-mini {
+    padding: 0.1rem 0.4rem;
+    background: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: 3px;
+    color: var(--primary);
+    font-size: 0.625rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .copy-btn-mini:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+  }
+
+  /* Card Action Footer */
+  .bc-footer {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .view-review-btn {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .view-review-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .view-review-btn:hover {
+    color: var(--primary);
+  }
+
+  .btn-visit-brand-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.75rem;
+    background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%);
+    color: #FFFFFF;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+  }
+
+  .btn-visit-brand-sm svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .btn-visit-brand-sm:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  /* No Results View */
+  .no-results-view {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background-color: var(--bg-aux);
+    border: 1px dashed var(--border-light);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .no-results-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--text-muted);
+  }
+
+  .no-results-view h3 {
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .no-results-view p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0;
+  }
+
+  /* Matrix Table */
+  .table-wrapper {
+    overflow-x: auto;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    background-color: #FFFFFF;
+  }
+
+  .matrix-table th {
+    background-color: #F8FAFC;
+    color: var(--text-main);
+    font-weight: 600;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .matrix-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #F1F5F9;
+    color: var(--text-body);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .matrix-table tr:hover td {
+    background-color: #F8FAFC;
+  }
+
+  .table-brand-link {
+    display: flex;
+    flex-direction: column;
+    color: var(--text-main);
+    transition: color var(--transition-fast);
+  }
+
+  .table-brand-link:hover {
+    color: var(--primary);
+  }
+
+  .table-sub {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+  }
+
+  .tier-indicator {
+    font-weight: 700;
+    font-size: 0.6875rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+  }
+
+  .table-price {
+    color: var(--primary);
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .line-tag {
+    font-size: 0.75rem;
+    color: var(--text-body);
+  }
+
+  .ping-text {
+    font-size: 0.75rem;
+    font-family: ui-monospace, monospace;
+    color: var(--text-muted);
+  }
+
+  .table-coupon-btn {
+    background: #FFFBEB;
+    border: 1px dashed rgba(245, 158, 11, 0.4);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .table-coupon-btn code {
+    font-weight: 700;
+    color: #D97706;
+    font-size: 0.75rem;
+  }
+
+  .table-coupon-btn:hover {
+    background-color: #FEF3C7;
+    border-color: #D97706;
+  }
+
+  .btn-table-speedtest {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #0284C7;
+    background-color: #F0F9FF;
+    border: 1px solid rgba(2, 132, 199, 0.3);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-table-speedtest:hover {
+    background-color: #E0F2FE;
+    border-color: #0284C7;
+  }
+
+  .table-reg-btn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+  }
+</style>
+
+<script>
+  // Live dynamic multi-dimensional filtering & search
+  class BrandsDirectoryFilter {
+    cards: HTMLElement[] = [];
+    tableRows: HTMLElement[] = [];
+    searchInput: HTMLInputElement | null = null;
+    clearSearchBtn: HTMLButtonElement | null = null;
+    resetBtn: HTMLButtonElement | null = null;
+    emptyResetBtn: HTMLButtonElement | null = null;
+    matchedCountElem: HTMLElement | null = null;
+    noResultsView: HTMLElement | null = null;
+    chipsContainer: HTMLElement | null = null;
+
+    filters = {
+      search: '',
+      price: 'all',
+      protocol: 'all',
+      tier: 'all',
+      feature: 'all'
+    };
+
+    constructor() {
+      this.initElements();
+      this.bindEvents();
+      this.bindCouponCopy();
+    }
+
+    initElements() {
+      this.cards = Array.from(document.querySelectorAll('[data-brand-card]'));
+      this.tableRows = Array.from(document.querySelectorAll('[data-table-row]'));
+      this.searchInput = document.getElementById('brand-search-input') as HTMLInputElement;
+      this.clearSearchBtn = document.getElementById('clear-search-btn') as HTMLButtonElement;
+      this.resetBtn = document.getElementById('reset-filters-btn') as HTMLButtonElement;
+      this.emptyResetBtn = document.getElementById('empty-reset-btn') as HTMLButtonElement;
+      this.matchedCountElem = document.getElementById('matched-count');
+      this.noResultsView = document.getElementById('no-results-view');
+      this.chipsContainer = document.getElementById('active-filter-chips');
+    }
+
+    bindEvents() {
+      // Search input listener
+      this.searchInput?.addEventListener('input', () => {
+        const val = this.searchInput?.value.trim() || '';
+        if (this.clearSearchBtn) {
+          this.clearSearchBtn.hidden = val.length === 0;
+        }
+        this.filters.search = val.toLowerCase();
+        this.applyFilters();
+      });
+
+      this.clearSearchBtn?.addEventListener('click', () => {
+        if (this.searchInput) {
+          this.searchInput.value = '';
+          this.clearSearchBtn!.hidden = true;
+          this.filters.search = '';
+          this.applyFilters();
+          this.searchInput.focus();
+        }
+      });
+
+      // Filter chips click listeners
+      document.querySelectorAll('[data-filter-group]').forEach((group) => {
+        group.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('.filter-chip') as HTMLElement;
+          if (!btn) return;
+          const groupName = group.getAttribute('data-filter-group') as keyof typeof this.filters;
+          const value = btn.getAttribute('data-value') || 'all';
+
+          // Update active state in UI
+          group.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
+          btn.classList.add('active');
+
+          this.filters[groupName] = value;
+          this.applyFilters();
+        });
+      });
+
+      // Reset button listeners
+      this.resetBtn?.addEventListener('click', () => this.resetAll());
+      this.emptyResetBtn?.addEventListener('click', () => this.resetAll());
+    }
+
+    applyFilters() {
+      let matched = 0;
+
+      this.cards.forEach((card) => {
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
+        const engName = (card.getAttribute('data-english-name') || '').toLowerCase();
+        const pinyin = (card.getAttribute('data-pinyin') || '').toLowerCase();
+        const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+        const desc = (card.getAttribute('data-desc') || '').toLowerCase();
+        const tagline = (card.getAttribute('data-tagline') || '').toLowerCase();
+        const protocols = (card.getAttribute('data-protocols') || '').toLowerCase();
+        const price = parseFloat(card.getAttribute('data-price') || '0');
+        const tier = card.getAttribute('data-tier') || '';
+        const hasNoExpiry = card.getAttribute('data-has-no-expiry') === 'true';
+        const established = parseInt(card.getAttribute('data-established') || '2023');
+        const traffic = parseInt(card.getAttribute('data-traffic') || '100');
+
+        let isMatch = true;
+
+        // Search text matching
+        if (this.filters.search) {
+          const q = this.filters.search;
+          const combined = `${name} ${engName} ${pinyin} ${tags} ${desc} ${tagline} ${protocols}`;
+          if (!combined.includes(q)) {
+            isMatch = false;
+          }
+        }
+
+        // Price dimension matching
+        if (isMatch && this.filters.price !== 'all') {
+          if (this.filters.price === 'p-budget' && price > 10) isMatch = false;
+          if (this.filters.price === 'p-standard' && (price <= 10 || price > 20)) isMatch = false;
+          if (this.filters.price === 'p-premium' && price <= 20) isMatch = false;
+        }
+
+        // Protocol dimension matching
+        if (isMatch && this.filters.protocol !== 'all') {
+          if (this.filters.protocol === 'vless' && !protocols.includes('vless')) isMatch = false;
+          if (this.filters.protocol === 'shadowsocks' && !protocols.includes('shadowsocks')) isMatch = false;
+        }
+
+        // Tier dimension matching
+        if (isMatch && this.filters.tier !== 'all') {
+          if (tier !== this.filters.tier) isMatch = false;
+        }
+
+        // Feature dimension matching
+        if (isMatch && this.filters.feature !== 'all') {
+          if (this.filters.feature === 'ai' && !tags.includes('ai') && !desc.includes('ai') && !tagline.includes('ai')) isMatch = false;
+          if (this.filters.feature === 'streaming' && !tags.includes('流媒体') && !desc.includes('netflix') && !tagline.includes('流媒体')) isMatch = false;
+          if (this.filters.feature === 'traffic' && traffic < 150) isMatch = false;
+          if (this.filters.feature === 'noexpiry' && !hasNoExpiry) isMatch = false;
+          if (this.filters.feature === 'old' && (2026 - established < 3)) isMatch = false;
+        }
+
+        if (isMatch) {
+          card.style.display = 'flex';
+          matched++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Also filter table rows
+      this.tableRows.forEach((row) => {
+        const slug = row.getAttribute('data-slug') || '';
+        const matchingCard = this.cards.find((c) => c.getAttribute('data-slug') === slug);
+        if (matchingCard && matchingCard.style.display !== 'none') {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Update counters & empty states
+      if (this.matchedCountElem) {
+        this.matchedCountElem.textContent = matched.toString();
+      }
+
+      if (this.noResultsView) {
+        this.noResultsView.hidden = matched > 0;
+      }
+    }
+
+    resetAll() {
+      if (this.searchInput) {
+        this.searchInput.value = '';
+        if (this.clearSearchBtn) this.clearSearchBtn.hidden = true;
+      }
+
+      this.filters = {
+        search: '',
+        price: 'all',
+        protocol: 'all',
+        tier: 'all',
+        feature: 'all'
+      };
+
+      document.querySelectorAll('[data-filter-group]').forEach((group) => {
+        group.querySelectorAll('.filter-chip').forEach((c) => {
+          if (c.getAttribute('data-value') === 'all') {
+            c.classList.add('active');
+          } else {
+            c.classList.remove('active');
+          }
+        });
+      });
+
+      this.applyFilters();
+    }
+
+    bindCouponCopy() {
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest('[data-coupon]') as HTMLElement;
+        if (!btn) return;
+        const code = btn.getAttribute('data-coupon') || '';
+        if (code) {
+          navigator.clipboard.writeText(code).then(() => {
+            const originalText = btn.textContent;
+            btn.classList.add('copied');
+            const label = btn.querySelector('.copy-label') || btn.querySelector('span') || btn;
+            const prev = label.textContent;
+            label.textContent = '已复制!';
+            setTimeout(() => {
+              label.textContent = prev;
+              btn.classList.remove('copied');
+            }, 1800);
+          }).catch(() => {
+            // fallback
+          });
+        }
+      });
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    new BrandsDirectoryFilter();
+  }
+</script>

@@ -1,0 +1,386 @@
+---
+const currentYear = new Date().getFullYear();
+
+const navSections = [
+  {
+    title: '核心分类',
+    links: [
+      { label: '客户端教程', href: '/tutorials' },
+      { label: '协议与网络原理', href: '/posts?category=协议与原理' },
+      { label: '机场生态观察', href: '/insights' },
+      { label: '安全与避坑指南', href: '/posts?category=避坑指南' },
+      { label: '全部技术文章', href: '/posts' },
+    ],
+  },
+  {
+    title: '常用工具',
+    links: [
+      { label: '在线订阅转换', href: '/tools#subconverter' },
+      { label: 'DNS 泄漏检测', href: '/tools#dns-leak' },
+      { label: 'WebRTC 真实 IP 检测', href: '/tools#webrtc' },
+      { label: '节点连通性测速', href: '/tools#speedtest' },
+      { label: '协议配置生成器', href: '/tools#generator' },
+    ],
+  },
+  {
+    title: '专题精选',
+    links: [
+      { label: 'Clash Verge Rev 从零到精通', href: '/topics/clash-verge-rev' },
+      { label: 'sing-box 现代路由架构实战', href: '/topics/sing-box-mastery' },
+      { label: '2026 全球优质机场综合横评', href: '/topics/airport-evaluation' },
+      { label: 'Shadowrocket iOS 深度配置', href: '/topics/shadowrocket-ios' },
+      { label: '全平台代理避坑完全手册', href: '/topics/network-safety' },
+    ],
+  },
+  {
+    title: '关于与合规',
+    links: [
+      { label: '关于 ClashLab', href: '/about' },
+      { label: '免责声明 (Disclaimer)', href: '/disclaimer' },
+      { label: '隐私政策 (Privacy Policy)', href: '/privacy' },
+      { label: 'RSS 订阅源', href: '/rss.xml' },
+      { label: '站点地图 (Sitemap)', href: '/sitemap-index.xml' },
+    ],
+  },
+];
+
+const hotTags = [
+  'Clash Verge Rev',
+  'Mihomo 内核',
+  'sing-box',
+  'Shadowrocket',
+  'Hysteria 2',
+  'TUIC v5',
+  'IPLC 专线',
+  'IEPL 专线',
+  'BGP 中转',
+  'DoH/DoT',
+  'Fake-IP',
+  '住宅原生 IP',
+  '流媒体解锁',
+  'TUN 虚拟网卡',
+  '晚高峰 QoS 测速',
+];
+---
+
+<footer class="footer">
+  <!-- Top Brand & Columns -->
+  <div class="container footer-main">
+    <div class="footer-grid">
+      <!-- Brand Column -->
+      <div class="footer-brand-col">
+        <a href="/" class="footer-logo">
+          <svg class="footer-logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="#1D4ED8" />
+            <path d="M7 21.5L16 6.5L25 21.5H19.5L16 15.5L12.5 21.5H7Z" fill="white" />
+            <circle cx="16" cy="24.5" r="2.5" fill="#38BDF8" />
+          </svg>
+          <span class="brand-text">ClashLab<span class="brand-dot">.blog</span></span>
+        </a>
+        <p class="footer-slogan">
+          专注网络协议演进、代理客户端深度指南与全球跨境网络基础设施的独立技术评测实验室。
+        </p>
+        <div class="footer-status-pill">
+          <span class="status-dot"></span>
+          <span>实验室节点测速系统运行中</span>
+        </div>
+      </div>
+
+      <!-- Navigation Columns -->
+      {navSections.map((sec) => (
+        <div class="footer-nav-col">
+          <h3 class="footer-col-title">{sec.title}</h3>
+          <ul class="footer-col-links">
+            {sec.links.map((link) => (
+              <li>
+                <a href={link.href} class="footer-link">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Hot Topics Bar -->
+    <div class="footer-tags-bar">
+      <span class="tags-title">热门研究方向:</span>
+      <div class="tags-list">
+        {hotTags.map((tag) => (
+          <a href={`/posts?tag=${encodeURIComponent(tag)}`} class="footer-tag">
+            #{tag}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Legal & Copyright -->
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <div class="footer-legal">
+        <p class="footer-disclaimer">
+          免责声明：本站所有内容仅供计算机网络协议研究、跨境技术通信学习与学术探讨。请遵守当地法律法规，严禁利用相关技术从事任何违法违规活动。
+        </p>
+        <p class="footer-copyright">
+          © {currentYear} ClashLab (clashlab.blog). 独立技术评测保留所有权利。
+        </p>
+      </div>
+
+      <!-- Back to top button -->
+      <button id="back-to-top" class="back-to-top-btn" aria-label="返回顶部">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+        <span>TOP</span>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--bg-dark);
+    color: #F9FAFB;
+    border-top: 1px solid var(--border-dark);
+    margin-top: auto;
+  }
+
+  .footer-main {
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 2fr repeat(4, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .footer-brand-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .footer-logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-text {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-dot {
+    color: var(--accent-sky);
+  }
+
+  .footer-slogan {
+    font-size: 0.875rem;
+    color: #94A3B8;
+    line-height: 1.6;
+    max-width: 340px;
+  }
+
+  .footer-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background-color: #121A24;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    color: #94A3B8;
+    width: fit-content;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10B981;
+    box-shadow: 0 0 8px #10B981;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .footer-col-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-col-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .footer-link {
+    font-size: 0.84375rem;
+    color: #94A3B8;
+    transition: all var(--transition-fast);
+  }
+
+  .footer-link:hover {
+    color: #38BDF8;
+    transform: translateX(2px);
+  }
+
+  /* Hot Tags */
+  .footer-tags-bar {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #1A2534;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-tags-bar {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .tags-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #64748B;
+    white-space: nowrap;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .footer-tag {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    background-color: #121A24;
+    border: 1px solid #1F2937;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    transition: all var(--transition-fast);
+  }
+
+  .footer-tag:hover {
+    background-color: rgba(37, 99, 235, 0.2);
+    border-color: #38BDF8;
+    color: #FFFFFF;
+  }
+
+  /* Bottom Bar */
+  .footer-bottom {
+    background-color: #070B11;
+    border-top: 1px solid #121A24;
+    padding: 1.75rem 0;
+  }
+
+  .footer-bottom-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .footer-bottom-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer-legal {
+    max-width: 820px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-disclaimer {
+    font-size: 0.75rem;
+    color: #64748B;
+    line-height: 1.5;
+  }
+
+  .footer-copyright {
+    font-size: 0.8125rem;
+    color: #94A3B8;
+  }
+
+  .back-to-top-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.875rem;
+    background-color: #121A24;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-sm);
+    color: #94A3B8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .back-to-top-btn:hover {
+    background-color: var(--primary);
+    color: #FFFFFF;
+    border-color: var(--primary);
+  }
+
+  .back-to-top-btn svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style>
+
+<script>
+  function initBackToTop() {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initBackToTop);
+  document.addEventListener('astro:page-load', initBackToTop);
+</script>

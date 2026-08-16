@@ -1,0 +1,194 @@
+---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  items: FAQItem[];
+  includeSchema?: boolean;
+}
+
+const {
+  title = '常见问题解答 (FAQ)',
+  description = '针对读者配置与实测过程中最常遇到的疑惑进行解答',
+  items = [],
+  includeSchema = true,
+} = Astro.props;
+
+const schemaData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': items.map((item) => ({
+    '@type': 'Question',
+    'name': item.question,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': item.answer,
+    },
+  })),
+};
+---
+
+<div class="faq-section-wrap">
+  {title && (
+    <div class="faq-header">
+      <h3 class="faq-main-title">{title}</h3>
+      {description && <p class="faq-main-desc">{description}</p>}
+    </div>
+  )}
+
+  <div class="faq-accordion" id="faq-accordion">
+    {items.map((item, idx) => (
+      <div class={`faq-item ${idx === 0 ? 'open' : ''}`}>
+        <button
+          type="button"
+          class="faq-question-btn"
+          aria-expanded={idx === 0 ? 'true' : 'false'}
+        >
+          <span class="faq-q-text">{item.question}</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="faq-answer-panel">
+          <div class="faq-answer-inner">
+            <p>{item.answer}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {includeSchema && items.length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  )}
+</div>
+
+<style>
+  .faq-section-wrap {
+    margin: 2.25rem 0;
+  }
+
+  .faq-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .faq-main-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+  }
+
+  .faq-main-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .faq-accordion {
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background-color: #FFFFFF;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-question-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.125rem 1.25rem;
+    text-align: left;
+    background-color: #FFFFFF;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    gap: 1rem;
+  }
+
+  .faq-question-btn:hover {
+    background-color: #F8FAFC;
+    color: var(--primary);
+  }
+
+  .faq-q-text {
+    flex: 1;
+    line-height: 1.45;
+  }
+
+  .faq-chevron {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--text-muted);
+    transition: transform var(--transition-normal), color var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .faq-item.open .faq-question-btn {
+    color: var(--primary);
+  }
+
+  .faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+    color: var(--primary);
+  }
+
+  .faq-answer-panel {
+    display: none;
+    padding: 0 1.25rem 1.25rem 1.25rem;
+    color: var(--text-body);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    background-color: #FFFFFF;
+  }
+
+  .faq-item.open .faq-answer-panel {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .faq-answer-inner p {
+    margin: 0;
+  }
+</style>
+
+<script>
+  function initFaqAccordion() {
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach((item) => {
+      const btn = item.querySelector('.faq-question-btn');
+      btn?.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initFaqAccordion);
+  document.addEventListener('astro:page-load', initFaqAccordion);
+</script>

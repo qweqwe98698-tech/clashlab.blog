@@ -1,0 +1,185 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Badge from '../../components/common/Badge.astro';
+import { getCollection } from 'astro:content';
+
+let topics: any[] = [];
+try {
+  topics = await getCollection('topics');
+  topics.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+} catch (e) {
+  topics = [];
+}
+
+const fallbackTopics = [
+  {
+    id: 'clash-verge-rev',
+    data: {
+      title: 'Clash Verge Rev 从零到精通',
+      description: '全面掌握新一代主流 Clash 客户端，覆盖 TUN 模式接管、Mihomo 内核切换、Script 预处理脚本与高级分流规则合并。',
+      articleCount: 14,
+      icon: 'clash',
+    }
+  },
+  {
+    id: 'sing-box-mastery',
+    data: {
+      title: 'sing-box 现代路由与核心架构实战',
+      description: '新一代通用网络代理平台实战指南。从 JSON 规则结构、Outbounds 链式代理到多端 TUN 模式极速配置。',
+      articleCount: 10,
+      icon: 'singbox',
+    }
+  },
+  {
+    id: 'airport-evaluation',
+    data: {
+      title: '2026 全球优质机场性能深度横评',
+      description: '拒绝主观营销，基于 20:00-23:00 晚高峰真实压测。全景剖析 IPLC 专线、多线 BGP 中转、流媒体解锁与防跑路准则。',
+      articleCount: 18,
+      icon: 'insights',
+    }
+  },
+  {
+    id: 'network-protocols',
+    data: {
+      title: '代理协议演进与底层通信原理',
+      description: '从 Shadowsocks 到 Hysteria 2 / TUIC v5。探索 TCP/UDP 传输差异、BBR 拥塞控制、DoH/DoT 与 Fake-IP 机制。',
+      articleCount: 12,
+      icon: 'protocols',
+    }
+  },
+];
+
+const displayTopics = topics.length > 0 ? topics : fallbackTopics;
+---
+
+<PageLayout
+  title="技术专题精选"
+  description="结构化专题学习路径，告别碎片化信息，从基础配置到高级内核调优完整打通。"
+  tagline="STRUCTURED TOPICS"
+  breadcrumbCurrent="专题精选"
+>
+  <div class="topics-page-container">
+    <div class="grid-2 topics-hub-grid">
+      {displayTopics.map((topic) => (
+        <article class="card topic-hub-card">
+          <a href={`/topics/${topic.slug || topic.id.replace(/\.mdx?$/, '')}`} class="topic-hub-link">
+            <div class="topic-hub-header">
+              <div class="topic-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <Badge variant="blue">{topic.data.articleCount || 10} 篇系统指南</Badge>
+            </div>
+
+            <h2 class="topic-hub-title card-title">{topic.data.title}</h2>
+            <p class="topic-hub-desc">{topic.data.description}</p>
+
+            <div class="topic-hub-footer">
+              <span class="topic-btn-text">
+                探索专题知识库
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .topics-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .topics-hub-grid {
+    gap: 1.5rem;
+  }
+
+  .topic-hub-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .topic-hub-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    gap: 1rem;
+  }
+
+  .topic-hub-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topic-icon-box {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    background-color: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+  }
+
+  .topic-icon-box svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .topic-hub-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    transition: color var(--transition-fast);
+  }
+
+  .topic-hub-desc {
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .topic-hub-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .topic-btn-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+    transition: transform var(--transition-fast);
+  }
+
+  .topic-hub-card:hover .topic-btn-text {
+    transform: translateX(4px);
+  }
+
+  .arrow {
+    width: 1rem;
+    height: 1rem;
+  }
+</style>

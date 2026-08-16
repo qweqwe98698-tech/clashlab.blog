@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B111A" />
+      <stop offset="60%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="beginGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.8" stroke-opacity="0.35" />
+    </pattern>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#bgGrad)" />
+  <rect width="800" height="600" fill="url(#grid)" />
+
+  <circle cx="400" cy="260" r="180" fill="#10B981" opacity="0.08" filter="url(#glow)" />
+
+  <!-- Center Roadmap / 3-Step Flow Diagram -->
+  <g transform="translate(400, 240)">
+    <!-- Step 1 Node -->
+    <g transform="translate(-200, 0)">
+      <circle cx="0" cy="0" r="38" fill="#121A24" stroke="#1E293B" stroke-width="2" />
+      <text x="0" y="6" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#94A3B8">01</text>
+      <text x="0" y="58" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#CBD5E1">获取订阅</text>
+    </g>
+
+    <!-- Connecting Fiber Line 1-2 -->
+    <line x1="-160" y1="0" x2="-40" y2="0" stroke="url(#beginGrad)" stroke-width="3" stroke-dasharray="6 4" />
+
+    <!-- Step 2 Node -->
+    <g transform="translate(0, 0)">
+      <circle cx="0" cy="0" r="46" fill="#121A24" stroke="#38BDF8" stroke-width="2.5" filter="url(#glow)" />
+      <text x="0" y="8" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="800" fill="#38BDF8">02</text>
+      <text x="0" y="68" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">客户端导入</text>
+    </g>
+
+    <!-- Connecting Fiber Line 2-3 -->
+    <line x1="48" y1="0" x2="160" y2="0" stroke="url(#beginGrad)" stroke-width="3" />
+
+    <!-- Step 3 Node -->
+    <g transform="translate(200, 0)">
+      <circle cx="0" cy="0" r="38" fill="#121A24" stroke="#10B981" stroke-width="2" />
+      <text x="0" y="6" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#10B981">03</text>
+      <text x="0" y="58" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#CBD5E1">开启代理</text>
+    </g>
+  </g>
+
+  <!-- Bottom Title Block -->
+  <g transform="translate(400, 470)" text-anchor="middle">
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800" fill="#FFFFFF">
+      新手零基础入门专题
+    </text>
+    <text y="32" font-family="sans-serif" font-size="15" fill="#94A3B8">
+      从 0 到 1 掌握网络代理、订阅格式、客户端配置与分流规则
+    </text>
+  </g>
+</svg>

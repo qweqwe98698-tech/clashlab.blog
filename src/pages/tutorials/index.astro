@@ -1,0 +1,280 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Badge from '../../components/common/Badge.astro';
+import ComparisonTable from '../../components/article/ComparisonTable.astro';
+import FAQSection from '../../components/article/FAQSection.astro';
+import ConversionCTA from '../../components/article/ConversionCTA.astro';
+
+const clients = [
+  {
+    id: 'clash-verge',
+    name: 'Clash Verge Rev',
+    platform: 'Windows / macOS / Linux',
+    badge: '主流推荐 · 桌面端主力',
+    desc: '基于 Tauri 框架打造的现代代理客户端，内置最新 Mihomo (Meta) 内核，支持原生 TUN 虚拟网卡、Script 脚本自动化与规则集分流。',
+    github: 'https://github.com/clash-verge-rev/clash-verge-rev',
+    tutorialArticle: '/posts/clash-verge-rev-complete-guide',
+    features: ['极低内存开销 (50-100MB)', 'Mihomo (Meta) 最新内核', '一键接管系统 TUN 模式', '多订阅聚合与脚本规则'],
+  },
+  {
+    id: 'sing-box',
+    name: 'sing-box',
+    platform: 'Windows / macOS / Linux / Android / iOS',
+    badge: '技术标杆 · 通用核心',
+    desc: '新一代通用网络代理平台，采用现代 Go 语言架构，支持灵活的 JSON 路由链、极低 GC 延迟与全平台运行。',
+    github: 'https://github.com/SagerNet/sing-box',
+    tutorialArticle: '/posts/sing-box-universal-proxy-configuration',
+    features: ['全平台一致性配置', '原生支持 Hysteria 2 / TUIC v5', '超低内存占用 (< 40MB)', '强大的链式代理与分流'],
+  },
+  {
+    id: 'shadowrocket',
+    name: 'Shadowrocket (小火箭)',
+    platform: 'iOS / iPadOS / macOS (Apple Silicon)',
+    badge: 'iOS 生态首选',
+    desc: 'iOS 生态中最稳定强劲的网络调试利器，支持全协议引擎、远程规则集分流、证书解密（MITM）与脚本重写。',
+    github: 'https://apps.apple.com/app/shadowrocket/id932747118',
+    tutorialArticle: '/posts/shadowrocket-ios-setup-tutorial',
+    features: ['极速冷启动与低耗电', '完整支持二维码/剪贴板导入', '内置丰富去广告与分流模块', '支持插件脚本重写扩展'],
+  },
+  {
+    id: 'v2rayn',
+    name: 'v2rayN',
+    platform: 'Windows',
+    badge: 'Windows 经典老牌',
+    desc: 'Windows 平台广受赞誉的开源客户端，支持 Xray-core 与 sing-box 双内核无缝切换，节点批量测试与延迟排序极其便利。',
+    github: 'https://github.com/2dust/v2rayN',
+    tutorialArticle: '/posts/sing-box-universal-proxy-configuration',
+    features: ['支持双内核无缝热切换', '支持大批量节点一键连通性测速', '自定义路由分流规则', '支持 Socks5/HTTP 多端口监听'],
+  },
+  {
+    id: 'hiddify',
+    name: 'Hiddify Next',
+    platform: 'Windows / macOS / Linux / Android / iOS',
+    badge: '新手友好 · 开箱即用',
+    desc: '基于 Flutter 打造的现代化跨平台代理客户端，UI 清新优雅，针对新手用户提供了极简的一键连接与协议自动识别。',
+    github: 'https://github.com/hiddify/hiddify-next',
+    tutorialArticle: '/posts/sing-box-universal-proxy-configuration',
+    features: ['优雅现代化的多语言 UI', '全平台统一的操作交互', '内置智能负载均衡与自动优选', '开箱即用，零配置门槛'],
+  },
+];
+
+const faqs = [
+  {
+    question: '小白用户第一次接触，应该优先选择哪款客户端？',
+    answer: 'Windows/Mac 桌面端强烈推荐使用 Clash Verge Rev，界面清晰且支持一键开启 TUN 模式；iOS 用户推荐在 App Store 购买下载 Shadowrocket (小火箭)；Android 用户推荐 Clash Verge 或 Hiddify。',
+  },
+  {
+    question: '什么是 TUN 虚拟网卡模式？何时需要开启？',
+    answer: 'TUN 模式通过在操作系统内核层创建虚拟网卡，强制接管系统所有的 TCP/UDP 流量。当部分软件（如 Git、在线游戏、UWP 应用）不遵循系统 HTTP 代理时，开启 TUN 模式能够彻底解决无法加速的问题。',
+  },
+  {
+    question: 'Clash Verge Rev 提示订阅无法更新或内核崩溃如何处理？',
+    answer: '首先检查订阅链接在浏览器中能否正常下载 YAML 内容；其次在设置中检查 Mihomo 内核版本是否需要更新；若遇端口冲突，可在设置中将默认 Mixed Port 从 7890 修改为 7897 或其他空闲端口。',
+  },
+  {
+    question: '如何防止 DNS 污染与 DNS 泄漏？',
+    answer: '建议在客户端配置中启用 Fake-IP 模式，并将首选 DoH 加密 DNS 设为国内公共 DNS（如阿里云 223.5.5.5 DoH）与国外加密 DNS（如 Cloudflare 1.1.1.1 DoH）混合分流。',
+  },
+];
+---
+
+<PageLayout
+  title="客户端配置与教程大全"
+  description="全平台主流网络代理客户端从零上手、高阶配置与疑难排错完全手册。"
+  tagline="CLIENT TUTORIAL DIRECTORY"
+  breadcrumbCurrent="客户端教程"
+>
+  <div class="tutorials-page-wrap">
+    <!-- Intro Card -->
+    <div class="tutorials-intro-box">
+      <h2 class="tutorials-intro-title">选对客户端，事半功倍</h2>
+      <p class="tutorials-intro-desc">
+        现代网络协议的加速效果极大程度依赖于客户端内核的优化调度。无论你是需要开箱即用的新手，还是追求毫秒级延迟与极限低内存占用的极客，ClashLab 都为你提供了最详尽的实战指南。
+      </p>
+    </div>
+
+    <!-- Client Cards Showcase -->
+    <div class="clients-directory-list">
+      {clients.map((c) => (
+        <div class="card client-directory-card" id={c.id}>
+          <div class="client-dir-main">
+            <!-- Header -->
+            <div class="client-dir-header">
+              <div class="client-dir-title-group">
+                <h3 class="client-dir-name">{c.name}</h3>
+                <span class="client-dir-plat">{c.platform}</span>
+              </div>
+              <Badge variant="blue">{c.badge}</Badge>
+            </div>
+
+            <!-- Description -->
+            <p class="client-dir-desc">{c.desc}</p>
+
+            <!-- Feature Bullet points -->
+            <div class="client-dir-features">
+              {c.features.map((feat) => (
+                <div class="dir-feat-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{feat}</span>
+                </div>
+              ))}
+            </div>
+
+            <!-- Actions -->
+            <div class="client-dir-actions">
+              <a href={c.tutorialArticle} class="btn btn-primary">
+                查看图文详细教程
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a href={c.github} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                官方下载 / GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Comparison Matrix -->
+    <ComparisonTable />
+
+    <!-- FAQ Accordions -->
+    <FAQSection items={faqs} />
+
+    <!-- Bottom Conversion CTA -->
+    <ConversionCTA />
+  </div>
+</PageLayout>
+
+<style>
+  .tutorials-page-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .tutorials-intro-box {
+    background: linear-gradient(135deg, #0B111A 0%, #151E2B 100%);
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    color: #FFFFFF;
+  }
+
+  .tutorials-intro-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: #FFFFFF;
+  }
+
+  .tutorials-intro-desc {
+    font-size: 0.95rem;
+    color: #94A3B8;
+    line-height: 1.65;
+    max-width: 800px;
+  }
+
+  .clients-directory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .client-directory-card {
+    padding: 1.75rem;
+    background-color: #FFFFFF;
+  }
+
+  .client-dir-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .client-dir-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .client-dir-header {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .client-dir-title-group {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .client-dir-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .client-dir-plat {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .client-dir-desc {
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.6;
+  }
+
+  .client-dir-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--bg-aux);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+  }
+
+  @media (min-width: 640px) {
+    .client-dir-features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .dir-feat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #374151;
+  }
+
+  .dir-feat-item svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  .client-dir-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .arrow {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style>

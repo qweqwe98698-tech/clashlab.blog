@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B111A" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="insightGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#C084FC" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.8" stroke-opacity="0.35" />
+    </pattern>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <circle cx="850" cy="300" r="230" fill="#818CF8" opacity="0.08" filter="url(#glow)" />
+
+  <g transform="translate(80, 120)">
+    <g>
+      <rect width="170" height="30" rx="15" fill="#1E293B" stroke="#818CF8" stroke-width="1" />
+      <circle cx="15" cy="15" r="4" fill="#818CF8" />
+      <text x="28" y="20" font-family="sans-serif" font-size="12" font-weight="700" fill="#818CF8" letter-spacing="1">INSIGHTS • 行业观察</text>
+    </g>
+
+    <text x="0" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="800" fill="#FFFFFF">
+      全球网络拓扑与遥测
+    </text>
+    <text x="0" y="135" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" fill="url(#insightGrad)">
+      延迟抖动与跨境路由链路深度洞察
+    </text>
+
+    <text x="0" y="195" font-family="sans-serif" font-size="16" fill="#94A3B8">
+      丢包率雷达 • 跨境光缆海缆分布 • 运营商 QoS 策略反编译
+    </text>
+
+    <g transform="translate(0, 240)">
+      <rect width="140" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+      <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#38BDF8">拓扑分析</text>
+
+      <g transform="translate(152, 0)">
+        <rect width="130" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+        <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#818CF8">遥测数据</text>
+      </g>
+
+      <g transform="translate(294, 0)">
+        <rect width="130" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+        <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#10B981">深度研报</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Right Visual: Telemetry Graphs & Radar Scanner -->
+  <g transform="translate(850, 310)">
+    <!-- Radar Rings -->
+    <circle cx="0" cy="0" r="140" fill="none" stroke="#1E293B" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="90" fill="none" stroke="#1E293B" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#1E293B" stroke-width="1.5" />
+    
+    <!-- Crosshair Lines -->
+    <line x1="-150" y1="0" x2="150" y2="0" stroke="#1E293B" stroke-width="1" />
+    <line x1="0" y1="-150" x2="0" y2="150" stroke="#1E293B" stroke-width="1" />
+
+    <!-- Wave Graph Line -->
+    <path d="M-140,40 Q-100,-60 -60,20 T20,-40 T80,30 T140,-50" fill="none" stroke="url(#insightGrad)" stroke-width="3" filter="url(#glow)" />
+
+    <!-- Scanning Node Dots -->
+    <circle cx="-60" cy="20" r="5" fill="#38BDF8" filter="url(#glow)" />
+    <circle cx="20" cy="-40" r="6" fill="#818CF8" filter="url(#glow)" />
+    <circle cx="80" cy="30" r="5" fill="#10B981" filter="url(#glow)" />
+
+    <!-- Floating HUD -->
+    <g transform="translate(-160, 100)">
+      <rect width="320" height="50" rx="8" fill="#0B111A" stroke="#1E293B" stroke-width="1.5" />
+      <text x="16" y="30" font-family="monospace" font-size="12" fill="#94A3B8">AVG JITTER: <tspan fill="#10B981" font-weight="700">0.08ms</tspan></text>
+      <text x="180" y="30" font-family="monospace" font-size="12" fill="#94A3B8">LOSS: <tspan fill="#10B981" font-weight="700">0.00%</tspan></text>
+    </g>
+  </g>
+</svg>

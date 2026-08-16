@@ -1,0 +1,96 @@
+---
+interface Props {
+  variant?: 'blue' | 'dark' | 'gray' | 'green' | 'amber' | 'cyan' | 'outline';
+  size?: 'sm' | 'md';
+  dot?: boolean;
+  href?: string;
+  class?: string;
+}
+
+const {
+  variant = 'blue',
+  size = 'md',
+  dot = false,
+  href,
+  class: className = '',
+} = Astro.props;
+
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag
+  href={href}
+  class={`badge badge-${variant} ${size === 'sm' ? 'text-xs py-0.5 px-2' : ''} ${className}`}
+>
+  {dot && <span class="badge-dot" />}
+  <slot />
+</Tag>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    line-height: 1.2;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  a.badge:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+
+  .badge-blue {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+  }
+
+  .badge-dark {
+    background-color: #1E293B;
+    color: #E2E8F0;
+    border: 1px solid #334155;
+  }
+
+  .badge-gray {
+    background-color: var(--bg-aux);
+    color: var(--text-muted);
+    border: 1px solid var(--border-light);
+  }
+
+  .badge-green {
+    background-color: #ECFDF5;
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .badge-amber {
+    background-color: #FFFBEB;
+    color: #D97706;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+
+  .badge-cyan {
+    background-color: #F0F9FF;
+    color: #0284C7;
+    border: 1px solid rgba(2, 132, 199, 0.2);
+  }
+
+  .badge-outline {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-light);
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+</style>

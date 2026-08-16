@@ -1,0 +1,191 @@
+---
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+  publishDate?: Date | string;
+  modifyDate?: Date | string;
+  tags?: string[];
+  category?: string;
+  author?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description = 'ClashLab (clashlab.blog) 是专注于现代网络代理协议、Clash Verge Rev、Sing-box、Shadowrocket、IPLC 专线与网络安全技术的深度实验室与技术博客。',
+  image = '/images/og-default.svg',
+  article = false,
+  publishDate,
+  modifyDate,
+  tags = ['Clash', 'Sing-box', 'Shadowrocket', 'IPLC', '网络技术', '网络代理', 'Fake-IP'],
+  category,
+  author = 'ClashLab 实验室',
+  canonicalUrl,
+  noindex = false,
+  breadcrumbs = [],
+  type = article ? 'article' : 'website',
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') || 'https://clashlab.blog';
+const siteTitle = 'ClashLab - 现代代理协议与网络技术前沿实验室';
+
+const fullTitle = title 
+  ? (title.includes('ClashLab') ? title : `${title} | ClashLab`)
+  : siteTitle;
+
+const currentPath = Astro.url.pathname;
+const resolvedCanonical = canonicalUrl 
+  ? new URL(canonicalUrl, siteUrl).toString()
+  : new URL(currentPath, siteUrl).toString();
+
+// Resolve image URL
+const resolvedImage = image.startsWith('http')
+  ? image
+  : new URL(image, siteUrl).toString();
+
+// Dates formatting
+const isoPublishDate = publishDate ? new Date(publishDate).toISOString() : undefined;
+const isoModifyDate = modifyDate ? new Date(modifyDate).toISOString() : isoPublishDate;
+
+// Schema.org Structured Data
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'ClashLab',
+  url: siteUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/images/favicon.svg`,
+  },
+  sameAs: [
+    'https://github.com/clashlab',
+    'https://t.me/clashlab',
+  ],
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'ClashLab',
+  url: siteUrl,
+  description: '现代网络代理协议、Clash Verge Rev、Sing-box 与网络技术前沿实验室',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${siteUrl}/?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const articleSchema = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title || siteTitle,
+      description: description,
+      image: [resolvedImage],
+      datePublished: isoPublishDate,
+      dateModified: isoModifyDate || isoPublishDate,
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: siteUrl,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'ClashLab',
+        logo: {
+          '@type': 'ImageObject',
+          url: `${siteUrl}/images/favicon.svg`,
+        },
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': resolvedCanonical,
+      },
+      articleSection: category || '网络技术',
+      keywords: tags.join(', '),
+    }
+  : null;
+
+const breadcrumbSchema = breadcrumbs && breadcrumbs.length > 0
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((crumb, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: crumb.name,
+        item: crumb.url.startsWith('http') ? crumb.url : `${siteUrl}${crumb.url}`,
+      })),
+    }
+  : null;
+---
+
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+<meta name="keywords" content={tags.join(', ')} />
+<meta name="author" content={author} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+<meta name="theme-color" content="#0B111A" />
+<meta name="color-scheme" content="dark light" />
+
+<!-- Canonical Link -->
+<link rel="canonical" href={resolvedCanonical} />
+
+<!-- Alternate Links -->
+<link rel="alternate" type="application/rss+xml" title="ClashLab RSS Feed" href="/rss.xml" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Favicons & App Icons -->
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+<link rel="apple-touch-icon" href="/images/favicon.svg" />
+
+<!-- OpenGraph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={resolvedCanonical} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={resolvedImage} />
+<meta property="og:image:alt" content={fullTitle} />
+<meta property="og:site_name" content="ClashLab" />
+<meta property="og:locale" content="zh_CN" />
+
+{article && isoPublishDate && <meta property="article:published_time" content={isoPublishDate} />}
+{article && isoModifyDate && <meta property="article:modified_time" content={isoModifyDate} />}
+{article && category && <meta property="article:section" content={category} />}
+{article && tags.map((t) => <meta property="article:tag" content={t} />)}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={resolvedCanonical} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedImage} />
+<meta name="twitter:image:alt" content={fullTitle} />
+<meta name="twitter:site" content="@clashlab" />
+<meta name="twitter:creator" content="@clashlab" />
+
+<!-- Schema.org JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{articleSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+)}
+{breadcrumbSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+)}

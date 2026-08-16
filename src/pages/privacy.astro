@@ -1,0 +1,76 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="隐私政策 (Privacy Policy)"
+  description="ClashLab 对用户数据保护、访问日志与隐私安全的透明度承诺。"
+  tagline="PRIVACY & SECURITY"
+  breadcrumbCurrent="隐私政策"
+  maxWidth="860px"
+>
+  <div class="card legal-card">
+    <div class="prose legal-prose">
+      <h2>一、隐私保护总则</h2>
+      <p>
+        <strong>ClashLab (clashlab.blog)</strong> 坚定捍卫用户的个人隐私权与数据主权。作为一家专注网络安全与协议技术的实验室，我们坚决反对任何形式的滥用追踪、隐式指纹采集与数据倒卖行为。
+      </p>
+
+      <h2>二、我们收集与不收集的信息</h2>
+      <h3>我们绝不收集的信息：</h3>
+      <ul>
+        <li>我们绝不记录、窥探或存储你在使用各类客户端与代理工具时的<strong>任何网络流量内容、访问记录、真实传输数据或敏感凭据</strong>。</li>
+        <li>我们不在前端集成任何侵犯隐私的第三方指纹追踪脚本或跨站广告追踪 SDK。</li>
+      </ul>
+
+      <h3>基础服务器日志：</h3>
+      <p>
+        当您访问 clashlab.blog 时，Web 服务器可能会自动记录标准的匿名网络访问日志（包括访问时间、请求的 URL、响应状态码、User-Agent 浏览器类型）。此类日志仅用于保障服务器基础运行安全、抵御恶意 DDoS 攻击与优化网页载入性能，不会与任何个人身份相关联，并在一定周期后自动滚动销毁。
+      </p>
+
+      <h2>三、Cookie 与本地存储 (LocalStorage) 的使用</h2>
+      <p>
+        本站仅在必要时使用浏览器的本地存储功能（LocalStorage / SessionStorage）以保存您的偏好设置（如深色/浅色阅读模式、最近搜索记录）。这些数据完全存储在您的本地设备中，绝不会自动上传至我们的服务器。
+      </p>
+
+      <h2>四、第三方外部服务</h2>
+      <p>
+        本站若使用无侵入式匿名访问统计工具（如 Cloudflare Web Analytics），其设计原理为聚合统计页面 PV/UV，不使用任何持久性 Cookie，亦不记录访客真实 IP 地址。
+      </p>
+
+      <h2>五、隐私政策之更新与联系</h2>
+      <p>
+        我们可能会根据法律法规调整或技术架构升级适时更新本隐私政策。若对本政策有任何疑问，可通过电子邮箱 <code>privacy@clashlab.blog</code> 联系我们。
+      </p>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .legal-card {
+    padding: 2.25rem;
+    background-color: #FFFFFF;
+  }
+
+  .legal-prose {
+    max-width: 100%;
+  }
+
+  .legal-prose h2 {
+    font-size: 1.35rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .legal-prose h3 {
+    font-size: 1.125rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-prose p, .legal-prose li {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-body);
+  }
+</style>

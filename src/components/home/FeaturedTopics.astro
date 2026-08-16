@@ -1,0 +1,255 @@
+---
+import Badge from '../common/Badge.astro';
+
+interface TopicItem {
+  id: string;
+  title: string;
+  tagline: string;
+  description: string;
+  articleCount: number;
+  iconType: string;
+  href: string;
+  color: string;
+}
+
+const topics: TopicItem[] = [
+  {
+    id: 'clash-verge-rev',
+    title: 'Clash Verge Rev 从零到精通',
+    tagline: 'Mihomo 内核与高级规则集分流',
+    description: '深入掌握新一代主流 Clash 客户端，覆盖 TUN 模式接管、Script 预处理配置与规则合并。',
+    articleCount: 14,
+    iconType: 'clash',
+    href: '/topics/clash-verge-rev',
+    color: '#2563EB',
+  },
+  {
+    id: 'sing-box-mastery',
+    title: 'sing-box 现代路由与核心架构',
+    tagline: '新一代通用通用网络代理平台',
+    description: '从 JSON 配置结构、Outbounds 链式代理到 Clash API 兼容方案，打造全平台极速体验。',
+    articleCount: 10,
+    iconType: 'singbox',
+    href: '/topics/sing-box-mastery',
+    color: '#0284C7',
+  },
+  {
+    id: 'airport-evaluation',
+    title: '2026 优质机场性能深度横评',
+    tagline: '真实晚高峰全维度实测与防跑路',
+    description: '客观评测 IPLC/IEPL 内网专线、多线 BGP 中转网络、真实延迟、流媒体解锁与套餐避坑。',
+    articleCount: 18,
+    iconType: 'insights',
+    href: '/topics/airport-evaluation',
+    color: '#10B981',
+  },
+  {
+    id: 'network-protocols',
+    title: '协议演进与网络底层通信',
+    tagline: '从 Shadowsocks 到 Hysteria 2 / TUIC',
+    description: '解析 TCP vs UDP 传输特性、BBR 拥塞控制、Fake-IP 机制与 DoH/DoT 安全防污染体系。',
+    articleCount: 12,
+    iconType: 'protocols',
+    href: '/topics/network-protocols',
+    color: '#8B5CF6',
+  },
+];
+---
+
+<section class="featured-topics section-sm">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-tag">CURATED TOPICS</span>
+        <h2 class="section-title">专题精选与系统学习路径</h2>
+        <p class="section-desc">结构化系统指南，告别零散教程，从底层原理到实战配置完整贯通。</p>
+      </div>
+      <a href="/topics" class="section-link">
+        浏览全部专题
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Topics Grid (4 horizontal cards) -->
+    <div class="grid-4 topics-grid">
+      {topics.map((topic) => (
+        <article class="card topic-card">
+          <a href={topic.href} class="topic-card-inner">
+            <!-- Top bar with visual accent -->
+            <div class="topic-top-bar" style={`--topic-color: ${topic.color}`}>
+              <div class="topic-icon-badge">
+                {topic.iconType === 'clash' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                  </svg>
+                )}
+                {topic.iconType === 'singbox' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                  </svg>
+                )}
+                {topic.iconType === 'insights' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                )}
+                {topic.iconType === 'protocols' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                )}
+              </div>
+              <Badge variant="gray" size="sm">{topic.articleCount} 篇精选</Badge>
+            </div>
+
+            <!-- Content -->
+            <div class="topic-content">
+              <span class="topic-tagline">{topic.tagline}</span>
+              <h3 class="topic-title card-title">{topic.title}</h3>
+              <p class="topic-desc">{topic.description}</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="topic-footer">
+              <span class="topic-explore-btn">
+                进入专题
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .topics-grid {
+    margin-top: 0.5rem;
+  }
+
+  .topic-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+  }
+
+  .topic-card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .topic-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .topic-icon-badge {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-aux);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--topic-color, var(--primary));
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .topic-card:hover .topic-icon-badge {
+    transform: scale(1.08);
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+
+  .topic-icon-badge svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .topic-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topic-tagline {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.35rem;
+  }
+
+  .topic-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    transition: color var(--transition-fast);
+  }
+
+  .topic-desc {
+    font-size: 0.84375rem;
+    color: var(--text-body);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .topic-footer {
+    margin-top: 1.25rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .topic-explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .topic-card:hover .topic-explore-btn {
+    color: var(--primary);
+  }
+
+  .arrow {
+    width: 0.875rem;
+    height: 0.875rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .topic-card:hover .arrow {
+    transform: translateX(3px);
+  }
+</style>

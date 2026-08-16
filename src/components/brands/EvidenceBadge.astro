@@ -1,0 +1,445 @@
+---
+export type EvidenceType = 'vendor' | 'measured' | 'commercial' | 'editorial';
+
+export interface Props {
+  type: EvidenceType;
+  label?: string;
+  sublabel?: string;
+  date?: string;
+  tooltip?: string;
+  size?: 'sm' | 'md' | 'lg';
+  interactive?: boolean;
+  showIcon?: boolean;
+  class?: string;
+}
+
+const {
+  type = 'measured',
+  label,
+  sublabel,
+  date = '2026-08',
+  tooltip,
+  size = 'md',
+  interactive = true,
+  showIcon = true,
+  class: customClass = '',
+} = Astro.props;
+
+// Layer configuration dictionary
+const typeConfigs: Record<
+  EvidenceType,
+  {
+    defaultLabel: string;
+    defaultSublabel: string;
+    badgePrefix: string;
+    codeName: string;
+    defaultTooltip: string;
+    colorVar: string;
+  }
+> = {
+  vendor: {
+    defaultLabel: '厂商官方宣称',
+    defaultSublabel: '官方技术参数',
+    badgePrefix: 'VENDOR DECLARED',
+    codeName: 'LAYER-1 // 厂商宣称',
+    defaultTooltip: '该项数据直接引用自服务商官方公开技术白皮书、套餐页面或客服答复，未经实验室端到端硬件抓包，仅供选型参考。',
+    colorVar: 'cyan',
+  },
+  measured: {
+    defaultLabel: `${date} 实测采样`,
+    defaultSublabel: '探针实测归档',
+    badgePrefix: `LAB VERIFIED ${date}`,
+    codeName: 'LAYER-2 // 探针实测',
+    defaultTooltip: `由 ClashLab 自动化探针 (MAI-TEST-BOT) 于 ${date} 晚高峰时段通过国内 BGP 节点向境外专线发起实际流量采样与丢包率测试。`,
+    colorVar: 'green',
+  },
+  commercial: {
+    defaultLabel: '商业优惠 / 专属折扣',
+    defaultSublabel: '含返利透明披露',
+    badgePrefix: 'COMMERCIAL DISCLOSED',
+    codeName: 'LAYER-3 // 商业披露',
+    defaultTooltip: '此项目包含读者专属优惠券码或推广返利链接。ClashLab 承诺所有技术评测与打分完全独立，不因商业合作修改实测数据。',
+    colorVar: 'amber',
+  },
+  editorial: {
+    defaultLabel: '编辑部中立判断',
+    defaultSublabel: '架构师综合定级',
+    badgePrefix: 'EDITORIAL VERDICT',
+    codeName: 'LAYER-4 // 编辑独立判断',
+    defaultTooltip: '由 ClashLab 网络架构师基于骨干网冗余设计、高峰期 QoS 策略、协议抗封锁表现及运维 SLA 稳定性给出的中立评估结论。',
+    colorVar: 'blue',
+  },
+};
+
+const config = typeConfigs[type] || typeConfigs.measured;
+const displayLabel = label || config.defaultLabel;
+const displaySublabel = sublabel || (size === 'lg' ? config.defaultSublabel : undefined);
+const tooltipContent = tooltip || config.defaultTooltip;
+---
+
+<span
+  class={`evidence-badge-wrap type-${type} size-${size} ${interactive ? 'is-interactive' : ''} ${customClass}`}
+  tabindex={interactive ? 0 : undefined}
+  role={interactive ? 'button' : undefined}
+  aria-label={`${config.codeName}: ${displayLabel}`}
+>
+  <span class="evidence-pill">
+    <!-- Status Indicator Dot -->
+    <span class="status-indicator">
+      <span class="indicator-ping"></span>
+      <span class="indicator-core"></span>
+    </span>
+
+    <!-- Optional SVG Icon -->
+    {showIcon && (
+      <span class="icon-wrap" aria-hidden="true">
+        {type === 'vendor' && (
+          <svg class="badge-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0-18C8.134 1 5 4.134 5 8v3a2 2 0 002 2h10a2 2 0 002-2V8c0-3.866-3.134-7-7-7z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        )}
+        {type === 'measured' && (
+          <svg class="badge-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        )}
+        {type === 'commercial' && (
+          <svg class="badge-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        )}
+        {type === 'editorial' && (
+          <svg class="badge-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        )}
+      </span>
+    )}
+
+    <!-- Text Payload -->
+    <span class="badge-text-group">
+      <span class="badge-primary-text">{displayLabel}</span>
+      {displaySublabel && <span class="badge-sublabel">{displaySublabel}</span>}
+    </span>
+  </span>
+
+  <!-- Hover / Focus Disclosure Card (Interactive Mode) -->
+  {interactive && (
+    <div class="evidence-tooltip-card" role="tooltip">
+      <div class="tooltip-header">
+        <span class="tooltip-layer-tag">{config.codeName}</span>
+        <span class="tooltip-status-pill">{config.badgePrefix}</span>
+      </div>
+      <p class="tooltip-body">{tooltipContent}</p>
+      <div class="tooltip-footer">
+        <span class="footer-meta">ClashLab Data Transparency Framework</span>
+        <span class="footer-dot">•</span>
+        <span class="footer-time">Verified {date}</span>
+      </div>
+    </div>
+  )}
+</span>
+
+<style>
+  .evidence-badge-wrap {
+    display: inline-flex;
+    position: relative;
+    vertical-align: middle;
+    outline: none;
+  }
+
+  .evidence-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", sans-serif;
+    font-weight: 600;
+    border-radius: var(--radius-sm, 6px);
+    transition: all var(--transition-fast, 150ms ease);
+    user-select: none;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* Size Variations */
+  .size-sm .evidence-pill {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.6875rem;
+    gap: 0.25rem;
+  }
+
+  .size-md .evidence-pill {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.75rem;
+    gap: 0.35rem;
+  }
+
+  .size-lg .evidence-pill {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8125rem;
+    gap: 0.45rem;
+  }
+
+  /* Type Colors - Dark Observatory Theme */
+  /* 1. Measured (Green / Emerald) */
+  .type-measured .evidence-pill {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  .type-measured .indicator-core,
+  .type-measured .indicator-ping {
+    background-color: #10B981;
+  }
+  .type-measured .tooltip-layer-tag {
+    color: #10B981;
+  }
+  .type-measured .tooltip-status-pill {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #34D399;
+  }
+
+  /* 2. Vendor (Cyan / Sky) */
+  .type-vendor .evidence-pill {
+    background: rgba(2, 132, 199, 0.1);
+    color: #38BDF8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+  .type-vendor .indicator-core,
+  .type-vendor .indicator-ping {
+    background-color: #38BDF8;
+  }
+  .type-vendor .tooltip-layer-tag {
+    color: #38BDF8;
+  }
+  .type-vendor .tooltip-status-pill {
+    background: rgba(2, 132, 199, 0.15);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #7DD3FC;
+  }
+
+  /* 3. Commercial (Amber / Gold) */
+  .type-commercial .evidence-pill {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+  }
+  .type-commercial .indicator-core,
+  .type-commercial .indicator-ping {
+    background-color: #F59E0B;
+  }
+  .type-commercial .tooltip-layer-tag {
+    color: #F59E0B;
+  }
+  .type-commercial .tooltip-status-pill {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.4);
+    color: #FCD34D;
+  }
+
+  /* 4. Editorial (Tech Blue / Indigo) */
+  .type-editorial .evidence-pill {
+    background: rgba(37, 99, 235, 0.12);
+    color: #60A5FA;
+    border: 1px solid rgba(96, 165, 250, 0.35);
+  }
+  .type-editorial .indicator-core,
+  .type-editorial .indicator-ping {
+    background-color: #3B82F6;
+  }
+  .type-editorial .tooltip-layer-tag {
+    color: #60A5FA;
+  }
+  .type-editorial .tooltip-status-pill {
+    background: rgba(37, 99, 235, 0.2);
+    border-color: rgba(96, 165, 250, 0.4);
+    color: #93C5FD;
+  }
+
+  /* Status Indicator Ping */
+  .status-indicator {
+    position: relative;
+    display: inline-flex;
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+  }
+
+  .indicator-core {
+    position: relative;
+    display: inline-flex;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+  }
+
+  .indicator-ping {
+    position: absolute;
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes ping {
+    75%, 100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  /* Icon Wrap */
+  .icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .badge-svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .size-lg .badge-svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Text Group */
+  .badge-text-group {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .badge-primary-text {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: inherit;
+    letter-spacing: -0.01em;
+  }
+
+  .badge-sublabel {
+    font-size: 0.6875rem;
+    color: #94A3B8;
+    font-weight: 400;
+  }
+
+  /* Interactive Hover / Focus Effects */
+  .is-interactive {
+    cursor: pointer;
+  }
+
+  .is-interactive:hover .evidence-pill,
+  .is-interactive:focus-visible .evidence-pill {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.15);
+  }
+
+  /* Tooltip Card */
+  .evidence-tooltip-card {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 280px;
+    padding: 0.75rem 0.875rem;
+    background: #0B111A;
+    border: 1px solid #1F2937;
+    border-radius: 8px;
+    box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
+  }
+
+  /* Tooltip Arrow */
+  .evidence-tooltip-card::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #0B111A transparent transparent transparent;
+  }
+
+  .evidence-badge-wrap:hover .evidence-tooltip-card,
+  .evidence-badge-wrap:focus-within .evidence-tooltip-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .tooltip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .tooltip-layer-tag {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .tooltip-status-pill {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.5625rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    border: 1px solid;
+    font-weight: 700;
+  }
+
+  .tooltip-body {
+    font-size: 0.75rem;
+    color: #CBD5E1;
+    line-height: 1.45;
+    margin: 0 0 0.5rem 0;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .tooltip-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.625rem;
+    color: #64748B;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+  }
+
+  .footer-dot {
+    color: #475569;
+  }
+
+  /* Right / Left align adjustment near screen edges */
+  @media (max-width: 640px) {
+    .evidence-tooltip-card {
+      width: 240px;
+      left: 0;
+      transform: translateY(4px);
+    }
+    .evidence-tooltip-card::after {
+      left: 20px;
+      transform: none;
+    }
+    .evidence-badge-wrap:hover .evidence-tooltip-card,
+    .evidence-badge-wrap:focus-within .evidence-tooltip-card {
+      transform: translateY(0);
+    }
+  }
+</style>

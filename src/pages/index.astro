@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroHeadlines from '../components/home/HeroHeadlines.astro';
+import FeaturedTopics from '../components/home/FeaturedTopics.astro';
+import LatestArticles from '../components/home/LatestArticles.astro';
+import ClientTutorials from '../components/home/ClientTutorials.astro';
+import NetworkKnowledge from '../components/home/NetworkKnowledge.astro';
+import AirportInsights from '../components/home/AirportInsights.astro';
+---
+
+<BaseLayout
+  title="ClashLab - 网络协议、代理客户端与网络加速技术实验室"
+  description="ClashLab (clashlab.blog) 专注网络协议演进、主流代理客户端配置手册 (Clash Verge Rev, sing-box, Shadowrocket) 与全球跨境网络基础设施客观真实评测。"
+>
+  <!-- Section 1: Hero Headlines (1 Large + 3 Vertical) -->
+  <HeroHeadlines />
+
+  <!-- Section 2: Featured Topics (4 Horizontal System Topics) -->
+  <FeaturedTopics />
+
+  <!-- Section 3: Latest Articles (Horizontal Card List with Filters) -->
+  <LatestArticles />
+
+  <!-- Section 4: Client Software Tutorials (5 Major Clients) -->
+  <ClientTutorials />
+
+  <!-- Section 5: Network Knowledge (5 Minimalist Tech Cards) -->
+  <NetworkKnowledge />
+
+  <!-- Section 6: Airport Insights (5 Industry Observatory Cards) -->
+  <AirportInsights />
+
+  <!-- Newsletter / Update Subscription Callout -->
+  <section class="newsletter-section section-sm">
+    <div class="container">
+      <div class="newsletter-box">
+        <div class="newsletter-content">
+          <span class="newsletter-tag">LAB UPDATES</span>
+          <h2 class="newsletter-title">追踪网络底层技术演进与节点评测报告</h2>
+          <p class="newsletter-desc">
+            定期推送 Clash/sing-box 最新内核调优技巧、晚高峰骨干网测速简报与网络安全避坑指南，无任何商业垃圾邮件。
+          </p>
+        </div>
+        <div class="newsletter-action-wrap">
+          <form class="newsletter-form" onsubmit="event.preventDefault(); alert('感谢订阅 ClashLab 实验室简报！');">
+            <input
+              type="email"
+              placeholder="输入您的电子邮箱..."
+              class="newsletter-input"
+              required
+            />
+            <button type="submit" class="btn btn-primary">
+              即刻订阅
+            </button>
+          </form>
+          <span class="form-privacy-note">支持 RSS 源无痛订阅，随时自由退订。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .newsletter-section {
+    padding-bottom: 4rem;
+  }
+
+  .newsletter-box {
+    background: linear-gradient(135deg, #0B111A 0%, #151E2B 100%);
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-lg);
+    padding: 2.25rem 1.75rem;
+    color: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 860px) {
+    .newsletter-box {
+      grid-template-columns: 1.25fr 1fr;
+      padding: 2.75rem 2.5rem;
+      align-items: center;
+    }
+  }
+
+  .newsletter-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .newsletter-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #38BDF8;
+    letter-spacing: 0.05em;
+  }
+
+  .newsletter-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .newsletter-title {
+      font-size: 1.65rem;
+    }
+  }
+
+  .newsletter-desc {
+    font-size: 0.9375rem;
+    color: #94A3B8;
+    line-height: 1.6;
+  }
+
+  .newsletter-action-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  @media (min-width: 500px) {
+    .newsletter-form {
+      flex-direction: row;
+    }
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background-color: #121A24;
+    border: 1px solid #233448;
+    border-radius: var(--radius-md);
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .newsletter-input:focus {
+    border-color: #38BDF8;
+  }
+
+  .newsletter-input::placeholder {
+    color: #64748B;
+  }
+
+  .form-privacy-note {
+    font-size: 0.75rem;
+    color: #64748B;
+  }
+</style>

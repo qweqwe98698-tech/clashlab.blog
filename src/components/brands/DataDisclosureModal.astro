@@ -1,0 +1,514 @@
+---
+// DataDisclosureModal.astro - ClashLab Four-Layer Testing Methodology & Disclosure Transparency Modal
+---
+
+<div
+  id="disclosure-modal"
+  class="disclosure-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="disclosure-title"
+  hidden
+>
+  <div class="disclosure-container">
+    <div class="disclosure-card">
+      <!-- Modal Header (#0B111A) -->
+      <header class="disclosure-header">
+        <div class="disclosure-header-content">
+          <div class="disclosure-badge">
+            <span class="pulse-dot"></span>
+            <span>ClashLab 数据透明度准则与评测白皮书</span>
+          </div>
+          <h2 id="disclosure-title" class="disclosure-title">四层实测审计与数据披露体系</h2>
+          <p class="disclosure-subtitle">
+            拒绝主观臆断与虚假跑分。ClashLab 实验室基于网络底层物理拓扑、晚高峰高并发压测、原生风控矩阵与客户端协议兼容，建立四大客观数据审计层。
+          </p>
+        </div>
+        <button type="button" id="disclosure-close-btn" class="disclosure-close-btn" aria-label="关闭窗口 (ESC)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          <span class="kbd-badge">ESC</span>
+        </button>
+      </header>
+
+      <!-- Modal Body - 4-Layer Architecture Details -->
+      <div class="disclosure-body">
+        <div class="layers-grid">
+          <!-- Layer 1 -->
+          <div class="layer-card">
+            <div class="layer-header">
+              <span class="layer-number">01</span>
+              <div class="layer-title-wrap">
+                <span class="layer-tag">PHYSICAL LAYER</span>
+                <h3 class="layer-title">物理链路与骨干架构审计</h3>
+              </div>
+            </div>
+            <p class="layer-desc">
+              重点验证跨境传输是否采用真实的运营商物理内网专线（IEPL / IPLC），排查普通公网隧道伪装专线的恶性超售现象。审计国内入口电信/联通/移动三网 BGP 聚合度与多入口 Anycast 自动故障熔断能力。
+            </p>
+            <div class="layer-metrics-pill">
+              <span>✓ 端到端物理内网直连</span>
+              <span>✓ 物理抖动 Jitter &lt; 2ms</span>
+              <span>✓ 多省 BGP 热备冗余</span>
+            </div>
+          </div>
+
+          <!-- Layer 2 -->
+          <div class="layer-card">
+            <div class="layer-header">
+              <span class="layer-number">02</span>
+              <div class="layer-title-wrap">
+                <span class="layer-tag">STRESS TEST LAYER</span>
+                <h3 class="layer-title">晚高峰满载压测与 SLA 丢包率</h3>
+              </div>
+            </div>
+            <p class="layer-desc">
+              摒弃无意义的清晨闲时测速，所有数据均采集自 20:00–23:00 黄金晚高峰。通过 5Gbps / 9G 专线集群与 32 线程并发压测，完整记录单线程最高吞吐、持续下载速率及 TCP 丢包率，真实还原 4K/8K 视频与大文件传输体验。
+            </p>
+            <div class="layer-metrics-pill">
+              <span>✓ 20:00–23:00 黄金晚高峰</span>
+              <span>✓ 0 丢包率基准检验</span>
+              <span>✓ 单线程与多线程峰值归档</span>
+            </div>
+          </div>
+
+          <!-- Layer 3 -->
+          <div class="layer-card">
+            <div class="layer-header">
+              <span class="layer-number">03</span>
+              <div class="layer-title-wrap">
+                <span class="layer-tag">RISK CONTROL LAYER</span>
+                <h3 class="layer-title">原生落地 IP 风控与流媒体/AI 解锁</h3>
+              </div>
+            </div>
+            <p class="layer-desc">
+              针对 OpenAI (ChatGPT)、Anthropic (Claude)、Google (Gemini) 等严苛 AI 风控策略，以及 Netflix、Disney+、YouTube Premium 等区域版权限制，定期校验落地 IP 纯净度与欺诈分值（Fraud Score），保障不频繁跳人机验证与访问被拒。
+            </p>
+            <div class="layer-metrics-pill">
+              <span>✓ AI 生产力专属低风控路由</span>
+              <span>✓ 4K/8K 流媒体全矩阵秒开</span>
+              <span>✓ 原生住宅/机房纯净 IP 池</span>
+            </div>
+          </div>
+
+          <!-- Layer 4 -->
+          <div class="layer-card">
+            <div class="layer-header">
+              <span class="layer-number">04</span>
+              <div class="layer-title-wrap">
+                <span class="layer-tag">PROTOCOL & CLIENT LAYER</span>
+                <h3 class="layer-title">现代代理协议与全客户端兼容</h3>
+              </div>
+            </div>
+            <p class="layer-desc">
+              评估服务商对现代化 VLESS (Reality) 及优选 Shadowsocks 协议的支持水平，检验加解密损耗与首包时间（TTFB）。测试 Clash Verge Rev、sing-box、Shadowrocket 等主流客户端的一键订阅导入与规则集分流可靠性。
+            </p>
+            <div class="layer-metrics-pill">
+              <span>✓ VLESS / Shadowsocks 现代化协议</span>
+              <span>✓ Clash / sing-box / 小火箭一键导入</span>
+              <span>✓ Fake-IP / TUN 模式防泄漏</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transparency Charter Strip -->
+        <div class="charter-box">
+          <div class="charter-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="charter-icon">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <h4>ClashLab 实验室独立客观承诺</h4>
+          </div>
+          <p class="charter-text">
+            1. <strong>不收受伪造数据报酬：</strong>所有品牌测速图档均为自动化测试探针（MAI-TEST-BOT）当次真实输出，不人工美化吞吐曲线。<br />
+            2. <strong>坚守「月付上车」原则：</strong>所有评测结论与天梯榜单均明确倡导按月订阅试错，杜绝推荐长周期圈钱产品。<br />
+            3. <strong>动态跟踪与降级：</strong>一旦监测到某品牌专线降级为公网中转或出现严重丢包，天梯榜单将第一时间执行降级降星处理。
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <footer class="disclosure-footer">
+        <span class="footer-note">版本：ClashLab Benchmark Specification v2.6 (2026-08)</span>
+        <button type="button" id="disclosure-understand-btn" class="btn btn-primary btn-sm">
+          我已了解四层披露体系
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<style>
+  .disclosure-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(11, 17, 26, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+  }
+
+  .disclosure-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (min-width: 640px) {
+    .disclosure-backdrop {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+
+  .disclosure-container {
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(16px) scale(0.98);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .disclosure-backdrop.is-open .disclosure-container {
+    transform: translateY(0) scale(1);
+  }
+
+  .disclosure-card {
+    background-color: #0B111A;
+    border: 1px solid #1F2937;
+    border-radius: 14px;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(37, 99, 235, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 90vh;
+  }
+
+  /* Header */
+  .disclosure-header {
+    background: linear-gradient(180deg, #121A24 0%, #0B111A 100%);
+    border-bottom: 1px solid #1F2937;
+    padding: 1.5rem 1.75rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .disclosure-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .disclosure-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #38BDF8;
+    background-color: #151E2B;
+    border: 1px solid #1F2937;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+    width: fit-content;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #10B981;
+    box-shadow: 0 0 6px #10B981;
+  }
+
+  .disclosure-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .disclosure-subtitle {
+    font-size: 0.875rem;
+    color: #94A3B8;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .disclosure-close-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    background-color: #151E2B;
+    border: 1px solid #1F2937;
+    border-radius: 6px;
+    color: #CBD5E1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .disclosure-close-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .disclosure-close-btn:hover {
+    background-color: #1F2937;
+    color: #FFFFFF;
+  }
+
+  .kbd-badge {
+    font-size: 0.6875rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+    color: #94A3B8;
+  }
+
+  /* Body */
+  .disclosure-body {
+    padding: 1.5rem 1.75rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: #060A10;
+  }
+
+  .layers-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .layers-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .layer-card {
+    background-color: #0E1620;
+    border: 1px solid #1F2937;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color var(--transition-fast);
+  }
+
+  .layer-card:hover {
+    border-color: rgba(37, 99, 235, 0.5);
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .layer-number {
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-family: ui-monospace, monospace;
+    color: #2563EB;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    line-height: 1;
+  }
+
+  .layer-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .layer-tag {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: #38BDF8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .layer-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  .layer-desc {
+    font-size: 0.8125rem;
+    color: #94A3B8;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .layer-metrics-pill {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .layer-metrics-pill span {
+    font-size: 0.6875rem;
+    color: #60A5FA;
+    background: rgba(37, 99, 235, 0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  /* Charter Box */
+  .charter-box {
+    background: linear-gradient(135deg, #121A24 0%, #151E2B 100%);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .charter-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .charter-icon {
+    width: 18px;
+    height: 18px;
+    color: #10B981;
+  }
+
+  .charter-header h4 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  .charter-text {
+    font-size: 0.8125rem;
+    color: #CBD5E1;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .charter-text strong {
+    color: #38BDF8;
+  }
+
+  /* Footer */
+  .disclosure-footer {
+    background-color: #0E1620;
+    border-top: 1px solid #1F2937;
+    padding: 1rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-note {
+    font-size: 0.75rem;
+    color: #64748B;
+    font-family: ui-monospace, monospace;
+  }
+</style>
+
+<script>
+  class DataDisclosureManager {
+    backdrop: HTMLElement | null = null;
+    closeBtn: HTMLElement | null = null;
+    understandBtn: HTMLElement | null = null;
+    isOpen: boolean = false;
+
+    constructor() {
+      this.initElements();
+      this.bindEvents();
+    }
+
+    initElements() {
+      this.backdrop = document.getElementById('disclosure-modal');
+      this.closeBtn = document.getElementById('disclosure-close-btn');
+      this.understandBtn = document.getElementById('disclosure-understand-btn');
+    }
+
+    bindEvents() {
+      document.addEventListener('click', (e) => {
+        const trigger = (e.target as HTMLElement).closest('[data-open-disclosure], .btn-open-disclosure') as HTMLElement;
+        if (trigger) {
+          e.preventDefault();
+          this.open();
+        }
+      });
+
+      this.closeBtn?.addEventListener('click', () => this.close());
+      this.understandBtn?.addEventListener('click', () => this.close());
+
+      this.backdrop?.addEventListener('click', (e) => {
+        if (e.target === this.backdrop) {
+          this.close();
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.isOpen) {
+          e.preventDefault();
+          this.close();
+        }
+      });
+    }
+
+    open() {
+      if (!this.backdrop) return;
+      this.backdrop.hidden = false;
+      requestAnimationFrame(() => {
+        this.backdrop?.classList.add('is-open');
+        this.isOpen = true;
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    close() {
+      if (!this.backdrop) return;
+      this.backdrop.classList.remove('is-open');
+      this.isOpen = false;
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (!this.isOpen && this.backdrop) {
+          this.backdrop.hidden = true;
+        }
+      }, 250);
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    new DataDisclosureManager();
+  }
+</script>

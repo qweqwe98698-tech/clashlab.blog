@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B111A" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="neonBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+    <linearGradient id="catGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width="0.8" stroke-opacity="0.35" />
+    </pattern>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- Background Glowing Orbs -->
+  <circle cx="850" cy="300" r="240" fill="#2563EB" opacity="0.12" filter="url(#glow)" />
+  <circle cx="300" cy="400" r="160" fill="#0284C7" opacity="0.08" filter="url(#glow)" />
+
+  <!-- Left Header & Guide Context -->
+  <g transform="translate(80, 120)">
+    <!-- Category Badge -->
+    <g>
+      <rect width="160" height="30" rx="15" fill="#1E293B" stroke="#38BDF8" stroke-width="1" />
+      <circle cx="15" cy="15" r="4" fill="#38BDF8" />
+      <text x="28" y="20" font-family="sans-serif" font-size="12" font-weight="700" fill="#38BDF8" letter-spacing="1">CLASH LAB • 核心教程</text>
+    </g>
+
+    <!-- Main Title -->
+    <text x="0" y="85" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="800" fill="#FFFFFF">
+      Clash Verge Rev
+    </text>
+    <text x="0" y="135" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" fill="url(#neonBlue)">
+      2026 全平台配置与规则优化指南
+    </text>
+
+    <!-- Subtitle Specs -->
+    <text x="0" y="195" font-family="sans-serif" font-size="16" fill="#94A3B8">
+      Mihomo (Clash Meta) 内核 • TUN 模式虚拟网卡 • Fake-IP 零泄露
+    </text>
+
+    <!-- Feature Pillars -->
+    <g transform="translate(0, 240)">
+      <rect width="130" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+      <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#38BDF8">TUN 智能分流</text>
+
+      <g transform="translate(142, 0)">
+        <rect width="140" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+        <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#10B981">GEOIP/GEOSITE</text>
+      </g>
+
+      <g transform="translate(294, 0)">
+        <rect width="140" height="36" rx="8" fill="#151E2B" stroke="#1E293B" />
+        <text x="14" y="23" font-family="sans-serif" font-size="13" font-weight="600" fill="#F59E0B">Script 规则拓展</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Right Visual: Clash Cat Router Engine & Data Flow -->
+  <g transform="translate(850, 310)">
+    <!-- Circuit Lines -->
+    <line x1="-220" y1="-100" x2="-80" y2="-40" stroke="#1E293B" stroke-width="2" />
+    <line x1="-220" y1="100" x2="-80" y2="40" stroke="#1E293B" stroke-width="2" />
+    <line x1="120" y1="-80" x2="200" y2="-120" stroke="#2563EB" stroke-width="2.5" stroke-dasharray="6 4" />
+    <line x1="120" y1="80" x2="200" y2="120" stroke="#38BDF8" stroke-width="2.5" />
+
+    <!-- Clash Cyber Cat Silhouette Shield -->
+    <g transform="translate(-10, -20) scale(1.35)">
+      <path d="M-50 -20 L-50 40 C-50 65 -20 85 0 95 C20 85 50 65 50 40 L50 -20 L35 -65 L15 -35 L-15 -35 L-35 -65 Z" fill="#121A24" stroke="url(#catGrad)" stroke-width="3" filter="url(#glow)" />
+      
+      <!-- Whiskers / Fiber Nodes -->
+      <line x1="-30" y1="15" x2="-55" y2="10" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+      <line x1="-30" y1="28" x2="-55" y2="30" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+      <line x1="30" y1="15" x2="55" y2="10" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+      <line x1="30" y1="28" x2="55" y2="30" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+
+      <!-- Eyes (Glowing Cyan Nodes) -->
+      <circle cx="-16" cy="15" r="4" fill="#38BDF8" filter="url(#glow)" />
+      <circle cx="16" cy="15" r="4" fill="#38BDF8" filter="url(#glow)" />
+
+      <!-- Nose / Center Route Switch -->
+      <polygon points="0,26 -5,32 5,32" fill="#FFFFFF" />
+      
+      <!-- Core Meta Matrix Grid -->
+      <rect x="-24" y="44" width="48" height="24" rx="4" fill="#0B111A" stroke="#2563EB" stroke-width="1.5" />
+      <text x="-18" y="60" font-family="monospace" font-size="9" font-weight="700" fill="#10B981">MIHOMO</text>
+    </g>
+
+    <!-- Floating HUD 1: TUN Mode Active -->
+    <g transform="translate(-240, -160)">
+      <rect width="160" height="54" rx="8" fill="#0B111A" stroke="#10B981" stroke-width="1.5" />
+      <circle cx="18" cy="18" r="4" fill="#10B981" />
+      <text x="30" y="22" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">TUN 虚拟网卡</text>
+      <text x="18" y="42" font-family="monospace" font-size="12" fill="#10B981">198.18.0.1/16</text>
+    </g>
+
+    <!-- Floating HUD 2: Rule Engine -->
+    <g transform="translate(60, 110)">
+      <rect width="180" height="54" rx="8" fill="#0B111A" stroke="#2563EB" stroke-width="1.5" />
+      <text x="14" y="20" font-family="sans-serif" font-size="10" font-weight="700" fill="#94A3B8">RULE-SET PARSER</text>
+      <text x="14" y="40" font-family="monospace" font-size="12" fill="#38BDF8">MATCH => PROXY [0ms]</text>
+    </g>
+  </g>
+</svg>

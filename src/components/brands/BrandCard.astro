@@ -1,0 +1,727 @@
+---
+import type { Brand } from '../../data/brands';
+import Badge from '../common/Badge.astro';
+
+interface Props {
+  brand: Brand;
+  showSpeedtestModal?: boolean;
+}
+
+const { brand } = Astro.props;
+
+const t1Slugs = ['guangshuyun', 'sujie', 'weitu-cloud', 'lingmao', 'yuzhou-cloud', 'kexin-cloud', 'jilian-cloud'];
+const t2Slugs = ['u1s1', 'sogoyun', 'yifanyun', 'guangnianti', 'quangqiuyun', 'ermaoyun', 'kuaili'];
+
+const brandTier = (brand as any).editorial?.tier || (t1Slugs.includes(brand.slug) ? 'T1' : t2Slugs.includes(brand.slug) ? 'T2' : 'T3');
+const tierLabel = (brand as any).editorial?.tierLabel || (brandTier === 'T1' ? 'T1 旗舰专线' : brandTier === 'T2' ? 'T2 性价比中转' : 'T3 便宜备用');
+const rating = (brand as any).editorial?.rating ?? (brand.rating ?? 4.8);
+const summary = (brand as any).editorial?.summary || brand.tagline || brand.description || '';
+const pros = (brand as any).editorial?.pros || brand.pros || [];
+const tags = (brand as any).editorial?.tags || ['专线中转', '流媒体解锁', '4K秒开'];
+
+const entryPrice = (brand as any).vendor?.entryPrice ?? (brand.entryPrice ? brand.entryPrice.replace(/[^0-9.]/g, '') : '15');
+const pricePeriod = (brand as any).vendor?.pricePeriod || (brand.plans?.[0]?.billingPeriod || '月付');
+const trafficGB = (brand as any).vendor?.trafficGB ?? (brand.plans?.[0]?.traffic?.replace(/[^0-9]/g, '') || '120');
+const hasNoExpiryPlan = (brand as any).vendor?.hasNoExpiryPlan ?? (brand.slug === 'xingdaomeng' || brand.slug === 'ermaoyun');
+const lineType = (brand as any).vendor?.lineType || brand.techArchitecture?.lineType || 'IEPL 专线';
+const protocols = (brand as any).vendor?.protocols || brand.techArchitecture?.protocols || ['Shadowsocks', 'VLESS'];
+const establishedYear = (brand as any).vendor?.establishedYear || brand.establishedYear || 2022;
+
+const speedtestImage = (brand as any).measured?.speedtestImage || brand.speedtest?.image || '/images/speedtests/default.png';
+const testedAt = (brand as any).measured?.testedAt || brand.speedtest?.testedAt || '2026-08-11';
+const notes = (brand as any).measured?.notes || brand.speedtest?.notes || '';
+
+const couponDiscount = (brand as any).commercial?.couponDiscount || brand.couponDiscount || '专属优惠';
+const couponCode = (brand as any).commercial?.couponCode || brand.couponCode || 'CLASHLAB';
+const affiliateUrl = (brand as any).commercial?.affiliateUrl || brand.affiliateUrl || `/brands/${brand.slug}`;
+---
+
+<article 
+  class="brand-card" 
+  data-brand-id={brand.slug || (brand as any).id}
+  data-price={entryPrice}
+  data-traffic={trafficGB}
+  data-line={lineType}
+  data-protocols={protocols.join(',')}
+  data-tier={brandTier}
+  data-tags={tags.join(',')}
+  data-name={brand.name}
+  data-pinyin={(brand as any).pinyin || brand.slug}
+>
+  <!-- Card Header: Title, Tier, Rating -->
+  <div class="card-header">
+    <div class="brand-identity">
+      <div class="brand-avatar">
+        <span class="avatar-letter">{brand.name.slice(0, 1)}</span>
+      </div>
+      <div class="brand-meta">
+        <div class="brand-name-wrap">
+          <h3 class="brand-title">
+            <a href={`/brands/${brand.slug}`} class="brand-link-title" title={`查看 ${brand.name} 深度评测报告`}>
+              {brand.name}
+            </a>
+          </h3>
+          {(brand as any).badge && <span class="brand-custom-badge">{(brand as any).badge}</span>}
+        </div>
+        <div class="brand-submeta">
+          <span class="est-year">{establishedYear} 年创立</span>
+          <span class="meta-dot"></span>
+          <span class={`tier-indicator tier-${brandTier.toLowerCase()}`}>{tierLabel}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating Score -->
+    <div class="rating-box" title={`综合评测评分: ${rating} / 5.0`}>
+      <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
+      <span class="score-num">{Number(rating).toFixed(1)}</span>
+    </div>
+  </div>
+
+  <!-- Price & Traffic Highlights Box -->
+  <div class="spec-highlight-box">
+    <div class="spec-cell price-cell">
+      <span class="cell-label">入门价格</span>
+      <div class="cell-val price-val">
+        <span class="currency-symbol">¥</span>
+        <span class="price-number">{entryPrice}</span>
+        <span class="price-unit">/月起</span>
+      </div>
+      <span class="price-period-sub">{pricePeriod}</span>
+    </div>
+
+    <div class="spec-cell-divider"></div>
+
+    <div class="spec-cell traffic-cell">
+      <span class="cell-label">月付流量</span>
+      <div class="cell-val traffic-val">
+        <span class="traffic-number">{trafficGB}</span>
+        <span class="traffic-unit">GB</span>
+      </div>
+      <span class="traffic-sub">{hasNoExpiryPlan ? '含不限时可选' : '标准月付'}</span>
+    </div>
+
+    <div class="spec-cell-divider"></div>
+
+    <div class="spec-cell line-cell">
+      <span class="cell-label">骨干线路</span>
+      <div class="cell-val line-val">
+        <span class="line-badge">{lineType.replace(' 专线', '')}</span>
+      </div>
+      <div class="protocol-tags">
+        {protocols.slice(0, 2).map((p: string) => (
+          <span class="proto-tag">{p}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Editorial Summary & Pros -->
+  <div class="card-body">
+    <p class="brand-summary">{summary}</p>
+    
+    <div class="feature-bullets">
+      {pros.slice(0, 3).map((pro: string) => (
+        <div class="bullet-item">
+          <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          <span>{pro}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Tags Row -->
+    <div class="tags-row">
+      {tags.map((tag: string) => (
+        <span class="mini-tag">#{tag}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Measured Speedtest Banner Link -->
+  <div class="measured-evidence-bar">
+    <div class="evidence-info">
+      <span class="evidence-dot"></span>
+      <span class="evidence-text">实测图档已归档 ({testedAt.split(' ')[0]})</span>
+    </div>
+    <button 
+      type="button" 
+      class="view-speedtest-btn"
+      data-speedtest-img={speedtestImage}
+      data-brand-name={brand.name}
+      data-brand-slug={brand.slug}
+      data-protocol={brand.speedtest?.protocol || (brand as any).protocol || 'Shadowsocks (AEAD)'}
+      data-backend={brand.speedtest?.backend || (brand as any).backend || '珠海联通 5Gbps / 32 线程'}
+      data-peak-speed={brand.speedtest?.peakSpeed || (brand as any).peakSpeed || '480.0 Mbps'}
+      data-avg-ping={brand.speedtest?.avgPing || (brand as any).avgPing || '36.0ms'}
+      data-tested-at={testedAt}
+      data-analysis={brand.speedtest?.analysis || (brand as any).analysis || notes || ''}
+      data-aff-url={affiliateUrl}
+      aria-label={`查看 ${brand.name} 实测测速截图`}
+    >
+      <svg class="chart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 20V10"></path>
+        <path d="M12 20V4"></path>
+        <path d="M6 20v-6"></path>
+      </svg>
+      <span>查看测速图</span>
+    </button>
+  </div>
+
+  <!-- Card Action Footer -->
+  <div class="card-footer">
+    <!-- Coupon Copy Area -->
+    <div class="coupon-section">
+      <div class="coupon-label-wrap">
+        <span class="coupon-title">优惠码</span>
+        <span class="coupon-discount">{couponDiscount}</span>
+      </div>
+      <button 
+        type="button" 
+        class="copy-coupon-btn" 
+        data-coupon={couponCode}
+        title="点击复制优惠码"
+        aria-label={`复制优惠码 ${couponCode}`}
+      >
+        <code class="coupon-code">{couponCode}</code>
+        <span class="copy-hint">复制</span>
+      </button>
+    </div>
+
+    <!-- Dual Actions: Review Link & Direct Buy Button -->
+    <div class="card-action-dual">
+      <a 
+        href={`/brands/${brand.slug}`} 
+        class="btn-card-review"
+        aria-label={`查看 ${brand.name} 评测报告`}
+      >
+        <span>评测报告</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow-icon">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+      <a 
+        href={affiliateUrl} 
+        target="_blank" 
+        rel="noopener noreferrer nofollow" 
+        class="btn-visit-brand"
+        aria-label={`前往 ${brand.name} 官网注册`}
+      >
+        <span>官网注册</span>
+        <svg class="arrow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .brand-card {
+    background-color: var(--bg-dark-card);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  }
+
+  .brand-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    border-color: rgba(37, 99, 235, 0.6);
+    box-shadow: 0 12px 28px -6px rgba(37, 99, 235, 0.25), 0 0 0 1px rgba(56, 189, 248, 0.2);
+  }
+
+  /* Card Header */
+  .card-header {
+    padding: 1.25rem 1.25rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .brand-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .brand-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1.25rem;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+  }
+
+  .brand-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .brand-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .brand-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .brand-custom-badge {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    background: rgba(37, 99, 235, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
+    border-radius: 4px;
+    line-height: 1.2;
+  }
+
+  .brand-submeta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #94A3B8;
+  }
+
+  .meta-dot {
+    width: 3px;
+    height: 3px;
+    background-color: #475569;
+    border-radius: 50%;
+  }
+
+  .tier-indicator {
+    font-weight: 600;
+    font-size: 0.6875rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .tier-t1 {
+    background: rgba(37, 99, 235, 0.25);
+    color: #60A5FA;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+  }
+
+  .tier-t2 {
+    background: rgba(2, 132, 199, 0.2);
+    color: #38BDF8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .tier-t3 {
+    background: rgba(71, 85, 105, 0.3);
+    color: #CBD5E1;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  .rating-box {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    color: #FBBF24;
+    flex-shrink: 0;
+  }
+
+  .star-icon {
+    width: 14px;
+    height: 14px;
+    color: #F59E0B;
+  }
+
+  .score-num {
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    line-height: 1;
+  }
+
+  /* Spec Highlight Box */
+  .spec-highlight-box {
+    background-color: #0E1620;
+    margin: 0.75rem 1.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .spec-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1;
+  }
+
+  .cell-label {
+    font-size: 0.6875rem;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .cell-val {
+    display: flex;
+    align-items: baseline;
+    line-height: 1.1;
+  }
+
+  .price-val .currency-symbol {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #38BDF8;
+    margin-right: 1px;
+  }
+
+  .price-val .price-number {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .price-val .price-unit {
+    font-size: 0.6875rem;
+    color: #94A3B8;
+    margin-left: 2px;
+  }
+
+  .price-period-sub, .traffic-sub {
+    font-size: 0.6875rem;
+    color: #64748B;
+  }
+
+  .traffic-val .traffic-number {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .traffic-val .traffic-unit {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #38BDF8;
+    margin-left: 2px;
+  }
+
+  .line-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #E2E8F0;
+  }
+
+  .protocol-tags {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 2px;
+  }
+
+  .proto-tag {
+    font-size: 0.625rem;
+    padding: 0.05rem 0.3rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    color: #94A3B8;
+    font-family: ui-monospace, monospace;
+  }
+
+  .spec-cell-divider {
+    width: 1px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.08);
+    margin: 0 0.75rem;
+  }
+
+  /* Card Body */
+  .card-body {
+    padding: 0.25rem 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .brand-summary {
+    font-size: 0.8125rem;
+    color: #CBD5E1;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .feature-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .bullet-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: #94A3B8;
+    line-height: 1.4;
+  }
+
+  .check-icon {
+    width: 13px;
+    height: 13px;
+    color: #10B981;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+  }
+
+  .mini-tag {
+    font-size: 0.6875rem;
+    color: #64748B;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  /* Speedtest Evidence Bar */
+  .measured-evidence-bar {
+    margin: 0 1.25rem 0.875rem;
+    padding: 0.5rem 0.75rem;
+    background-color: rgba(18, 26, 36, 0.8);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .evidence-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .evidence-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #10B981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  }
+
+  .evidence-text {
+    font-size: 0.6875rem;
+    color: #94A3B8;
+  }
+
+  .view-speedtest-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #38BDF8;
+    background: transparent;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: all var(--transition-fast);
+  }
+
+  .view-speedtest-btn:hover {
+    background: rgba(56, 189, 248, 0.1);
+    color: #FFFFFF;
+  }
+
+  .chart-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Card Footer */
+  .card-footer {
+    padding: 1rem 1.25rem;
+    background-color: #0E1620;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+  }
+
+  .coupon-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background-color: #151E2B;
+    border: 1px dashed rgba(56, 189, 248, 0.3);
+    padding: 0.35rem 0.625rem;
+    border-radius: 6px;
+  }
+
+  .coupon-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .coupon-title {
+    font-size: 0.6875rem;
+    color: #64748B;
+  }
+
+  .coupon-discount {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #F59E0B;
+  }
+
+  .copy-coupon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(37, 99, 235, 0.2);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .copy-coupon-btn:hover {
+    background: rgba(37, 99, 235, 0.4);
+    border-color: #38BDF8;
+  }
+
+  .coupon-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  .copy-hint {
+    font-size: 0.6875rem;
+    color: #38BDF8;
+    font-weight: 500;
+  }
+
+  .copy-coupon-btn.copied .copy-hint {
+    color: #10B981;
+  }
+
+  .brand-link-title {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .brand-link-title:hover {
+    color: #38BDF8;
+  }
+
+  .card-action-dual {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .btn-card-review {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    flex: 1;
+    padding: 0.55rem 0.75rem;
+    background-color: #151E2B;
+    border: 1px solid #1F2937;
+    color: #CBD5E1;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-card-review .arrow-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .btn-card-review:hover {
+    color: #FFFFFF;
+    background-color: #1F2937;
+    border-color: #374151;
+  }
+
+  .btn-visit-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    flex: 1.3;
+    padding: 0.55rem 0.85rem;
+    background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%);
+    color: #FFFFFF;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .btn-visit-brand:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45);
+    transform: translateY(-1px);
+    color: #FFFFFF;
+  }
+
+  .arrow-ext {
+    width: 13px;
+    height: 13px;
+  }
+</style>

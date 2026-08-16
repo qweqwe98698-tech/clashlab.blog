@@ -1,0 +1,212 @@
+---
+import Badge from '../common/Badge.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+  category?: string;
+  tags?: string[];
+  limit?: number;
+}
+
+const {
+  currentSlug,
+  category = '',
+  tags = [],
+  limit = 3,
+} = Astro.props;
+
+let allPosts: any[] = [];
+try {
+  allPosts = await getCollection('posts');
+} catch (e) {
+  allPosts = [];
+}
+
+const fallbackRelated = [
+  {
+    slug: 'clash-verge-rev-guide',
+    data: {
+      title: 'Clash Verge Rev 完整配置与内核切换实战手册',
+      description: '深入解析 Clash Verge Rev 的 Mihomo 内核集成与规则集分流。',
+      pubDate: new Date('2026-08-10'),
+      category: '客户端教程',
+      readTime: '12 分钟',
+    },
+  },
+  {
+    slug: 'sing-box-mastery',
+    data: {
+      title: 'sing-box 现代路由与核心架构深度拆解',
+      description: '深入剖析 sing-box 1.10+ 的 JSON 规则路由与链式代理。',
+      pubDate: new Date('2026-08-12'),
+      category: '客户端教程',
+      readTime: '9 分钟',
+    },
+  },
+  {
+    slug: 'airport-infrastructure-evaluation',
+    data: {
+      title: '2026 全球优质机场线路与网络基础设施深度横评',
+      description: '实测 IPLC 跨境专线晚高峰抖动、流媒体原生解锁及容灾。',
+      pubDate: new Date('2026-08-08'),
+      category: '机场观察',
+      readTime: '15 分钟',
+    },
+  },
+];
+
+let related = allPosts.filter((p) => (p.slug || p.id) !== currentSlug);
+
+if (category) {
+  const sameCategory = related.filter((p) => p.data.category === category);
+  if (sameCategory.length >= limit) {
+    related = sameCategory.slice(0, limit);
+  } else {
+    const others = related.filter((p) => p.data.category !== category);
+    related = [...sameCategory, ...others].slice(0, limit);
+  }
+} else {
+  related = related.slice(0, limit);
+}
+
+if (related.length === 0) {
+  related = fallbackRelated.filter((p) => p.slug !== currentSlug).slice(0, limit);
+}
+
+const formatDate = (d: Date | string) => {
+  const date = new Date(d);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+};
+---
+
+{related.length > 0 && (
+  <section class="related-posts-section">
+    <div class="related-header">
+      <h3 class="related-title">延伸阅读与相关评测</h3>
+      <a href="/posts" class="related-all-link">
+        查看更多文章 →
+      </a>
+    </div>
+
+    <div class="grid-3 related-grid">
+      {related.map((post: any) => (
+        <article class="card related-card">
+          <a href={`/posts/${post.slug || post.id}`} class="related-card-link">
+            <div class="related-card-top">
+              <Badge variant="blue" size="sm">{post.data.category}</Badge>
+              <span class="related-date">{formatDate(post.data.pubDate)}</span>
+            </div>
+
+            <h4 class="related-card-title card-title">{post.data.title}</h4>
+            <p class="related-card-desc">{post.data.description}</p>
+
+            <div class="related-card-footer">
+              <span class="related-read-time">{post.data.readTime || '8 分钟阅读'}</span>
+              <span class="related-arrow">→</span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-posts-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .related-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .related-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .related-all-link {
+    font-size: 0.84375rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .related-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    gap: 0.5rem;
+  }
+
+  .related-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .related-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .related-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color var(--transition-fast);
+  }
+
+  .related-card-desc {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.5;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-card-footer {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .related-arrow {
+    color: var(--primary);
+    font-weight: 700;
+    transition: transform var(--transition-fast);
+  }
+
+  .related-card:hover .related-arrow {
+    transform: translateX(3px);
+  }
+</style>

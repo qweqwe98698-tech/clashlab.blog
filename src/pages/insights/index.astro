@@ -1,0 +1,319 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Badge from '../../components/common/Badge.astro';
+import ConversionCTA from '../../components/article/ConversionCTA.astro';
+
+const monthlyReports = [
+  {
+    id: 'cost-model',
+    tag: '成本与模型',
+    badge: '深度研报',
+    title: '2026 跨境网络带宽结算模型与机房成本透视',
+    date: '2026-08',
+    summary: '详细解析 95 计费带宽结算模型、BGP 跨境专线物理采购成本（¥200-400/Mbps）以及超售比例对晚高峰丢包率的直接影响。',
+    keyPoints: ['95计费 vs 突发计费', '深港/沪日专线成本拆解', '防超售鉴别方法'],
+    readUrl: '/posts/airport-infrastructure-evaluation',
+  },
+  {
+    id: 'brand-dynamics',
+    tag: '架构演进',
+    badge: '基建追踪',
+    title: '头部网络服务商入口多线容灾与 BGP 智能调度',
+    date: '2026-08',
+    summary: '公网骨干断纤与偶发 QoS 干扰频繁发生，主流服务商如何通过 Anycast 边缘 DNS 解析与全国多省入口秒级热备维持高可用。',
+    keyPoints: ['入口多省 BGP 热备', 'DNS 故障自动熔断转移', '单 IP 阻断自愈'],
+    readUrl: '/posts/airport-infrastructure-evaluation',
+  },
+  {
+    id: 'qos-benchmarks',
+    tag: '实测数据',
+    badge: '晚高峰测速',
+    title: '全国三网 (电信/联通/移动) 晚高峰 QoS 抖动与丢包大盘',
+    date: '2026-08',
+    summary: '20:00 - 23:00 黄金时段实测数据汇总：公网普通 163 骨干网丢包率达 25%+，CN2 GIA/AS9929 表现平稳，IPLC 专线保持 0 丢包。',
+    keyPoints: ['三网晚高峰丢包矩阵', '丢包对 TCP 慢启动影响', 'UDP 拥塞对抗实测'],
+    readUrl: '/posts/hysteria2-vs-tuic-protocols',
+  },
+  {
+    id: 'safety-rules',
+    tag: '避坑准则',
+    badge: '安全风控',
+    title: '虚假专线鉴别与月付防跑路核心策略',
+    date: '2026-08',
+    summary: '通过 MTR、Traceroute 与 Ping 抖动特征一眼识破「公网伪装 IPLC」，坚守月付法则避免被沉没成本绑架。',
+    keyPoints: ['MTR 跳数与延迟特征', '非对称路由鉴别', '月付上车黄金法则'],
+    readUrl: '/posts/ip-types-and-risk-control',
+  },
+];
+
+const benchmarkStats = [
+  { line: '深港 IPLC 专线', baseLatency: '4.8 ms', peakJitter: '< 0.5 ms', peakLoss: '0.0%', rating: '⭐⭐⭐⭐⭐' },
+  { line: '沪日 IEPL 专线', baseLatency: '24.2 ms', peakJitter: '< 0.8 ms', peakLoss: '0.1%', rating: '⭐⭐⭐⭐⭐' },
+  { line: '电信 CN2 GIA 高端中转', baseLatency: '38.5 ms', peakJitter: '3.2 ms', peakLoss: '0.8%', rating: '⭐⭐⭐⭐' },
+  { line: '联通 9929 优质骨干', baseLatency: '42.0 ms', peakJitter: '4.1 ms', peakLoss: '1.2%', rating: '⭐⭐⭐⭐' },
+  { line: '普通公网直连 (163/CMI)', baseLatency: '85.0 ms', peakJitter: '35.0 ms', peakLoss: '28.5%', rating: '⭐⭐' },
+];
+---
+
+<PageLayout
+  title="机场生态与网络基建观察"
+  description="客观数据监测、线路成本模型剖析与晚高峰 QoS 实测研报，助力用户看清网络底层本质。"
+  tagline="INDUSTRY OBSERVATORY"
+  breadcrumbCurrent="机场观察"
+>
+  <div class="insights-page-wrap">
+    <!-- Observatory Dashboard Header -->
+    <div class="insights-dashboard-banner">
+      <div class="banner-badge">
+        <span class="pulse-dot"></span>
+        <span>实验室自动化测速监测系统 (24/7 实时运行)</span>
+      </div>
+      <h2 class="banner-title">穿透黑盒，用数据说话</h2>
+      <p class="banner-desc">
+        ClashLab 不参与任何机场的主观推广或商业返佣。我们通过部署在全国多地的物理测试探针，对跨境骨干网、专线节点进行全天候抓包与抗丢包测试，输出纯粹客观的基建研报。
+      </p>
+    </div>
+
+    <!-- Monthly In-depth Reports Grid -->
+    <section class="reports-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-tag">MONTHLY PAPERS</span>
+          <h2 class="section-title">专题深度研报</h2>
+        </div>
+      </div>
+
+      <div class="grid-2 reports-grid">
+        {monthlyReports.map((rep) => (
+          <article class="card report-card" id={rep.id}>
+            <div class="report-card-inner">
+              <div class="report-top-row">
+                <Badge variant="blue">{rep.tag}</Badge>
+                <span class="report-date">{rep.date}</span>
+              </div>
+
+              <h3 class="report-card-title card-title">{rep.title}</h3>
+              <p class="report-card-summary">{rep.summary}</p>
+
+              <div class="report-keypoints">
+                <span class="kp-label">核心要点:</span>
+                <div class="kp-chips">
+                  {rep.keyPoints.map((kp) => (
+                    <span class="kp-chip">{kp}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div class="report-footer">
+                <a href={rep.readUrl} class="btn btn-secondary btn-sm">
+                  阅读完整评测报告 →
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- QoS Benchmark Matrix -->
+    <section class="benchmark-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-tag">LAB BENCHMARKS</span>
+          <h2 class="section-title">主流物理线路类型晚高峰指标对比</h2>
+          <p class="section-desc">基于 20:00-23:00 真实网络压测采集所得均值数据</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>线路架构类型</th>
+              <th>物理基准延迟 (深圳/上海)</th>
+              <th>晚高峰抖动 (Jitter)</th>
+              <th>晚高峰丢包率</th>
+              <th>综合推荐评级</th>
+            </tr>
+          </thead>
+          <tbody>
+            {benchmarkStats.map((stat) => (
+              <tr>
+                <td><strong>{stat.line}</strong></td>
+                <td><code>{stat.baseLatency}</code></td>
+                <td><code>{stat.peakJitter}</code></td>
+                <td style={`color: ${stat.peakLoss.startsWith('0') ? '#059669' : '#DC2626'}; font-weight: 600;`}>
+                  {stat.peakLoss}
+                </td>
+                <td>{stat.rating}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <ConversionCTA
+      title="获取实验室优选跨境线路榜单"
+      description="严选晚高峰 0 丢包专线节点，支持流媒体与 ChatGPT 原生解锁。"
+    />
+  </div>
+</PageLayout>
+
+<style>
+  .insights-page-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .insights-dashboard-banner {
+    background: linear-gradient(135deg, #0B111A 0%, #151E2B 100%);
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-lg);
+    padding: 2.25rem 2rem;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .banner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background-color: #121A24;
+    border: 1px solid #1F2937;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    color: #38BDF8;
+    width: fit-content;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #38BDF8;
+    box-shadow: 0 0 8px #38BDF8;
+  }
+
+  .banner-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+  }
+
+  .banner-desc {
+    font-size: 0.95rem;
+    color: #94A3B8;
+    line-height: 1.65;
+    max-width: 820px;
+  }
+
+  .reports-grid {
+    gap: 1.5rem;
+  }
+
+  .report-card-inner {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 0.875rem;
+  }
+
+  .report-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .report-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .report-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    transition: color var(--transition-fast);
+  }
+
+  .report-card-summary {
+    font-size: 0.875rem;
+    color: var(--text-body);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .report-keypoints {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.75rem;
+    background-color: var(--bg-aux);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+  }
+
+  .kp-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .kp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .kp-chip {
+    font-size: 0.75rem;
+    color: var(--primary);
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  .report-footer {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .benchmark-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .benchmark-table th {
+    background-color: #F8FAFC;
+    color: var(--text-main);
+    font-weight: 600;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .benchmark-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #F1F5F9;
+    color: var(--text-body);
+    white-space: nowrap;
+  }
+
+  .benchmark-table tr:hover td {
+    background-color: #F8FAFC;
+  }
+</style>

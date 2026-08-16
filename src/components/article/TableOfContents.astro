@@ -1,0 +1,156 @@
+---
+interface HeadingItem {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: HeadingItem[];
+}
+
+const { headings } = Astro.props;
+const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{filteredHeadings.length > 0 && (
+  <nav class="toc-container" aria-label="文章目录导航">
+    <div class="toc-header">
+      <svg class="toc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="21" y1="10" x2="3" y2="10"></line>
+        <line x1="21" y1="6" x2="3" y2="6"></line>
+        <line x1="21" y1="14" x2="3" y2="14"></line>
+        <line x1="21" y1="18" x2="3" y2="18"></line>
+      </svg>
+      <span class="toc-title">目录导航 (TOC)</span>
+    </div>
+
+    <ul class="toc-list" id="toc-list">
+      {filteredHeadings.map((heading) => (
+        <li class={`toc-item depth-${heading.depth}`}>
+          <a
+            href={`#${heading.slug}`}
+            class="toc-link"
+            data-target={heading.slug}
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc-container {
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .toc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .toc-icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--primary);
+  }
+
+  .toc-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.02em;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .toc-item {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .toc-item.depth-3 {
+    padding-left: 0.875rem;
+    font-size: 0.78125rem;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    transition: all var(--transition-fast);
+    border-left: 2px solid transparent;
+  }
+
+  .toc-link:hover {
+    color: var(--primary);
+    background-color: var(--primary-light);
+  }
+
+  .toc-link.active {
+    color: var(--primary);
+    font-weight: 600;
+    background-color: var(--primary-light);
+    border-left-color: var(--primary);
+  }
+</style>
+
+<script>
+  function initTocSpy() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+    if (!links.length) return;
+
+    const headingElements: HTMLElement[] = [];
+    links.forEach((link) => {
+      const slug = link.getAttribute('data-target');
+      if (slug) {
+        const el = document.getElementById(slug);
+        if (el) headingElements.push(el);
+      }
+    });
+
+    if (!headingElements.length) return;
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          links.forEach((link) => {
+            if (link.getAttribute('data-target') === id) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      rootMargin: '-80px 0px -70% 0px',
+      threshold: 0,
+    });
+
+    headingElements.forEach((el) => observer.observe(el));
+  }
+
+  document.addEventListener('DOMContentLoaded', initTocSpy);
+  document.addEventListener('astro:page-load', initTocSpy);
+</script>

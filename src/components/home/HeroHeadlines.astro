@@ -1,0 +1,499 @@
+---
+import Badge from '../common/Badge.astro';
+import { getCollection } from 'astro:content';
+
+let posts: any[] = [];
+try {
+  posts = await getCollection('posts');
+} catch (e) {
+  posts = [];
+}
+
+// Main Pillar Feature Post
+const defaultHeroPost = {
+  id: '2026-airport-recommendation-ranking',
+  slug: '2026-airport-recommendation-ranking',
+  customUrl: '/airport-recommendation',
+  data: {
+    title: '2026 优质机场推荐天梯榜与专线选购全景指南 (16 品牌真实测速横评)',
+    description: '拒绝虚假营销。基于 ClashLab 评测实验室 16 家主流专线机场实测测速截图归档、骨干链路架构、晚高峰抗 QoS 抖动与协议代际，深度评定 T1/T2/T3 梯队天梯图。',
+    pubDate: new Date('2026-08-15'),
+    updatedDate: new Date('2026-08-16'),
+    category: '机场推荐',
+    readTime: '15 分钟',
+    coverImage: '/images/hero-airport-2026.svg',
+  }
+};
+
+const defaultSubPosts = [
+  {
+    id: 'clash-verge-rev-complete-guide',
+    slug: 'clash-verge-rev-complete-guide',
+    data: {
+      title: 'Clash Verge Rev 2026 全平台深度配置指南：内核切换与分流实战',
+      description: '全面解析新一代 Clash Verge Rev 基于 Mihomo 内核的高阶特性：规则集加速、TUN 模式与晚高峰调优。',
+      pubDate: new Date('2026-08-14'),
+      category: '客户端教程',
+      readTime: '12 分钟',
+      coverImage: '/images/hero-clash.svg',
+    }
+  },
+  {
+    id: 'brands-directory',
+    slug: 'brands-directory',
+    customUrl: '/brands',
+    data: {
+      title: '2026 机场品牌库与测速档案：收录光速云、速界、SOGO云等 16 家实测',
+      description: '多维度实测 IEPL 专线延迟、VLESS 协议支持度、月付 7–25 元阶梯配置与专属优惠码一键复制。',
+      pubDate: new Date('2026-08-12'),
+      category: '品牌档案',
+      readTime: '8 分钟',
+      coverImage: '/images/hero-insights.svg',
+    }
+  },
+  {
+    id: 'sing-box-universal-proxy-configuration',
+    slug: 'sing-box-universal-proxy-configuration',
+    data: {
+      title: 'sing-box 通用代理平台架构解析与全协议配置实战',
+      description: '深入剖析 sing-box 的 JSON 规则路由、Inbound 嗅探、Rule-Set 二进制规则集与内存极速调优。',
+      pubDate: new Date('2026-08-10'),
+      category: '协议知识',
+      readTime: '10 分钟',
+      coverImage: '/images/hero-singbox.svg',
+    }
+  }
+];
+
+const featuredPosts = (posts || []).filter(p => p?.data?.featured && ((p?.slug || p?.id || '') as string).includes('recommendation'));
+const mainPost = featuredPosts[0] || defaultHeroPost;
+const sidePosts = defaultSubPosts;
+
+const formatDate = (d: Date | string) => {
+  const date = new Date(d);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+};
+
+const getPostUrl = (post: any) => {
+  if (post.customUrl) return post.customUrl;
+  return `/posts/${post.slug || post.id}`;
+};
+---
+
+<section class="hero-headlines section-sm">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Left: Big Feature Card with Real Cover Illustration -->
+      <article class="card hero-main-card">
+        <a href={getPostUrl(mainPost)} class="main-card-link">
+          <div class="main-visual-wrap">
+            <img
+              src={mainPost.data.coverImage || '/images/hero-airport-2026.svg'}
+              alt={mainPost.data.title}
+              class="main-cover-img"
+              loading="eager"
+            />
+            <div class="main-visual-overlay"></div>
+            
+            <div class="main-top-badges">
+              <span class="badge badge-blue badge-glow">头条特载</span>
+              <span class="badge badge-dark">{mainPost.data.category}</span>
+            </div>
+
+            <div class="main-visual-telemetry">
+              <span class="telemetry-pill">
+                <span class="pulse-dot"></span>
+                <span>LAB TESTED · 2026 Q3 BENCHMARK</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="main-card-body">
+            <div class="meta-row">
+              <span class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="meta-icon">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                {mainPost.data.readTime || '15 分钟'}
+              </span>
+              <span class="meta-dot"></span>
+              <span class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="meta-icon">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                更新于 {formatDate(mainPost.data.updatedDate || mainPost.data.pubDate)}
+              </span>
+            </div>
+
+            <h1 class="main-card-title card-title">
+              {mainPost.data.title}
+            </h1>
+
+            <p class="main-card-desc">
+              {mainPost.data.description}
+            </p>
+
+            <div class="main-card-footer">
+              <span class="read-action">
+                查阅 2026 机场推荐天梯榜与测速大盘
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow-icon">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </a>
+      </article>
+
+      <!-- Right: 3 Vertical Secondary Cards with Visual Thumbnails -->
+      <div class="hero-side-column">
+        {sidePosts.map((post: any, idx: number) => (
+          <article class="card hero-side-card">
+            <a href={getPostUrl(post)} class="side-card-link">
+              <div class="side-card-thumb-wrap">
+                <img
+                  src={post.data.coverImage}
+                  alt={post.data.title}
+                  class="side-card-thumb-img"
+                  loading="lazy"
+                />
+                <span class="side-card-index">0{idx + 1}</span>
+              </div>
+              <div class="side-card-content">
+                <div class="meta-row">
+                  <Badge variant="blue" size="sm">{post.data.category}</Badge>
+                  <span class="meta-dot"></span>
+                  <span class="meta-item">{formatDate(post.data.pubDate)}</span>
+                </div>
+                <h2 class="side-card-title card-title">
+                  {post.data.title}
+                </h2>
+                <p class="side-card-desc">
+                  {post.data.description}
+                </p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-headlines {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1.35fr 1fr;
+    }
+  }
+
+  /* Left Main Card */
+  .hero-main-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  }
+
+  .hero-main-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(37, 99, 235, 0.4);
+    box-shadow: 0 12px 30px -8px rgba(37, 99, 235, 0.15);
+  }
+
+  .main-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .main-visual-wrap {
+    position: relative;
+    height: 260px;
+    background-color: #0B111A;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .main-visual-wrap {
+      height: 300px;
+    }
+  }
+
+  .main-cover-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+  }
+
+  .hero-main-card:hover .main-cover-img {
+    transform: scale(1.025);
+  }
+
+  .main-visual-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11, 17, 26, 0.2) 0%, rgba(11, 17, 26, 0.65) 100%);
+    pointer-events: none;
+  }
+
+  .main-top-badges {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .badge-glow {
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.6);
+  }
+
+  .main-visual-telemetry {
+    position: relative;
+    z-index: 2;
+  }
+
+  .telemetry-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    background-color: rgba(11, 17, 26, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: var(--radius-full);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #38BDF8;
+    font-family: ui-monospace, monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #10B981;
+    box-shadow: 0 0 8px #10B981;
+  }
+
+  .main-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.875rem;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .meta-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .meta-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: var(--border-medium);
+  }
+
+  .main-card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    margin: 0;
+    transition: color var(--transition-fast);
+  }
+
+  .hero-main-card:hover .main-card-title {
+    color: var(--primary);
+  }
+
+  .main-card-desc {
+    font-size: 0.9375rem;
+    color: var(--text-body);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .main-card-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .read-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+    transition: gap var(--transition-fast);
+  }
+
+  .hero-main-card:hover .read-action {
+    gap: 0.65rem;
+  }
+
+  .arrow-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Right Side Column */
+  .hero-side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hero-side-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+  }
+
+  .hero-side-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(37, 99, 235, 0.4);
+    box-shadow: 0 8px 20px -6px rgba(37, 99, 235, 0.12);
+  }
+
+  .side-card-link {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .side-card-link {
+      grid-template-columns: 120px 1fr;
+      padding: 1.15rem;
+    }
+  }
+
+  .side-card-thumb-wrap {
+    position: relative;
+    height: 85px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: #0B111A;
+    border: 1px solid var(--border-light);
+  }
+
+  .side-card-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-side-card:hover .side-card-thumb-img {
+    transform: scale(1.06);
+  }
+
+  .side-card-index {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgba(11, 17, 26, 0.85);
+    color: #38BDF8;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    font-family: ui-monospace, monospace;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .side-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .side-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text-main);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color var(--transition-fast);
+  }
+
+  .hero-side-card:hover .side-card-title {
+    color: var(--primary);
+  }
+
+  .side-card-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
