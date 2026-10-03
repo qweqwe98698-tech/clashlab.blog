@@ -1,0 +1,53 @@
+name: Auto Publish SEO/GEO Matrix Posts
+
+on:
+  schedule:
+    # 每 4 天在 UTC 02:00 (北京时间 10:00) 自动执行一次
+    - cron: '0 2 */4 * *'
+  workflow_dispatch: # 支持在 GitHub Actions 界面随时手动单次触发测试或发布
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Generate SEO/GEO Matrix Article (DeepSeek API + URL Anti-AI Inspector)
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: node scripts/auto-publish.mjs
+
+      - name: Verify build with Astro
+        run: npm run build
+
+      - name: Commit and push changes to GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 检查是否有新文章或选题状态变动
+          if [ -n "$(git status --porcelain)" ]; then
+            git add src/content/posts scripts/topic-registry.json
+            
+            # 【重要】严格遵照指令：删除 [skip ci]，确保正常触发外部 CI/CD (如 Cloudflare Pages 等) 自动构建
+            git commit -m "feat(content): publish new SEO/GEO matrix observatory article"
+            git push origin main
+            echo "✅ 成功将最新万字级 SEO/GEO 矩阵文章推送到 GitHub main 分支！"
+          else
+            echo "⚠️ 未检测到新内容变动，跳过推送。"
+          fi
