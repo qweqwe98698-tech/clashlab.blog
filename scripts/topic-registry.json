@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "system": "SEO Anti-AI URL Architecture & Content Matrix System",
-  "lastPublishedCluster": "benchmarking",
+  "lastPublishedCluster": "protocols",
   "clusterSequence": [
     "protocols",
     "infrastructure",
@@ -9,7 +9,23 @@
     "client-kernels",
     "benchmarking"
   ],
-  "publishedArticles": [],
+  "publishedArticles": [
+    {
+      "id": "proto-hysteria2-brisk",
+      "cluster": "protocols",
+      "slug": "hysteria2-congestion-control-brisk",
+      "title": "Hysteria2 协议底层架构深度剖析：自研 Brisk 拥塞控制与恶劣公网高丢包对抗实测",
+      "publishedAt": "2026-10-03T06:36:49.694Z",
+      "keywords": [
+        "Hysteria2 拥塞控制",
+        "Brisk 算法",
+        "UDP 丢包补偿",
+        "QUIC 协议栈",
+        "端口跳跃",
+        "弱网加速"
+      ]
+    }
+  ],
   "matrixPool": [
     {
       "id": "proto-hysteria2-brisk",
