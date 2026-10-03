@@ -1,4 +1,4 @@
----
+﻿---
 title: "sing-box 现代路由与核心架构实战"
 description: "新一代通用网络代理平台实战指南。从 JSON 规则结构、Outbounds 链式代理到多端 TUN 模式极速配置。"
 icon: "singbox"

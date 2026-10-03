@@ -1,4 +1,4 @@
----
+﻿---
 title: "客户端实战指南"
 description: "涵盖 Clash Verge Rev、sing-box、Shadowrocket、Hiddify 及 v2rayN 等全平台客户端的安装、TUN 接管与进阶调优配置。"
 icon: "Cpu"
@@ -9,7 +9,7 @@ category: "客户端教程"
 tags: ["Clash Verge Rev", "sing-box", "Shadowrocket", "Hiddify", "v2rayN", "TUN模式"]
 ---
 
-# 客户端实战指南专题
+## 客户端实战指南专题
 
 本专题汇聚了主流桌面端（Windows / macOS / Linux）与移动端（iOS / Android）顶级代理客户端的深度配置教程。
 

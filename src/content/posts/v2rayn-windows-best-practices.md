@@ -1,6 +1,6 @@
 ---
 coverImage: "/images/hero-singbox.svg"
-title: "v2rayN Windows 客户端 2026 最佳实践与多内核调优指南（Xray / sing-box / Mihomo 深度对比）"
+title: "v2rayN Windows 最佳实践与内核调优指南（Xray/sing-box/Mihomo）"
 description: "作为 Windows 上历史最悠久的通用代理工具，v2rayN 迎来内核多元化重构。全面解读 Xray、sing-box 与 Mihomo 三大内核无缝切换、TUN 虚拟网卡调优与高并发吞吐优化方案。"
 pubDate: 2026-02-05
 updatedDate: 2026-03-01

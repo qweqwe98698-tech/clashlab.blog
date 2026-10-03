@@ -1,4 +1,4 @@
----
+﻿---
 title: "代理协议演进与底层通信原理"
 description: "从 Shadowsocks 到 Hysteria 2 / TUIC v5。探索 TCP/UDP 传输差异、BBR 拥塞控制、DoH/DoT 与 Fake-IP 机制。"
 icon: "protocols"

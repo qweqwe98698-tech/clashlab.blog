@@ -1,6 +1,6 @@
 ---
 coverImage: "/images/hero-protocols.svg"
-title: "代理协议演进史：从 Shadowsocks 到 VLESS Reality、Hysteria2 与 TUIC 协议全解析"
+title: "代理协议演进史：Shadowsocks、VLESS Reality、Hysteria2 与 TUIC 解析"
 description: "全面梳理科学上网协议十余年进化史。深度剖析对称加密缺陷、TLS 伪装、uTLS 客户端指纹模拟、VLESS Reality 借证技术，以及基于 UDP/QUIC 的 Hysteria2 和 TUIC 吞吐革命。"
 pubDate: 2026-02-28
 updatedDate: 2026-03-10
