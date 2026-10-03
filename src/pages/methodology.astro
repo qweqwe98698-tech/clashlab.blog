@@ -1,0 +1,169 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="ClashLab 实测方法论与四层审计白皮书 (Methodology)"
+  description="详细公开 ClashLab 实验室针对全球跨境网络节点、骨干专线与协议客户端的四层客观测试标准、探针硬件环境与评测体系。"
+  tagline="TESTING STANDARDS & E-E-A-T"
+  breadcrumbCurrent="评测方法论"
+  maxWidth="920px"
+>
+  <div class="card methodology-card">
+    <div class="prose methodology-prose">
+      <h2>一、测评核心宗旨：用客观工程数据终结信息差</h2>
+      <p>
+        在跨境网络与代理协议生态中，普遍存在“白天测速虚标、晚高峰断流拥堵、公网直连冒充内网专线”等严重信息不对称乱象。
+        <strong>ClashLab (clashlab.blog)</strong> 坚守网络工程严谨性，所有数据均依托统一规范的物理硬件、自动化测试内核与严格的时间窗口实测获得。
+      </p>
+
+      <h2>二、四层实测审计体系 (Four-Layer Audit Architecture)</h2>
+
+      <div class="layers-container">
+        <div class="layer-box">
+          <div class="layer-header">
+            <span class="layer-tag">Layer 1</span>
+            <h3>物理链路与骨干拓扑审计</h3>
+          </div>
+          <p>
+            通过双向 MTR、Traceroute 与 ICMP Ping 抖动特征分析物理过境路由。严格鉴别是否为端到端运营商内网 IEPL/IPLC 物理光缆，剔除公网中转伪装专线的虚标线路，要求专线抖动 (Jitter) &lt; 2ms。
+          </p>
+        </div>
+
+        <div class="layer-box">
+          <div class="layer-header">
+            <span class="layer-tag">Layer 2</span>
+            <h3>黄金晚高峰满载压测 (20:00–23:00)</h3>
+          </div>
+          <p>
+            摒弃无参考价值的空闲时段跑分，测试全部集中于全网国际出口拥堵最严重的晚高峰时段。采用 32 线程高并发满载压测，准确记录单线程峰值吞吐量与持续丟包率，基准线要求丢包率 &le; 0.1%。
+          </p>
+        </div>
+
+        <div class="layer-box">
+          <div class="layer-header">
+            <span class="layer-tag">Layer 3</span>
+            <h3>原生风控属性与流媒体/AI 解锁</h3>
+          </div>
+          <p>
+            对落地节点 IP 进行纯净度与欺诈评分（Fraud Score）扫描。校验是否具备住宅/原生机房属性，验证 Netflix、Disney+ 4K/8K 超高清流媒体支持，以及对 OpenAI (ChatGPT) 和 Anthropic (Claude) 的高频交互解锁率。
+          </p>
+        </div>
+
+        <div class="layer-box">
+          <div class="layer-header">
+            <span class="layer-tag">Layer 4</span>
+            <h3>协议现代演进与客户端生态兼容</h3>
+          </div>
+          <p>
+            全面跟进现代代理通信协议标准，评估对 VLESS Reality、Shadowsocks 2022、Hysteria 2 及 TUIC v5 的支持程度，并验证在 Clash Verge Rev、sing-box、Shadowrocket 上的通用导入兼容性。
+          </p>
+        </div>
+      </div>
+
+      <h2>三、物理硬件与测试环境参数披露</h2>
+      <p>为了保证测试结果的可复现性与横向可比性，实验室规范了标准基准环境：</p>
+      <ul>
+        <li><strong>核心测试节点</strong>：广东珠海电信 / 联通双线机房 5Gbps 物理骨干集群接入。</li>
+        <li><strong>自动化内核</strong>：自研开源 MAI-TEST-BOT 2.0 压测引擎，杜绝人工主观干预。</li>
+        <li><strong>测试样本频率</strong>：每月开展例行集中批次压测，重要线路变动进行专项复核。</li>
+      </ul>
+
+      <h2>四、天梯梯队划分标准 (T1 / T2 / T3)</h2>
+      <ul>
+        <li><strong>T1 综合首选与旗舰专线</strong>：运营 3 年以上，IEPL 专线全覆盖，晚高峰丢包率 &le; 0.1%，支持 4K 秒开与主流 AI 工具原生解锁，具备完善工单与退款保障。</li>
+        <li><strong>T2 性价比主力专线</strong>：月均单价实惠（¥10-20/月），线路架构健全，偶尔有微小波动但自愈迅速，适合作为主力办公或流媒体日常方案。</li>
+        <li><strong>T3 便宜备用与不限时方案</strong>：起步月付 &le; ¥10 或提供永久不限时按量付费，核心价值在于低成本防跑路容灾与备用兜底。</li>
+      </ul>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .methodology-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .methodology-prose {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-body);
+  }
+
+  .methodology-prose h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .methodology-prose h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .layers-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (min-width: 640px) {
+    .layers-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .layer-box {
+    background-color: var(--bg-aux);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .layer-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  .layer-header h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .layer-box p {
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .methodology-prose ul {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .methodology-prose li {
+    margin-bottom: 0.5rem;
+  }
+</style>

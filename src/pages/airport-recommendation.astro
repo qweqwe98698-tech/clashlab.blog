@@ -50,10 +50,25 @@ const faqJsonLd = {
     }
   }))
 };
+
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  'name': '2026 机场推荐与梯队天梯排行榜',
+  'description': pageDescription,
+  'numberOfItems': brands.length,
+  'itemListElement': brands.map((b, idx) => ({
+    '@type': 'ListItem',
+    'position': idx + 1,
+    'name': `${b.name} (${b.englishName}) - ${b.tier} 梯队`,
+    'url': `https://clashlab.blog/brands/${b.slug}`
+  }))
+};
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />
 
   <div class="pillar-recommendation-page">
     <!-- Top Hero Section (#0B111A / #121A24) -->
@@ -492,7 +507,7 @@ const faqJsonLd = {
                       <a
                         href={b.commercial.affiliateUrl}
                         target="_blank"
-                        rel="noopener noreferrer nofollow"
+                        rel="nofollow sponsored noopener"
                         class="btn-table-action"
                       >
                         注册直达
@@ -502,6 +517,11 @@ const faqJsonLd = {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          <div class="affiliate-table-note">
+            <span class="note-icon">ℹ️</span>
+            <span><strong>推广透明度披露：</strong>本站包含读者专属优惠折扣与推广返利链接。通过链接访问订阅可能为 ClashLab 带来佣金支持以维持 5Gbps 测速探针运营，绝不影响您的最终付款金额。详见 <a href="/affiliate-disclosure">《推广披露声明》</a> 与 <a href="/methodology">《评测方法论》</a>。</span>
           </div>
         </div>
       </section>
@@ -711,6 +731,24 @@ const faqJsonLd = {
 </BaseLayout>
 
 <style>
+  .affiliate-table-note {
+    margin-top: 1rem;
+    padding: 0.85rem 1.25rem;
+    background-color: var(--bg-aux);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    line-height: 1.6;
+  }
+  .affiliate-table-note a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+
   /* Pillar Hero */
   .pillar-hero {
     padding: 3.5rem 0 3rem;

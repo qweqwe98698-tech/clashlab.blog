@@ -1,0 +1,89 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="推广与返利透明披露声明 (Affiliate Disclosure)"
+  description="ClashLab 实验室关于商业推广链接、返利佣金机制、评测中立性与用户零加价承诺之完整法律披露文件。"
+  tagline="TRANSPARENCY & DISCLOSURE"
+  breadcrumbCurrent="推广披露声明"
+  maxWidth="860px"
+>
+  <div class="card legal-card">
+    <div class="prose legal-prose">
+      <h2>一、商业模式与推广返利声明</h2>
+      <p>
+        <strong>ClashLab (clashlab.blog)</strong> 坚守开源透明与客观中立的技术原则。为了维持实验室日常高昂的运营开销（包括 5Gbps 骨干测试专线采购、全国多省分布式监控探针服务器托管以及 MAI-TEST-BOT 自动化压测集群维护），本网站部分文章与品牌推荐中包含商业推广链接（即 Affiliate Links / 推广返利链接）。
+      </p>
+      <p>
+        当您通过本站提供的推广链接或专属优惠券码访问第三方服务商并产生有效付费订阅时，服务商可能会向 ClashLab 支付一定比例的推广佣金。
+      </p>
+
+      <h2>二、零加价与优惠保障承诺</h2>
+      <p>
+        我们郑重承诺：<strong>通过本站的推广链接或优惠码进行订阅，绝对不会增加您的任何付款金额</strong>。
+      </p>
+      <ul>
+        <li>您支付的实际价格与直接在服务商官网购买完全一致，或因使用了 ClashLab 读者专属优惠券码而享受更低的折上折优惠。</li>
+        <li>我们绝不在推广链接中植入任何形式的隐式加价、价格歧视或强制搭售条款。</li>
+      </ul>
+
+      <h2>三、评测中立性与评分隔离机制</h2>
+      <p>
+        根据 ClashLab 实验室的《四层实测审计白皮书》规范，<strong>商业合作机制与技术评测打分完全物理隔离</strong>：
+      </p>
+      <ul>
+        <li><strong>实测数据不可交易</strong>：所有晚高峰丢包率、单线程最高吞吐量、平均延迟等指标，均由自动化探针实机抓取，任何商业合作或返利比例高低均无法影响客观实测数据与图表真实性。</li>
+        <li><strong>天梯排名依据工程指标</strong>：品牌的 T1 / T2 / T3 梯队划分严格基于线路物理架构（IEPL专线占比）、晚高峰 QoS 表现及运营年限，绝不存在“因支付佣金而提高评级”的赞助排名行为。</li>
+        <li><strong>黑名单与避坑警示</strong>：对于发生跑路、持续严重超售或虚假宣传公网中转伪装专线的服务商，无论其佣金政策如何，本站一律下调评级或列入避坑黑名单。</li>
+      </ul>
+
+      <h2>四、无隶属独立关系声明</h2>
+      <p>
+        ClashLab 是独立的计算机网络技术研究实验室与第三方观测平台，与所评测的任何第三方网络加速服务商、机场运营商均<strong>不存在任何股权归属、雇佣劳务或共同经营关系</strong>。
+      </p>
+      <p>
+        第三方服务商的产品稳定性、网络节点可用性及退款纠纷均由该服务商独立承担法律主体责任。
+      </p>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .legal-card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 2.25rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .legal-prose {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-body);
+  }
+
+  .legal-prose h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .legal-prose h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .legal-prose ul {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .legal-prose li {
+    margin-bottom: 0.5rem;
+  }
+</style>

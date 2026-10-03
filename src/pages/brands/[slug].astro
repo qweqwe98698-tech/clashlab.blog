@@ -311,7 +311,7 @@ const faqSchema = {
                 <a
                   href={brand.affiliateUrl}
                   target="_blank"
-                  rel="noopener noreferrer nofollow"
+                  rel="nofollow sponsored noopener"
                   class="btn btn-primary btn-lg hero-register-btn"
                 >
                   <span>立即前往 {brand.name} 官网</span>
@@ -435,6 +435,8 @@ const faqSchema = {
                     src={brand.speedtest.image}
                     alt={`${brand.name} 2026 节点测速实测截图，包含地区、协议、延迟与速度结果`}
                     class="speedtest-img"
+                    width="800"
+                    height="450"
                     loading="lazy"
                   />
                 </button>
@@ -538,7 +540,7 @@ const faqSchema = {
                     <a
                       href={brand.affiliateUrl}
                       target="_blank"
-                      rel="noopener noreferrer nofollow"
+                      rel="nofollow sponsored noopener"
                       class={`btn ${plan.isPopular ? 'btn-primary' : 'btn-secondary'} btn-block`}
                     >
                       选购此套餐 ↗
@@ -798,7 +800,7 @@ const faqSchema = {
                 <a
                   href={brand.affiliateUrl}
                   target="_blank"
-                  rel="noopener noreferrer nofollow"
+                  rel="nofollow sponsored noopener"
                   class="btn btn-primary btn-lg bcc-main-btn"
                 >
                   <span>立即前往 {brand.name} 官网注册</span>
@@ -882,7 +884,7 @@ const faqSchema = {
       <button type="button" class="btn btn-secondary btn-sm msb-copy" data-coupon={brand.couponCode}>
         码: {brand.couponCode}
       </button>
-      <a href={brand.affiliateUrl} target="_blank" rel="noopener noreferrer nofollow" class="btn btn-primary btn-sm msb-buy">
+      <a href={brand.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary btn-sm msb-buy">
         直达官网 ↗
       </a>
     </div>

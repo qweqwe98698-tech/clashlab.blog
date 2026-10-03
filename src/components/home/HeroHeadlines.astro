@@ -91,6 +91,8 @@ const getPostUrl = (post: any) => {
               src={mainPost.data.coverImage || '/images/hero-airport-2026.svg'}
               alt={mainPost.data.title}
               class="main-cover-img"
+              width="800"
+              height="450"
               loading="eager"
             />
             <div class="main-visual-overlay"></div>
@@ -160,6 +162,8 @@ const getPostUrl = (post: any) => {
                   src={post.data.coverImage}
                   alt={post.data.title}
                   class="side-card-thumb-img"
+                  width="180"
+                  height="120"
                   loading="lazy"
                 />
                 <span class="side-card-index">0{idx + 1}</span>

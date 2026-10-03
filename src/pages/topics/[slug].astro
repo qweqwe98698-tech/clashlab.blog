@@ -50,6 +50,12 @@ const relatedPosts = allPosts.filter((p) => {
   if (topicSlug.includes('protocol')) {
     return p.data.category === '协议与原理' || title.includes('协议') || title.includes('dns');
   }
+  if (topicSlug.includes('shadowrocket')) {
+    return title.includes('shadowrocket') || title.includes('小火箭') || title.includes('ios') || tags.includes('shadowrocket');
+  }
+  if (topicSlug.includes('safety') || topicSlug.includes('network-safety')) {
+    return p.data.category === '避坑指南' || title.includes('避坑') || title.includes('排查') || title.includes('超时');
+  }
   return true;
 });
 
