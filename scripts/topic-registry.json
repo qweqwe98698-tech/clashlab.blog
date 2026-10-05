@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "system": "SEO Anti-AI URL Architecture & Content Matrix System",
-  "lastPublishedCluster": "protocols",
+  "lastPublishedCluster": "infrastructure",
   "clusterSequence": [
     "protocols",
     "infrastructure",
@@ -23,6 +23,21 @@
         "QUIC 协议栈",
         "端口跳跃",
         "弱网加速"
+      ]
+    },
+    {
+      "id": "infra-iplc-jitter-sla",
+      "cluster": "infrastructure",
+      "slug": "iplc-iepl-jitter-sla",
+      "title": "跨境 IPLC 与 IEPL 专线架构全景透视：晚高峰抖动控制、丢包率与企业级 SLA 真实量测",
+      "publishedAt": "2026-10-05T08:41:53.277Z",
+      "keywords": [
+        "IPLC IEPL 专线",
+        "晚高峰抖动",
+        "跨境专线 SLA",
+        "二层物理链路",
+        "内网互联",
+        "丢包率实测"
       ]
     }
   ],
