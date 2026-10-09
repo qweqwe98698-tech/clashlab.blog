@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "system": "SEO Anti-AI URL Architecture & Content Matrix System",
-  "lastPublishedCluster": "infrastructure",
+  "lastPublishedCluster": "security-risk",
   "clusterSequence": [
     "protocols",
     "infrastructure",
@@ -38,6 +38,21 @@
         "二层物理链路",
         "内网互联",
         "丢包率实测"
+      ]
+    },
+    {
+      "id": "sec-chatgpt-fraud-score",
+      "cluster": "security-risk",
+      "slug": "chatgpt-claude-fraud-score",
+      "title": "AI 服务风控机制全景透视：FraudScore 欺诈评分、数据中心 IP 标记与安全伪装指南",
+      "publishedAt": "2026-10-09T08:43:12.588Z",
+      "keywords": [
+        "ChatGPT 风控规避",
+        "FraudScore",
+        "Claude 封号防御",
+        "住宅 IP 纯净度",
+        "Cloudflare Turnstile",
+        "IP2Location"
       ]
     }
   ],
