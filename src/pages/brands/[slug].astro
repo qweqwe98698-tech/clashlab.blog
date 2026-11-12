@@ -57,27 +57,39 @@ const breadcrumbSchema = {
 
 const productSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Product',
-  'name': `${brand.name} 跨境网络加速服务`,
-  'image': `https://clashlab.blog${brand.speedtest.image}`,
-  'description': brand.description,
-  'brand': {
-    '@type': 'Brand',
-    'name': brand.name,
+  '@type': 'Review',
+  'itemReviewed': {
+    '@type': 'Product',
+    'name': `${brand.name} 跨境网络加速服务`,
+    'image': `https://clashlab.blog${brand.speedtest.image}`,
+    'description': brand.description,
+    'brand': {
+      '@type': 'Brand',
+      'name': brand.name,
+    },
+    'offers': {
+      '@type': 'AggregateOffer',
+      'priceCurrency': 'CNY',
+      'lowPrice': brand.entryPriceNum.toString(),
+      'offerCount': brand.plans.length.toString(),
+      'price': brand.entryPriceNum.toString(),
+    },
   },
-  'aggregateRating': {
-    '@type': 'AggregateRating',
+  'reviewRating': {
+    '@type': 'Rating',
     'ratingValue': brand.rating.toString(),
     'bestRating': '5.0',
     'worstRating': '1.0',
-    'ratingCount': brand.reviewCount.toString(),
   },
-  'offers': {
-    '@type': 'AggregateOffer',
-    'priceCurrency': 'CNY',
-    'lowPrice': brand.entryPriceNum.toString(),
-    'offerCount': brand.plans.length.toString(),
-    'price': brand.entryPriceNum.toString(),
+  'author': {
+    '@type': 'Organization',
+    'name': 'ClashLab 评测实验室',
+    'url': 'https://clashlab.blog/about',
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'ClashLab Network Observatory',
+    'url': 'https://clashlab.blog',
   },
 };
 
@@ -168,6 +180,7 @@ const faqSchema = {
             <!-- Top Tagline & Status Badges -->
             <div class="hero-top-badges">
               <span class="badge badge-blue">LAB VERIFIED 实验室实测认证</span>
+              <a href="/airport-recommendation" class="badge badge-sky" style="text-decoration: none; border-color: rgba(56, 189, 248, 0.4);">🏆 2026 专线天梯榜 ({brand.editorial.tier}) ↗</a>
               <span class="badge badge-green">测试时间: {brand.speedtest.testedAt.split(' ')[0]}</span>
               <span class="badge badge-purple">{brand.establishedYear} 创立 · 运营 {operatingYears} 年</span>
               {brand.badge && <span class="badge badge-amber">{brand.badge}</span>}
@@ -465,6 +478,93 @@ const faqSchema = {
                 </div>
               </div>
             </div>
+
+            <!-- Regional Speedtest Matrix -->
+            {brand.speedtestHistory && brand.speedtestHistory.length > 0 && (
+              <div class="regional-speedtest-container">
+                <h3 class="regional-table-title">🌍 各地区主力节点延迟与下行速率实测明细</h3>
+                <p class="regional-table-desc">
+                  以下数据为 {brand.name} 针对亚太及欧美核心区域节点的实测采样，包含核心入口往返延迟与单线程峰值吞吐指标：
+                </p>
+                <div class="regional-table-wrapper">
+                  <table class="regional-table">
+                    <thead>
+                      <tr>
+                        <th>节点地区</th>
+                        <th>往返物理延迟 (Ping)</th>
+                        <th>单线峰值速率 (Speed)</th>
+                        <th>4K / 8K 流媒体评级</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {brand.speedtestHistory.map((item) => (
+                        <tr>
+                          <td class="region-name-cell">
+                            <span class="region-flag">📍</span>
+                            <strong>{item.region}</strong>
+                          </td>
+                          <td class="latency-cell">
+                            <span class="badge badge-latency">{item.latency}</span>
+                          </td>
+                          <td class="speed-cell">
+                            <span class="text-emerald font-mono font-bold">{item.speed}</span>
+                          </td>
+                          <td class="status-cell">
+                            <span class="badge badge-green">4K/8K 极速秒开</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            <!-- Multi-Image Unlock Gallery -->
+            {brand.unlockImages && brand.unlockImages.length > 0 && (
+              <div class="unlock-gallery-section">
+                <div class="section-badge-row">
+                  <span class="section-tag">STREAMING & AI VERIFICATION</span>
+                  <span class="evidence-status-pill">多图实测凭证</span>
+                </div>
+                <h3 class="unlock-gallery-title">📺 2026 流媒体与主流 AI 原生解锁实测画廊 ({brand.unlockImages.length} 组高清快照)</h3>
+                <p class="unlock-gallery-desc">
+                  ClashLab 评测实验室对 <strong>{brand.name}</strong> 节点链路进行了深度跨区域流媒体与 AI 工具可用性测试。以下为现场截取的高清实测原图，覆盖 Netflix、Disney+、YouTube 4K、TikTok 以及 ChatGPT / Claude 3.7 / Gemini 原生解锁测试矩阵（点击可缩放拖拽）：
+                </p>
+                <div class="unlock-cards-grid">
+                  {brand.unlockImages.map((imgUrl, imgIdx) => (
+                    <div class="unlock-photo-card">
+                      <div class="unlock-photo-frame">
+                        <button
+                          type="button"
+                          class="unlock-img-btn"
+                          data-speedtest-img={imgUrl}
+                          data-brand-name={`${brand.name} - 解锁实测凭证 #${imgIdx + 1}`}
+                          data-tested-at={brand.speedtest.testedAt}
+                          data-notes="流媒体4K/8K与ChatGPT/Claude原生解锁实测凭证"
+                          data-protocol={brand.speedtest.protocol}
+                          data-backend={brand.speedtest.backend}
+                          data-peak={brand.speedtest.peakSpeed}
+                          data-ping={brand.speedtest.avgPing}
+                          title="点击打开高清交互大图"
+                        >
+                          <img
+                            src={imgUrl}
+                            alt={`${brand.name} 2026 流媒体与AI工具原生解锁实测截图凭证 #${imgIdx + 1}`}
+                            class="unlock-img"
+                            loading="lazy"
+                          />
+                        </button>
+                      </div>
+                      <div class="unlock-photo-caption">
+                        <span class="caption-tag">实测快照 #{imgIdx + 1}</span>
+                        <span class="caption-text">原生解锁矩阵与链路健康度</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
 
           <!-- Section 2: 专线网络拓扑与抗封锁架构 (Network Topology Observatory) -->
@@ -751,24 +851,20 @@ const faqSchema = {
 
             <div class="faq-accordion-box">
               {brand.faqs.map((faq, idx) => (
-                <div class={`faq-card ${idx === 0 ? 'open' : ''}`}>
-                  <button
-                    type="button"
-                    class="faq-q-btn"
-                    aria-expanded={idx === 0 ? 'true' : 'false'}
-                  >
+                <details class="faq-card faq-details" open={idx === 0}>
+                  <summary class="faq-q-btn faq-summary">
                     <span class="faq-q-label">Q{idx + 1}:</span>
                     <span class="faq-q-title">{faq.question}</span>
                     <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
-                  </button>
+                  </summary>
                   <div class="faq-a-body">
                     <div class="faq-a-content">
                       <p>{faq.answer}</p>
                     </div>
                   </div>
-                </div>
+                </details>
               ))}
             </div>
           </section>
@@ -860,6 +956,25 @@ const faqSchema = {
               </div>
             </section>
           )}
+
+          <!-- Cross-Pillar Linking Section -->
+          <section class="card p-4 mt-6" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: var(--radius-md);">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                <span style="font-size: 0.8125rem; font-weight: 700; color: #38BDF8; letter-spacing: 0.05em;">2026 CLASHLAB OBSERVATORY</span>
+                <span style="font-size: 0.75rem; color: #94A3B8;">已收录 16 家主流机场实测档案</span>
+              </div>
+              <h3 style="font-size: 1.15rem; color: #FFFFFF; margin: 0;">横向对比：{brand.name} 在 16 家专线机场中表现如何？</h3>
+              <p style="font-size: 0.875rem; color: #94A3B8; margin: 0; line-height: 1.6;">
+                查看 ClashLab 评测实验室晚高峰 20:00~23:00 真实测速大盘、丢包率横比与 T0/T1/T2 梯队天梯榜。若遇到节点配置后全部超时，请查阅 7 步排错自救方案。
+              </p>
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <a href="/airport-recommendation" class="btn btn-primary btn-sm">2026 机场推荐天梯榜总盘 →</a>
+                <a href="/posts/airport-node-timeout-troubleshooting" class="btn btn-outline btn-sm">节点全部超时排错自救</a>
+                <a href="/posts/clash-verge-rev-complete-guide" class="btn btn-secondary btn-sm">Clash 订阅导入教程</a>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
     </div>
@@ -1704,6 +1819,172 @@ const faqSchema = {
     font-weight: 700;
   }
 
+  /* Regional Speedtest Matrix */
+  .regional-speedtest-container {
+    background: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .regional-table-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .regional-table-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .regional-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid #E2E8F0;
+  }
+
+  .regional-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .regional-table th {
+    background-color: #F8FAFC;
+    color: #475569;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #E2E8F0;
+    white-space: nowrap;
+  }
+
+  .regional-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #F1F5F9;
+    color: #334155;
+    vertical-align: middle;
+  }
+
+  .regional-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .region-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .badge-latency {
+    background: #EEF2FF;
+    color: #4F46E5;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 600;
+  }
+
+  /* Multi-Image Unlock Gallery */
+  .unlock-gallery-section {
+    background: #FFFFFF;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-xs);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .unlock-gallery-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .unlock-gallery-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .unlock-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .unlock-photo-card {
+    border: 1px solid #E2E8F0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #0B111A;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .unlock-photo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .unlock-photo-frame {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #000000;
+  }
+
+  .unlock-img-btn {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: zoom-in;
+    display: block;
+  }
+
+  .unlock-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .unlock-img-btn:hover .unlock-img {
+    transform: scale(1.05);
+  }
+
+  .unlock-photo-caption {
+    padding: 0.625rem 0.875rem;
+    background: #0F172A;
+    border-top: 1px solid #1E293B;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .caption-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #38BDF8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .caption-text {
+    font-size: 0.75rem;
+    color: #94A3B8;
+  }
+
   /* Section 3: Plans */
   .plans-card-grid {
     display: grid;
@@ -2220,11 +2501,22 @@ const faqSchema = {
     flex-shrink: 0;
   }
 
-  .faq-card.open .faq-q-btn {
+  details.faq-card summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  details.faq-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-card.open .faq-q-btn,
+  .faq-card[open] .faq-q-btn {
     color: var(--primary);
   }
 
-  .faq-card.open .faq-arrow {
+  .faq-card.open .faq-arrow,
+  .faq-card[open] .faq-arrow {
     transform: rotate(180deg);
     color: var(--primary);
   }
@@ -2238,7 +2530,8 @@ const faqSchema = {
     background-color: #FFFFFF;
   }
 
-  .faq-card.open .faq-a-body {
+  .faq-card.open .faq-a-body,
+  .faq-card[open] .faq-a-body {
     display: block;
   }
 

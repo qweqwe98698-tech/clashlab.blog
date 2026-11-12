@@ -26,8 +26,8 @@ faqs:
 cta:
   title: "寻找高性价比或主力高可用专线？"
   description: "查看 ClashLab 2026 完整机场排行榜，包含 16 品牌晚高峰详细测速数据与选购指南。"
-  buttonText: "查看完整排行榜"
-  buttonLink: "/posts/2026-airport-recommendation-ranking"
+  buttonText: "查看 2026 专线机场天梯榜"
+  buttonLink: "/airport-recommendation"
 ---
 
 > [!NOTE] 核心结论速览 (BLUF)

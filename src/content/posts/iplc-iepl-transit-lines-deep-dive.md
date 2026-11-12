@@ -1,7 +1,7 @@
 ---
 coverImage: "/images/hero-iplc.svg"
 title: "深度解析：IPLC 专线与 IEPL 专线有什么区别？机场内网专线全景图与成本真相"
-description: "从物理光缆、OSI 协议层到跨境 SLA 服务保障，全面拆解 IPLC 与 IEPL 专线底层工作原理。深度对比 BGP 公网中转、直连线路与内网专线的延迟抖动及真伪鉴别方法。"
+description: "从海底光缆拓扑、OSI 协议层到跨境运营商成本模型，全面对比 IPLC 与 IEPL 专线本质区别。曝光机场内网专线全景图、BGP 入口假专线鉴别技巧与带宽真实成本。"
 pubDate: 2026-03-05
 updatedDate: 2026-03-12
 author: "网络架构研究员"

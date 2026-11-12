@@ -43,7 +43,7 @@ const clients = [
     badge: 'Windows 经典老牌',
     desc: 'Windows 平台广受赞誉的开源客户端，支持 Xray-core 与 sing-box 双内核无缝切换，节点批量测试与延迟排序极其便利。',
     github: 'https://github.com/2dust/v2rayN',
-    tutorialArticle: '/posts/sing-box-universal-proxy-configuration',
+    tutorialArticle: '/posts/v2rayn-windows-best-practices',
     features: ['支持双内核无缝热切换', '支持大批量节点一键连通性测速', '自定义路由分流规则', '支持 Socks5/HTTP 多端口监听'],
   },
   {
@@ -53,7 +53,7 @@ const clients = [
     badge: '新手友好 · 开箱即用',
     desc: '基于 Flutter 打造的现代化跨平台代理客户端，UI 清新优雅，针对新手用户提供了极简的一键连接与协议自动识别。',
     github: 'https://github.com/hiddify/hiddify-next',
-    tutorialArticle: '/posts/sing-box-universal-proxy-configuration',
+    tutorialArticle: '/posts/hiddify-next-multi-platform-tutorial',
     features: ['优雅现代化的多语言 UI', '全平台统一的操作交互', '内置智能负载均衡与自动优选', '开箱即用，零配置门槛'],
   },
 ];
@@ -79,12 +79,27 @@ const faqs = [
 ---
 
 <PageLayout
-  title="客户端配置与教程大全"
-  description="全平台主流网络代理客户端完全手册：涵盖 Clash Verge Rev、sing-box 与 Shadowrocket 从零上手、TUN 虚拟网卡与疑难排障指南。"
+  title="2026 代理客户端教程大全：Clash Verge Rev、小火箭、sing-box、Hiddify 下载与配置手册"
+  description="ClashLab 2026 客户端终极指南：覆盖 Clash Verge Rev (Mihomo)、Shadowrocket (iOS 小火箭)、sing-box、Hiddify Next 与 v2rayN 下载安装、订阅节点导入、TUN 模式开启与节点全部超时排查实战。"
   tagline="CLIENT TUTORIAL DIRECTORY"
   breadcrumbCurrent="客户端教程"
 >
   <div class="tutorials-page-wrap">
+    <!-- Quick Action / Troubleshooting Banner -->
+    <div class="card p-4 mb-4" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(14, 165, 233, 0.05) 100%); border-left: 4px solid var(--primary-color);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+        <div>
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--primary-color); letter-spacing: 0.05em;">HIGH PRIORITY TROUBLESHOOTING</span>
+          <h3 style="margin: 0.25rem 0; font-size: 1.15rem; color: #FFFFFF;">客户端节点测试全红、TIMEOUT 或打不开网页？</h3>
+          <p style="margin: 0; font-size: 0.875rem; color: #94A3B8;">排查系统时间偏差、Chrome 报 ERR_CONNECTION_TIMED_OUT、TUN 网卡死锁及节点失效问题。</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="/posts/airport-node-timeout-troubleshooting" class="btn btn-primary btn-sm">7步超时排查指南 →</a>
+          <a href="/airport-recommendation" class="btn btn-outline btn-sm">2026 稳定专线推荐</a>
+        </div>
+      </div>
+    </div>
+
     <!-- Intro Card -->
     <div class="tutorials-intro-box">
       <h2 class="tutorials-intro-title">选对客户端，事半功倍</h2>

@@ -26,3 +26,4 @@ Thumbs.db
 
 # temporary build artifacts
 *.tsbuildinfo
+scratch/

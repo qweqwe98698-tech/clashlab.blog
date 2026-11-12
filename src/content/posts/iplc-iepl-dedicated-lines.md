@@ -1,6 +1,6 @@
 ---
 title: "IPLC 与 IEPL 专线中转原理解析：为什么游戏与实时通信更需要专线？"
-description: "从物理光缆、OSI 协议层到跨境 SLA 服务保障，全面拆解 IPLC 与 IEPL 专线底层工作原理。深度对比 BGP 公网中转、直连线路与内网专线的延迟抖动及真伪鉴别方法。"
+description: "深入探讨 IPLC 与 IEPL 专线在游戏联机与实时语音通信中的低延迟抖动优势。解析内网二层直连如何规避公网 QoS 丢包、队头拥塞与丢帧跳 ping，提供硬核技术选线指南。"
 pubDate: 2026-07-25
 updatedDate: 2026-08-16
 author: "网络基建小组"

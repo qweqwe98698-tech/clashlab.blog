@@ -16,13 +16,23 @@ interface Props {
 const {
   title = 'ClashLab - 网络协议、代理客户端与网络加速技术实验室',
   description = 'ClashLab (clashlab.blog) 专注网络协议演进、主流代理客户端配置手册 (Clash Verge Rev, sing-box, Shadowrocket) 与全球跨境网络基础设施深度客观评测。',
-  canonical = Astro.url.href,
+  canonical,
   image = '/images/og-default.jpg',
   type = 'website',
   publishDate,
 } = Astro.props;
 
 const siteName = 'ClashLab';
+const siteOrigin = 'https://clashlab.blog';
+const cleanPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const normalizedCanonical = canonical
+  ? (canonical.startsWith('http') ? canonical : `${siteOrigin}${canonical.startsWith('/') ? canonical : '/' + canonical}`)
+  : `${siteOrigin}${cleanPath === '/' ? '/' : cleanPath + '/'}`;
+
+const normalizedImage = image.startsWith('http')
+  ? image
+  : `${siteOrigin}${image.startsWith('/') ? image : '/' + image}`;
+
 const formattedTitle = title.includes('ClashLab') ? title : `${title} | ${siteName}`;
 
 const jsonLd = {
@@ -30,7 +40,7 @@ const jsonLd = {
   '@type': type === 'article' ? 'TechArticle' : 'WebSite',
   'name': title,
   'headline': formattedTitle,
-  'url': canonical,
+  'url': normalizedCanonical,
   'description': description,
   'inLanguage': 'zh-CN',
   'publisher': {
@@ -58,22 +68,22 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{formattedTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={normalizedCanonical} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:url" content={normalizedCanonical} />
     <meta property="og:title" content={formattedTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={normalizedImage} />
     <meta property="og:site_name" content={siteName} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonical} />
+    <meta property="twitter:url" content={normalizedCanonical} />
     <meta property="twitter:title" content={formattedTitle} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={image} />
+    <meta property="twitter:image" content={normalizedImage} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

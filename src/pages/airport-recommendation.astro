@@ -7,8 +7,8 @@ import SpeedtestLightbox from '../components/brands/SpeedtestLightbox.astro';
 import DataDisclosureModal from '../components/brands/DataDisclosureModal.astro';
 import { brands } from '../data/brands';
 
-const pageTitle = '2026 机场推荐与梯队天梯排行榜 - 16家专线机场实测选购终极指南';
-const pageDescription = 'ClashLab 2026 机场推荐年度横评专题。基于 16 家主流机场实测测速截图归档、专线骨干链路架构、晚高峰抗抖动测试与流媒体/AI解锁表现，深度评定 T1/T2/T3 梯队天梯图，提供场景决策树与4大避坑法则。';
+const pageTitle = '机场推荐：2026 顶级专线机场天梯排行榜与避坑选购指南（42家实测大盘）';
+const pageDescription = 'ClashLab 2026 机场推荐与顶级专线横评总榜：基于 42 家主流机场晚高峰实测测速、真内网 IPLC/IEPL 专线架构与 ChatGPT/4K 解锁能力，划定 T0/T1/T2/T3 梯队天梯图，提供防跑路月付法则与小白选购决策。';
 
 // Real dynamic tier classification from brands data
 const t1Brands = brands.filter((b) => b.tier === 'T1' || b.editorial?.tier === 'T1');
@@ -16,6 +16,10 @@ const t2Brands = brands.filter((b) => b.tier === 'T2' || b.editorial?.tier === '
 const t3Brands = brands.filter((b) => b.tier === 'T3' || b.editorial?.tier === 'T3');
 
 const faqList = [
+  {
+    q: '什么是顶级专线机场？与普通公网中转机场有何本质差距？',
+    a: '顶级专线机场（如光速云、速界）具备三大基建特征：① 采用纯内网物理 IPLC/IEPL 专线过境，数据不过 GFW 公网路由，20:00~23:00 晚高峰丢包率接近 0.0%；② 部署华东（上海）、华南（广州）、华北（北京）三网多线 BGP 冗余入口，入口 IP 自动熔断热备；③ 提供纯净原生/住宅落地 IP 池，稳定支持 ChatGPT、Claude 3.7 与 Netflix 4K 免验证码访问。'
+  },
   {
     q: '为什么一定要坚持「月付上车」原则？',
     a: '跨境网络基础设施受机房网络政策、上游运营商结算、入口 IP 阻断以及服务商资金链等多重不可控因素影响。月付模式能将试错成本降至最低（通常仅需十几元），一旦遇到服务商线路降级、持续拥堵或运营异常，可随时切换，避免年付沉没成本风险。'
@@ -88,14 +92,14 @@ const itemListJsonLd = {
         </h1>
 
         <p class="pillar-subtitle">
-          拒绝虚假营销与盲目吹捧。基于 ClashLab 实验室 16 家主流机场实机测速图档归档、物理专线骨干链路、晚高峰抗 QoS 抖动与现代协议代际，建立客观透明的 T1/T2/T3 梯队索引与场景匹配方案。
+          拒绝虚假营销与盲目吹捧。基于 ClashLab 实验室 42 家主流机场实机测速图档归档、物理专线骨干链路、晚高峰抗 QoS 抖动与现代协议代际，建立客观透明的 T1/T2/T3 梯队索引与场景匹配方案。
         </p>
 
         <!-- Key Observatory Telemetry Strip -->
         <div class="hero-telemetry-strip">
           <div class="telemetry-item">
             <span class="t-k">收录样本</span>
-            <span class="t-v">16 品牌已归档</span>
+            <span class="t-v">42 品牌已归档</span>
           </div>
           <div class="telemetry-sep"></div>
           <div class="telemetry-item">
@@ -121,9 +125,10 @@ const itemListJsonLd = {
             <a href="#ai-overview" class="quick-nav-link">AI 核心结论速览</a>
             <a href="#tier-system" class="quick-nav-link">梯队天梯榜</a>
             <a href="#decision-tree" class="quick-nav-link">场景决策树</a>
-            <a href="#master-table" class="quick-nav-link">16品牌横评总表</a>
+            <a href="#master-table" class="quick-nav-link">42品牌横评总表</a>
             <a href="#safety-rules" class="quick-nav-link">4大避坑铁律</a>
-            <a href="#decision-framework" class="quick-nav-link">选购4大维度</a>
+            <a href="/posts/2026-airport-recommendation-ranking" class="quick-nav-link" style="color: #38BDF8; font-weight: 600;">📖 万字深度测速横评</a>
+            <a href="/posts/airport-node-timeout-troubleshooting" class="quick-nav-link" style="color: #F87171; font-weight: 600;">⚡ 节点超时排错自救</a>
             <a href="#faq" class="quick-nav-link">常见问题解答</a>
           </div>
         </nav>
@@ -139,7 +144,7 @@ const itemListJsonLd = {
           <span class="section-tag">TIER SYSTEM BENCHMARK</span>
           <h2 class="section-title">2026 机场推荐梯队排行榜 (天梯图)</h2>
           <p class="section-desc">
-            综合品牌运营年限、IEPL 物理专线质量、晚高峰抗抖动实测数据、VLESS 协议支持及售后保障，将 16 家收录品牌划分为三大核心梯队：
+            综合品牌运营年限、IEPL 物理专线质量、晚高峰抗抖动实测数据、VLESS 协议支持及售后保障，将 42 家收录品牌划分为三大核心梯队：
           </p>
         </div>
 
@@ -155,7 +160,7 @@ const itemListJsonLd = {
               </span>
               <span class="ai-source-tag">AI Overview &amp; Executive Summary · 30秒决策结论</span>
             </div>
-            <span class="ai-benchmark-tag">16 品牌物理实测数据提炼</span>
+            <span class="ai-benchmark-tag">42 品牌物理实测数据提炼</span>
           </div>
 
           <div class="ai-summary-content-grid">
@@ -418,9 +423,9 @@ const itemListJsonLd = {
       <section id="master-table" class="pillar-section">
         <div class="section-title-wrap">
           <span class="section-tag">COMPREHENSIVE MASTER MATRIX</span>
-          <h2 class="section-title">16 家主流专线机场实测参数横评总表</h2>
+          <h2 class="section-title">42 家主流专线机场实测参数横评总表</h2>
           <p class="section-desc">
-            全量汇聚 16 家品牌的基础资费、协议支持、实测单线最高速率、专属优惠码与直达官网注册通道：
+            全量汇聚 42 家品牌的基础资费、协议支持、实测单线最高速率、专属优惠码与直达官网注册通道：
           </p>
         </div>
 
@@ -712,7 +717,7 @@ const itemListJsonLd = {
           <p>前往 ClashLab 机场品牌库，享受实时条件过滤与完整 2026-08 测速实测图档高清单击预览。</p>
         </div>
         <a href="/brands" class="btn btn-primary btn-lg">
-          <span>进入 16 品牌互动数据库</span>
+          <span>进入 42 品牌互动数据库</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>

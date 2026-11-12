@@ -1,34 +1,39 @@
 ---
-title: "机场节点全部超时怎么办？节点全红、TIMEOUT 与连上无法上网排查指南"
-description: "节点测试全部显示 Timeout、延迟测速全红、开启代理后浏览器却打不开网页？本文提供 7 步系统性排错方法论，覆盖系统时间同步、TUN 虚拟网卡冲突、Fake-IP DNS 污染、防火墙拦截、内核端口冲突及订阅失效全流程解决方案。"
+title: "机场节点全部超时怎么办？节点全红、TIMEOUT 与检查代理和防火墙 (ERR_CONNECTION_TIMED_OUT) 排查指南"
+description: "节点测试全部显示 Timeout / 全红、Chrome 提示「检查代理服务器和防火墙 (ERR_CONNECTION_TIMED_OUT)」、连上代理打不开网页？本文提供 7 步系统性排查与自救指南，涵盖时钟同步、TUN 网卡死锁、DNS 污染与订阅失效修复，附高可用备用专线选购决策。"
 pubDate: 2026-03-14
 updatedDate: 2026-08-16
 author: "ClashLab 架构组"
 authorAvatar: "/images/authors/clashlab-core.png"
 category: "客户端教程"
-tags: ["排错指南", "节点超时", "连上没网", "Clash排错", "TUN模式", "DNS污染", "Mihomo"]
+tags: ["排错指南", "节点超时", "检查代理和防火墙", "ERR_CONNECTION_TIMED_OUT", "连上没网", "Clash排错", "TIMEOUT", "TUN模式", "DNS污染", "Mihomo"]
 coverImage: "/images/hero-airport-2026.svg"
 image: "/images/hero-airport-2026.svg"
-readTime: "14 分钟"
+readTime: "15 分钟"
 featured: true
 toc: true
 faqs:
+  - question: "Chrome 提示「检查代理服务器和防火墙 (ERR_CONNECTION_TIMED_OUT)」如何 30 秒快速解决？"
+    answer: "最常见的原因是客户端非正常退出，导致 Windows/macOS 系统代理开关残留打开，但后台已无代理程序监听端口。解决办法：① 重新打开 Clash Verge / v2rayN 并正常关闭「系统代理」；② 或者进入 Windows 设置 -> 网络和 Internet -> 代理，手动将「使用代理服务器」关闭。"
   - question: "为什么客户端节点测速全是绿色有延迟，但网页依然打不开？"
     answer: "节点测速（URL-Test）成功仅代表客户端与节点服务器之间的 TCP/UDP 链路连通，不代表分流规则和 DNS 正常工作。最常见的原因是：① 系统代理开关未实际勾选或被浏览器扩展覆盖；② 本地 DNS 发生污染，域名无法被 Fake-IP 正确劫持；③ 规则策略组选择了 DIRECT（直连）或 REJECT（拒绝）。"
   - question: "为什么系统时钟相差 1~2 分钟就会导致所有节点全部 Timeout？"
     answer: "现代主流加密协议（如 VLESS Reality、VMess、Shadowsocks-2022、TUIC）在建立 TLS 安全握手时，高度依赖时间戳进行防重放攻击（Replay Attack Protection）验证。若客户端与远程服务器时间偏差超过 60~90 秒，服务器将直接拒绝解密并丢弃握手包，表现为全节点测速超时。"
   - question: "开启 TUN 模式后电脑无法上网，微信也断连了怎么办？"
-    answer: "通常是由于 TUN 网卡（如 Wintun）劫持了系统全部默认路由，但内核未能正确放行局域网与国内直连流量，或者 DNS 发生了死锁。请在 Clash Verge Rev 中开启 `auto-detect-interface`，检查 `dns.enhanced-mode` 是否为 `fake-ip`，并将局域网网段加入 DIRECT 规则中。"
+    answer: "通常是由于 TUN 网卡（如 Wintun）劫持了系统全部默认路由，但内核未能正确放行局域网与国内直连流量，或者 DNS 发生了死锁。请在 Clash Verge Rev 中开启 auto-detect-interface，检查 dns.enhanced-mode 是否为 fake-ip，并将局域网网段加入 DIRECT 规则中。"
   - question: "更新订阅时提示「Fetch failed」或「Invalid YAML format」怎么解决？"
     answer: "这通常是因为机场原有订阅域名已被本地运营商 DNS 污染阻断，或者机场服务器正在维护。解决办法：① 先开启现有的可用节点作为前置代理再点击更新；② 前往机场官网用户中心获取最新发布的备用订阅分发链接；③ 检查订阅链接是否含有特殊字符导致解析异常。"
   - question: "公司或学校校园网连上机场后全部超时无法使用？"
     answer: "部分企业与校园网防火墙对 UDP 流量（特别是 443 以外的高端口 UDP）实施了全面封锁，导致基于 QUIC 的 Hysteria2 或 TUIC 协议失效；或者网络开启了深层 DPI 阻断常见代理端口。可尝试切换至基于 TCP/TLS 的 VLESS Reality 或 Trojan 节点，并将端口伪装为标准 443。"
 cta:
-  title: "排错遇到瓶颈，急需稳定可靠的节点？"
-  description: "查看 ClashLab 2026 专线机场测评榜单，严选 BGP 入口与真内网 IPLC 节点，告别超时与断流。"
-  buttonText: "查看高可用机场推荐"
-  buttonLink: "/posts/2026-airport-recommendation-ranking"
+  title: "所有排查步骤均正常，但节点依然频繁全部超时？"
+  description: "这通常意味着廉价公网中转机场入口被上游机房封锁或超售严重。建议为工作环境配置高可用 BGP + IEPL 真内网专线与按量计费不限时备用容灾方案。"
+  buttonText: "查看 2026 稳定专线机场天梯榜"
+  buttonLink: "/airport-recommendation"
 ---
+
+> [!NOTE] 核心排错结论速览 (BLUF)
+> 节点全部超时（全红）的 3 大最高频元凶：**① 本地系统时间与网络标准时间相差超过 60 秒**（触发 TLS 握手防重放防御被直接丢弃）；**② 客户端退出时残留了系统代理，导致 Chrome 报「检查代理服务器和防火墙 (ERR_CONNECTION_TIMED_OUT)」**；**③ 机场上游单点公网中转入口遭受大规模 QoS 阻断**。请首先运行系统时间自动同步，并检查 Windows 代理设置。
 
 ## 1. 故障现象与排错全景图
 
@@ -37,6 +42,28 @@ cta:
 1. **节点列表全红 / 全部 TIMEOUT**：点击延迟测试（URL-Test / Ping），所有国家和节点均提示 `Timeout` 或 `Error`，无一可用。
 2. **节点延迟正常（全绿），但浏览器打不开任何网页**：Google、YouTube 等网站提示 `ERR_CONNECTION_TIMED_OUT` 或 `DNS_PROBE_FINISHED_NXDOMAIN`。
 3. **开启系统代理 / TUN 模式后，国内网络瘫痪**：微信、飞书离线，局域网打印机与内网服务无法访问。
+
+### 1.1 Chrome 提示「请检查代理服务器和防火墙」与 ERR_CONNECTION_TIMED_OUT 30秒极速自救
+
+当你在 Google Chrome 或 Edge 浏览器中看到以下经典报错时：
+
+```
+无法访问此网站
+网址为 https://www.google.com/ 的网页可能暂时无法连接，或者它已永久性地移动到了新网址。
+ERR_CONNECTION_TIMED_OUT
+建议：请检查代理服务器和防火墙设置
+```
+
+请按以下 3 步在 30 秒内恢复：
+
+1. **步骤一：重置系统代理死锁（占比 60%）**
+   - 按下键盘快捷键 `Win + I` 打开 Windows 设置，进入 **「网络和 Internet」 -> 「代理」**。
+   - 查看「手动设置代理」下的 **「使用代理服务器」** 是否处于开启状态。
+   - 如果开启但你的客户端（如 Clash / v2rayN）此时并未运行，浏览器所有请求将被转发到空端口从而全部超时！立即将其拨动为 **「关」**，浏览器即可恢复国内联网。
+2. **步骤二：核实客户端 Mixed 监听端口**
+   - 检查客户端设置中的本地端口（通常为 `7890` 或 `10808`），确保系统代理指向的端口与客户端实际监听端口完全一致。
+3. **步骤三：清除 Chrome Socket 缓存连接**
+   - 在 Chrome 地址栏输入 `chrome://net-internals/#sockets`，点击 **「Flush socket pools」** 清理失效的代理连接池。
 
 为了快速定位根因，ClashLab 制定了以下 **7 步标准排查流程图**：
 
@@ -239,11 +266,28 @@ netsh winsock reset
 
 ---
 
-## 9. 结语
+## 9. 终极自救方案：为什么一定要配置「真专线与不限时备用容灾」？
 
-网络故障往往是多个环节叠加的结果。通过掌握以上标准化的 7 步排错逻辑，你可以在 3 分钟内准确定位是系统环境、客户端内核、本地运营商还是机场服务端的问题，告别盲目重装系统的繁琐流程。
+如果按照上述 7 步排查后，本地系统时钟无误、防火墙未拦截、DNS 正常，但**依然频繁出现特定时段（如晚高峰 20:00~23:00）全节点超时（全红）**，其本质根因往往是**廉价作坊式机场的上游公网入口遭受运营商 QoS 限制或 IP 封锁**。
+
+公网中转与单线直连机场抗风险能力极弱，一旦境内前置服务器被通报或断网，整个订阅的所有节点便会瞬间全军覆没。
+
+### 9.1 双线容灾选型建议
+1. **主力专线**：首选具备全国多地 BGP 动态入口与真内网 IPLC/IEPL 专线的品牌（如光速云、速界），不过 GFW 审查，确保晚高峰 0 丢包与 AI/4K 流媒体秒开。
+2. **备用不限时容灾**：在客户端中配置一个按量计费、永不清零的备用订阅（如星岛梦、唯兔云）。当主力订阅突发网络波动时，可在客户端一秒切至备用线路，工作学习不中断。
+
+详细选购矩阵与梯队排行榜请参阅：
+- [《2026 机场推荐与梯队天梯排行榜（16家专线机场实测大盘）》](/airport-recommendation)
+- [《2026 便宜机场与按量付费不限时备用机场推荐（低至 7 元/月）》](/posts/best-cheap-and-pay-as-you-go-airports)
+
+---
+
+## 10. 结语
+
+网络故障往往是系统环境、客户端内核与服务端网络多个环节叠加的结果。通过掌握以上标准化的 7 步排错逻辑，你可以在 3 分钟内准确定位并解决 `ERR_CONNECTION_TIMED_OUT`、全节点全红等故障，告别盲目重装系统的繁琐流程。
 
 相关阅读：
-- [《2026 机场推荐：稳定、便宜与 IPLC 专线机场排行榜》](/posts/2026-airport-recommendation-ranking)
-- [《Clash Verge Rev 2026 全平台深度配置指南》](/posts/clash-verge-rev-complete-guide)
+- [《2026 机场推荐与梯队天梯排行榜（16家专线机场实测大盘）》](/airport-recommendation)
+- [《2026 机场推荐：稳定、便宜与 IPLC 专线机场排行榜（深度横评）》](/posts/2026-airport-recommendation-ranking)
+- [《Clash Verge Rev 2026 全平台深度配置指南：订阅导入与分流实战》](/posts/clash-verge-rev-complete-guide)
 - [《国外网站打不开怎么办？海外网站无法访问终极解决教程》](/posts/overseas-website-access-troubleshooting)

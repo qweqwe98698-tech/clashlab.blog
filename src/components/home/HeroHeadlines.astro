@@ -15,8 +15,8 @@ const defaultHeroPost = {
   slug: '2026-airport-recommendation-ranking',
   customUrl: '/airport-recommendation',
   data: {
-    title: '2026 优质机场推荐天梯榜与专线选购全景指南 (16 品牌真实测速横评)',
-    description: '拒绝虚假营销。基于 ClashLab 评测实验室 16 家主流专线机场实测测速截图归档、骨干链路架构、晚高峰抗 QoS 抖动与协议代际，深度评定 T1/T2/T3 梯队天梯图。',
+    title: '2026 优质机场推荐天梯榜与专线选购全景指南 (42 品牌真实测速横评)',
+    description: '拒绝虚假营销。基于 ClashLab 评测实验室 42 家主流专线机场实测测速截图归档、骨干链路架构、晚高峰抗 QoS 抖动与协议代际，深度评定 T1/T2/T3 梯队天梯图。',
     pubDate: new Date('2026-08-15'),
     updatedDate: new Date('2026-08-16'),
     category: '机场推荐',
@@ -27,11 +27,23 @@ const defaultHeroPost = {
 
 const defaultSubPosts = [
   {
+    id: 'airport-node-timeout-troubleshooting',
+    slug: 'airport-node-timeout-troubleshooting',
+    data: {
+      title: '机场节点全部超时怎么办？全红、TIMEOUT 与 ERR_CONNECTION_TIMED_OUT 排查',
+      description: '解决节点延迟全红、Chrome 提示检查代理和防火墙错误、TUN 模式网卡冲突与订阅失效 7 步速查方案。',
+      pubDate: new Date('2026-08-16'),
+      category: '排错指南',
+      readTime: '14 分钟',
+      coverImage: '/images/hero-airport-2026.svg',
+    }
+  },
+  {
     id: 'clash-verge-rev-complete-guide',
     slug: 'clash-verge-rev-complete-guide',
     data: {
-      title: 'Clash Verge Rev 2026 全平台深度配置指南：内核切换与分流实战',
-      description: '全面解析新一代 Clash Verge Rev 基于 Mihomo 内核的高阶特性：规则集加速、TUN 模式与晚高峰调优。',
+      title: 'Clash Verge Rev 2026 下载与配置指南：订阅节点导入与分流实战',
+      description: '全平台 Clash 客户端新手快速入门：Mihomo 内核切换、一键导入机场订阅、TUN 虚拟网卡与超时排查。',
       pubDate: new Date('2026-08-14'),
       category: '客户端教程',
       readTime: '12 分钟',
@@ -43,24 +55,12 @@ const defaultSubPosts = [
     slug: 'brands-directory',
     customUrl: '/brands',
     data: {
-      title: '2026 机场品牌库与测速档案：收录光速云、速界、SOGO云等 16 家实测',
+      title: '2026 机场品牌库与测速档案：收录光速云、暮光加速、飞猫云等 42 家实测',
       description: '多维度实测 IEPL 专线延迟、VLESS 协议支持度、月付 7–25 元阶梯配置与专属优惠码一键复制。',
       pubDate: new Date('2026-08-12'),
       category: '品牌档案',
       readTime: '8 分钟',
       coverImage: '/images/hero-insights.svg',
-    }
-  },
-  {
-    id: 'sing-box-universal-proxy-configuration',
-    slug: 'sing-box-universal-proxy-configuration',
-    data: {
-      title: 'sing-box 通用代理平台架构解析与全协议配置实战',
-      description: '深入剖析 sing-box 的 JSON 规则路由、Inbound 嗅探、Rule-Set 二进制规则集与内存极速调优。',
-      pubDate: new Date('2026-08-10'),
-      category: '协议知识',
-      readTime: '10 分钟',
-      coverImage: '/images/hero-singbox.svg',
     }
   }
 ];
