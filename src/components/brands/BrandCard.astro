@@ -34,6 +34,7 @@ const notes = (brand as any).measured?.notes || brand.speedtest?.notes || '';
 const couponDiscount = (brand as any).commercial?.couponDiscount || brand.couponDiscount || '专属优惠';
 const couponCode = (brand as any).commercial?.couponCode || brand.couponCode || 'CLASHLAB';
 const affiliateUrl = (brand as any).commercial?.affiliateUrl || brand.affiliateUrl || `/brands/${brand.slug}`;
+const hasOfficialEntry = (brand as any).commercial?.hasOfficialEntry ?? (brand as any).hasOfficialEntry ?? affiliateUrl.startsWith('http');
 ---
 
 <article 
@@ -203,20 +204,31 @@ const affiliateUrl = (brand as any).commercial?.affiliateUrl || brand.affiliateU
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </a>
-      <a 
-        href={affiliateUrl} 
-        target="_blank" 
-        rel="nofollow sponsored noopener" 
-        class="btn-visit-brand"
-        aria-label={`前往 ${brand.name} 官网注册`}
-      >
-        <span>官网注册</span>
-        <svg class="arrow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-          <polyline points="15 3 21 3 21 9"></polyline>
-          <line x1="10" y1="14" x2="21" y2="3"></line>
-        </svg>
-      </a>
+      {hasOfficialEntry ? (
+        <a 
+          href={affiliateUrl} 
+          target="_blank" 
+          rel="nofollow sponsored noopener" 
+          class="btn-visit-brand"
+          aria-label={`前往 ${brand.name} 官网注册`}
+        >
+          <span>官网注册</span>
+          <svg class="arrow-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      ) : (
+        <a 
+          href={`/brands/${brand.slug}`} 
+          class="btn-visit-brand"
+          style="opacity: 0.78; background: rgba(148,163,184,0.16); color: #cbd5e1;"
+          aria-label={`${brand.name} 暂未提供独立官网入口，查看评测档案`}
+        >
+          <span>暂未提供入口</span>
+        </a>
+      )}
     </div>
   </div>
 </article>

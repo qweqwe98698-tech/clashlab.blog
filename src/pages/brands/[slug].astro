@@ -321,18 +321,24 @@ const faqSchema = {
               </div>
 
               <div class="hero-cta-buttons">
-                <a
-                  href={brand.affiliateUrl}
-                  target="_blank"
-                  rel="nofollow sponsored noopener"
-                  class="btn btn-primary btn-lg hero-register-btn"
-                >
-                  <span>立即前往 {brand.name} 官网</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-arrow">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </a>
+                {brand.hasOfficialEntry ? (
+                  <a
+                    href={brand.affiliateUrl}
+                    target="_blank"
+                    rel="nofollow sponsored noopener"
+                    class="btn btn-primary btn-lg hero-register-btn"
+                  >
+                    <span>立即前往 {brand.name} 官网</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-arrow">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </a>
+                ) : (
+                  <span class="btn btn-secondary btn-lg hero-register-btn" style="opacity: 0.85; cursor: default;">
+                    暂未提供独立官网注册入口
+                  </span>
+                )}
                 <a href="#speedtest-evidence" class="btn btn-secondary btn-lg hero-quick-jump">
                   查看测速证据 ↓
                 </a>
@@ -637,14 +643,20 @@ const faqSchema = {
                   </div>
 
                   <div class="plan-action">
-                    <a
-                      href={brand.affiliateUrl}
-                      target="_blank"
-                      rel="nofollow sponsored noopener"
-                      class={`btn ${plan.isPopular ? 'btn-primary' : 'btn-secondary'} btn-block`}
-                    >
-                      选购此套餐 ↗
-                    </a>
+                    {brand.hasOfficialEntry ? (
+                      <a
+                        href={brand.affiliateUrl}
+                        target="_blank"
+                        rel="nofollow sponsored noopener"
+                        class={`btn ${plan.isPopular ? 'btn-primary' : 'btn-secondary'} btn-block`}
+                      >
+                        选购此套餐 ↗
+                      </a>
+                    ) : (
+                      <span class="btn btn-secondary btn-block" style="opacity: 0.78; cursor: default;">
+                        官网入口待核实
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -893,18 +905,24 @@ const faqSchema = {
               </div>
 
               <div class="bcc-actions">
-                <a
-                  href={brand.affiliateUrl}
-                  target="_blank"
-                  rel="nofollow sponsored noopener"
-                  class="btn btn-primary btn-lg bcc-main-btn"
-                >
-                  <span>立即前往 {brand.name} 官网注册</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </a>
+                {brand.hasOfficialEntry ? (
+                  <a
+                    href={brand.affiliateUrl}
+                    target="_blank"
+                    rel="nofollow sponsored noopener"
+                    class="btn btn-primary btn-lg bcc-main-btn"
+                  >
+                    <span>立即前往 {brand.name} 官网注册</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </a>
+                ) : (
+                  <span class="btn btn-secondary btn-lg bcc-main-btn" style="opacity: 0.85; cursor: default;">
+                    暂未提供独立官网注册入口
+                  </span>
+                )}
               </div>
 
               <div class="bcc-footer-note">
@@ -999,9 +1017,15 @@ const faqSchema = {
       <button type="button" class="btn btn-secondary btn-sm msb-copy" data-coupon={brand.couponCode}>
         码: {brand.couponCode}
       </button>
-      <a href={brand.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary btn-sm msb-buy">
-        直达官网 ↗
-      </a>
+      {brand.hasOfficialEntry ? (
+        <a href={brand.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary btn-sm msb-buy">
+          直达官网 ↗
+        </a>
+      ) : (
+        <span class="btn btn-secondary btn-sm msb-buy" style="opacity: 0.8; cursor: default;">
+          暂无入口
+        </span>
+      )}
     </div>
   </div>
 

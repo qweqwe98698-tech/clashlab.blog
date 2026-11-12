@@ -666,11 +666,17 @@
       }
 
       if (this.affLink) {
-        if (affUrl) {
+        if (affUrl && affUrl.startsWith('http')) {
           this.affLink.href = affUrl;
+          this.affLink.setAttribute('target', '_blank');
+          this.affLink.setAttribute('rel', 'nofollow sponsored noopener');
+          this.affLink.textContent = '直达官网注册 →';
           this.affLink.style.display = 'inline-block';
         } else if (slug) {
           this.affLink.href = `/brands/${slug}`;
+          this.affLink.removeAttribute('target');
+          this.affLink.removeAttribute('rel');
+          this.affLink.textContent = '查看评测档案 →';
           this.affLink.style.display = 'inline-block';
         } else {
           this.affLink.style.display = 'none';

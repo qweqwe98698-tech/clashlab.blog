@@ -509,14 +509,25 @@ const itemListJsonLd = {
                       </a>
                     </td>
                     <td>
-                      <a
-                        href={b.commercial.affiliateUrl}
-                        target="_blank"
-                        rel="nofollow sponsored noopener"
-                        class="btn-table-action"
-                      >
-                        注册直达
-                      </a>
+                      {b.hasOfficialEntry ? (
+                        <a
+                          href={b.commercial.affiliateUrl}
+                          target="_blank"
+                          rel="nofollow sponsored noopener"
+                          class="btn-table-action"
+                        >
+                          注册直达
+                        </a>
+                      ) : (
+                        <a
+                          href={`/brands/${b.slug}`}
+                          class="btn-table-action"
+                          style="opacity: 0.75; background: rgba(148,163,184,0.16); color: #94a3b8;"
+                          title="暂未提供独立品牌入口"
+                        >
+                          暂未收录入口
+                        </a>
+                      )}
                     </td>
                   </tr>
                 ))}

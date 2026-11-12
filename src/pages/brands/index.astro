@@ -385,19 +385,30 @@ const latestTestBatch = '2026-08 节点压测';
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
               </a>
-              <a
-                href={brand.commercial.affiliateUrl}
-                target="_blank"
-                rel="nofollow sponsored noopener"
-                class="btn-visit-brand-sm"
-              >
-                <span>官网注册</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </a>
+              {brand.hasOfficialEntry ? (
+                <a
+                  href={brand.commercial.affiliateUrl}
+                  target="_blank"
+                  rel="nofollow sponsored noopener"
+                  class="btn-visit-brand-sm"
+                >
+                  <span>官网注册</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                </a>
+              ) : (
+                <a
+                  href={`/brands/${brand.slug}`}
+                  class="btn-visit-brand-sm"
+                  style="opacity: 0.78; background: rgba(148,163,184,0.16); color: #cbd5e1;"
+                  title="品牌资料暂未提供独立官网注册入口"
+                >
+                  <span>暂未提供入口</span>
+                </a>
+              )}
             </div>
           </article>
         ))}
@@ -478,14 +489,24 @@ const latestTestBatch = '2026-08 节点压测';
                   </button>
                 </td>
                 <td>
-                  <a
-                    href={b.commercial.affiliateUrl}
-                    target="_blank"
-                    rel="nofollow sponsored noopener"
-                    class="btn btn-primary btn-sm table-reg-btn"
-                  >
-                    注册直达
-                  </a>
+                  {b.hasOfficialEntry ? (
+                    <a
+                      href={b.commercial.affiliateUrl}
+                      target="_blank"
+                      rel="nofollow sponsored noopener"
+                      class="btn btn-primary btn-sm table-reg-btn"
+                    >
+                      注册直达
+                    </a>
+                  ) : (
+                    <a
+                      href={`/brands/${b.slug}`}
+                      class="btn btn-secondary btn-sm table-reg-btn"
+                      title="暂未提供独立品牌入口"
+                    >
+                      暂未提供
+                    </a>
+                  )}
                 </td>
               </tr>
             ))}
